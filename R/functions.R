@@ -64,9 +64,9 @@ attack = function(adv = 0,
         if(vocal){
             print('CRIT HIT')
         }
-        diceCount = str_extract(damageDice,pattern = '[0-9]*?(?=d)')
+        diceCount = stringr::str_extract(damageDice,pattern = '[0-9]*?(?=d)')
         diceCount = as.integer(diceCount)*2
-        damageDice %<>% str_replace(pattern = '[0-9]*?(?=d)',
+        damageDice %<>% stringr::str_replace(pattern = '[0-9]*?(?=d)',
                                     as.character(diceCount))
         damageRoll = unname(diceSyntax::r(damageDice,vocal = vocal) + char$abilityMods[attackStat] +modToDamage)
     } else{
