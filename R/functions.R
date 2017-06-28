@@ -171,6 +171,14 @@ save = function(stat, char =  getOption('defaultCharacter')){
 }
 
 
+#' @export
+quickSave = function(char = getOption('defaultCharacter')){
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+    diceSyntax::r(r1d20)  + char$abilityMods + char$proficiencyBonus*char$abilityProf
+}
+
 #' Title
 #'
 #' @export
