@@ -99,7 +99,8 @@ skillCheck = function(skill,
 
     bonus = char$skillProf[skill]*char$proficiencyBonus +
         char$skillDoubleProf[skill]*char$proficiencyBonus +
-        (char$skillHalfProf[skill]*!char$skillProf[skill]*char$proficiencyBonus/2)
+        (char$skillHalfProf[skill]*!char$skillProf[skill]*char$proficiencyBonus/2) +
+        char$abilityMods[char$skillAttributes[skill]]
 
     if(char$skillHalfProfRoundUp[skill]){
         bonus %<>% ceiling()

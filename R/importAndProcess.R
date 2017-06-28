@@ -79,6 +79,16 @@ processCharacter = function(char){
                    'Intimidation',
                    'Performance',
                    'Persuasion')
+
+    skillAttributes = c('Str',
+                         rep('Dex',3),
+                         rep('Int',5),
+                         rep('Wis',5),
+                         rep('Chr',4))
+    names(skillAttributes) = skillNames
+    char$skillAttributes = skillAttributes
+    # char$skillNames = skillNames
+
     skillData = char$skillInfo %>% strsplit('⊠|(â\u008a.)') %>% {.[[1]]} %>% trimws()
 
     skillProf = skillData[1:18] %>% logicConvert
