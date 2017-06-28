@@ -134,7 +134,9 @@ quickCheck = function(char =  getOption('defaultCharacter')){
     roll = diceSyntax::r(r1d20)
     bonus = char$skillProf*char$proficiencyBonus +
         char$skillDoubleProf*char$proficiencyBonus +
-        (char$skillHalfProf*!char$skillProf*char$proficiencyBonus/2)
+        (char$skillHalfProf*!char$skillProf*char$proficiencyBonus/2) +
+        char$abilityMods[char$skillAttributes]
+
 
     bonus %<>% rounding(char$skillHalfProfRoundUp)
 
