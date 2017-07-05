@@ -2,9 +2,11 @@ library(import5eChar)
 
 char = importCharacter('Tim_Fighter')
 
-# by default the name getOption('defaultCharacter') returns 'char'. If another name is used use options(defaultCharacter = 'whatever') to set or manually
+# by default the name getOption('defaultCharacter') returns 'char'.
+# If another name is used use options(defaultCharacter = 'whatever') to set or manually
 # specify char when running functions
 
+# set a default attacking function for Tim the fighter.
 timAttack = function(adv = 0,
                      sharpShoot = F,
                      attackStat = 'Dex',
@@ -36,13 +38,9 @@ init()
 # ability scores ----------
 char$abilityMods
 # saves -------------
-save('Str')
-save('Dex')
-save('Con')
-save('Chr')
-save('Int')
-save('Wis')
+quickSave()
 
+# ability checks
 abilityCheck('Str')
 abilityCheck('Dex')
 abilityCheck('Con')
@@ -81,11 +79,14 @@ skillCheck(performance)
 # health ------------
 char$maxHealth
 
-# second wind
+# second wind *
 # d10+figter level
 r(r1d10) + 2
 
+# action surge *
+
 # attack --------------
+# ammuntion update at the end of session
 char$bolt = 49
 char$arrow = 20
 
@@ -112,28 +113,4 @@ timAttack(damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
 timAttack(1,damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
 timAttack(-1,damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
 
-
-
-r(r1d20)
-
-# loot -----------
-###### wand of want not need
-##### 20 gold
-##### 30 gold
-###### 2 gold
-##### 10 silver
-
-# warlock
-###### 2 gold
-# weird bone thingy
-
-# briar glen
-
-10/4
-
-# Catrisca Giblari
-
-(20 +30 +2 +2)/4
-
-13.5 + 0.25
-
+# other notes below

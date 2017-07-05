@@ -3,7 +3,7 @@ Type: Package
 Title: Import Exported 5e Characters
 Version: 0.1.0
 Author@R: person('Ogan','Mancarci', 'ogan.mancarcii@gmail.com',c('aut','cre'))
-Description: Imports fifth edition characters exported by Wakter Kammerer's "Fifth Edition Character Sheet" iOS and Android app
+Description: Imports fifth edition characters exported by Walter Kammerer's "Fifth Edition Character Sheet" iOS and Android app
 Encoding: UTF-8
 LazyData: true
 Imports: googledrive,
