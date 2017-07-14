@@ -2,7 +2,7 @@
 import5echar
 ============
 
-Walter Kammerer's "Fifth Edition Character Sheet" app allows you to upload your character to google drive. This package parses that file and allows you to use character data for automation.
+Walter Kammerer's [Fifth Edition Character Sheet](https://play.google.com/store/apps/details?id=com.wgkammerer.testgui.basiccharactersheet.app&hl=en) app allows you to upload your character to google drive. This package parses that file and allows you to use character data for automation.
 
 Installation
 ------------
@@ -25,18 +25,18 @@ Once a character is loaded convenience functions can be used
 init() # initiative roll
 ```
 
-    ## [1] "Rolls: [ 5 ]"
+    ## [1] "Rolls: [ 6 ]"
 
-    ## [1] 9
+    ## [1] 10
 
 ``` r
 skillCheck(medicine) # medicine skill check
 ```
 
-    ## [1] "Rolls: [ 13 ]"
+    ## [1] "Rolls: [ 8 ]"
 
     ## Medicine 
-    ##       14
+    ##        9
 
 All these conveninece functions require an imported character as an input. If you use the variable name `char`, providing this will not be necesarry. If you want to use a different name you can either do `options(defaultCharacter='newVariableName')` to continue using the functions as before, or specify the object.
 
@@ -46,9 +46,9 @@ myBestCharacter = importCharacter('Tim_Fighter')
 init(char = myBestCharacter)
 ```
 
-    ## [1] "Rolls: [ 8 ]"
+    ## [1] "Rolls: [ 12 ]"
 
-    ## [1] 12
+    ## [1] 16
 
 Use example
 -----------

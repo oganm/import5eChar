@@ -4,11 +4,12 @@ output: github_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 devtools::load_all()
+set.seed(1)
 ```
 
 # import5echar
 
-Walter Kammerer's "Fifth Edition Character Sheet" app allows you to upload your character to google drive. This package parses that file and allows you to use character data for automation.
+Walter Kammerer's [Fifth Edition Character Sheet](https://play.google.com/store/apps/details?id=com.wgkammerer.testgui.basiccharactersheet.app&hl=en) app allows you to upload your character to google drive. This package parses that file and allows you to use character data for automation.
 
 ## Installation
 

@@ -3,14 +3,15 @@
 #'
 #' @param adv integer. 0: Normal, -1 Disadvantage, +1 Advantage
 #' @param sharpShoot logical. are we sharpshooting
-#' @param attackStat character. which stat to use for attack. 3 letter
-#' @param damageDice character. attack dice
-#' @param proficient logical. is the attacker proficient in the shot
+#' @param attackStat character. which stat to use for attack. 3 letter. Added to hit and damage rolls
+#' @param damageDice character vector. attack dice. If more than one dice type is used (as in sneak attack) add them as a vector (\code{damageDice = c('1d8','1d6')})
+#' @param proficient logical. is the attacker proficient in the weapon. If so proficiency bonus will be added to hit rolls
 #' @param modToHit integer. hit modifier
 #' @param modToDamage integer. damage modifier
-#' @param useAmmo logical. should the shot expand ammo
+#' @param useAmmo logical. should the shot expand ammo. This uses \code{<<-} to set the ammo variable so not exactly function friendly
 #' @param ammo character. what is the name of the ammo. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)
 #' @param vocal logical. Should dice rolls and crit notifications be printed.
+#' @param critRange vector of integers. Which rolls to count as a critical hit
 #' @param char A list outputted from importCharacter or processCharacter, or a character naming such a list
 #'
 #' @return Named vector. Attack roll and damage. If a 1 is rolled damage is always 0
@@ -26,6 +27,7 @@ attack = function(adv = 0,
                   useAmmo = FALSE,
                   ammo = 'arrow',
                   vocal = TRUE,
+                  critRange = 20,
                   char = getOption('defaultCharacter')){
     # if char isn't provided see what the defaultCharacter option is
     if(is.character(char)){
@@ -50,7 +52,7 @@ attack = function(adv = 0,
     } else if (adv == -1){
         attackRoll = diceSyntax::r(r2d20dh1, vocal = vocal)
     }
-    finalRoll = unname(attackRoll + char$abilityMods[attackStat]+ char$proficiencyBonus+ modToHit)
+    finalRoll = unname(attackRoll + char$abilityMods[attackStat] + proficient*char$proficiencyBonus + modToHit)
     if(sharpShoot){
         finalRoll = finalRoll - 5
     }
@@ -60,17 +62,20 @@ attack = function(adv = 0,
             print('CRIT MISS')
         }
         damageRoll = 0
-    } else if(attackRoll == 20){
+    } else if(attackRoll %in%  critRange){
         if(vocal){
             print('CRIT HIT')
         }
-        diceCount = stringr::str_extract(damageDice,pattern = '[0-9]*?(?=d)')
-        diceCount = as.integer(diceCount)*2
-        damageDice %<>% stringr::str_replace(pattern = '[0-9]*?(?=d)',
-                                    as.character(diceCount))
-        damageRoll = unname(diceSyntax::r(damageDice,vocal = vocal) + char$abilityMods[attackStat] +modToDamage)
+        damageDice = c(damageDice,damageDice)
+        damageRolls = damageDice %>% sapply(function(x){
+            diceSyntax::r(x,vocal = vocal)
+        })
+        damageRoll = unname(sum(damageRolls) + char$abilityMods[attackStat] +modToDamage)
     } else{
-        damageRoll = unname(diceSyntax::r(damageDice, vocal = vocal) + char$abilityMods[attackStat] + modToDamage)
+        damageRolls = damageDice %>% sapply(function(x){
+            diceSyntax::r(x,vocal = vocal)
+        })
+        damageRoll = unname(sum(damageRolls) + char$abilityMods[attackStat] +modToDamage)
     }
     if(sharpShoot & attackRoll != 1){
         damageRoll = damageRoll+10

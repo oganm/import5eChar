@@ -7,7 +7,7 @@
 attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
   "Int", "Chr"), damageDice = "1d6", proficient = TRUE, modToHit = 0,
   modToDamage = 0, useAmmo = FALSE, ammo = "arrow", vocal = TRUE,
-  char = getOption("defaultCharacter"))
+  critRange = 20, char = getOption("defaultCharacter"))
 }
 \arguments{
 \item{adv}{integer. 0: Normal, -1 Disadvantage, +1 Advantage}
@@ -16,7 +16,7 @@ attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
 
 \item{attackStat}{character. which stat to use for attack. 3 letter}
 
-\item{damageDice}{character. attack dice}
+\item{damageDice}{character vector. attack dice. If more than one dice type is used (as in sneak attack) add them as a vector (\code{damageDice = c('1d8','1d6')})}
 
 \item{proficient}{logical. is the attacker proficient in the shot}
 
@@ -29,6 +29,8 @@ attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
 \item{ammo}{character. what is the name of the ammo. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)}
 
 \item{vocal}{logical. Should dice rolls and crit notifications be printed.}
+
+\item{critRange}{vector of integers. Which rolls to count as a critical hit}
 
 \item{char}{A list outputted from importCharacter or processCharacter, or a character naming such a list}
 }
