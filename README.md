@@ -9,7 +9,7 @@ Installation
 
     devtools::install_github('oganm/ogbox)
     devtools::install_github('oganm/diceSyntax)
-    devtools::install_github('oganm/import5echar)
+    devtools::install_github('oganm/import5echar')
 
 Basics
 ------
