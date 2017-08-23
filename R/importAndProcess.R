@@ -25,7 +25,7 @@ importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE
         character = googledrive::drive_get(fileID)
     }
 
-    download_link <- character$files_resource[[1]]$webContentLink
+    download_link <- character$drive_resource[[1]]$webContentLink
     if(is.null(output)){
         output = tempfile()
     }
