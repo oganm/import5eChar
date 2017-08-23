@@ -7,6 +7,7 @@ Walter Kammerer's [Fifth Edition Character Sheet](https://play.google.com/store/
 Installation
 ------------
 
+    devtools::install_github('tidyverse/googledrive')
     devtools::install_github('oganm/ogbox)
     devtools::install_github('oganm/diceSyntax)
     devtools::install_github('oganm/import5echar')

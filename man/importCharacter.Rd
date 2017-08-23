@@ -5,16 +5,18 @@
 \title{Import character from google drive}
 \usage{
 importCharacter(regex = NULL, fileID = NULL, output = NULL,
-  overwrite = TRUE)
+  overwrite = TRUE, ...)
 }
 \arguments{
 \item{regex}{A regular expression that matches the file name. If there are multiple matches, the most recently edited file will the chosen}
 
-\item{fileID}{A googledrive file ID. If regex is not provided}
+\item{fileID}{A googledrive file ID.}
 
 \item{output}{if provided, the file will be saved here. if not, a temporary file will be used}
 
 \item{overwrite}{If TRUE the new file will overwrite the old one. Not important if output isn't provided as the file will be deleted eventually}
+
+\item{...}{Variables to pass to googledrive::drive_find (if regex is given) or googledrive::drive_get (if fileID is given).}
 }
 \value{
 The output is a nested list extracted from the original XML file, edited to make certain fields more computer readable.

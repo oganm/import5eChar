@@ -14,17 +14,17 @@ attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
 
 \item{sharpShoot}{logical. are we sharpshooting}
 
-\item{attackStat}{character. which stat to use for attack. 3 letter}
+\item{attackStat}{character. which stat to use for attack. 3 letter. Added to hit and damage rolls}
 
 \item{damageDice}{character vector. attack dice. If more than one dice type is used (as in sneak attack) add them as a vector (\code{damageDice = c('1d8','1d6')})}
 
-\item{proficient}{logical. is the attacker proficient in the shot}
+\item{proficient}{logical. is the attacker proficient in the weapon. If so proficiency bonus will be added to hit rolls}
 
 \item{modToHit}{integer. hit modifier}
 
 \item{modToDamage}{integer. damage modifier}
 
-\item{useAmmo}{logical. should the shot expand ammo}
+\item{useAmmo}{logical. should the shot expand ammo. This uses \code{<<-} to set the ammo variable so not exactly function friendly}
 
 \item{ammo}{character. what is the name of the ammo. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)}
 

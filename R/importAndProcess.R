@@ -5,24 +5,24 @@
 #' .httr-oauth file to your working directory.
 #'
 #' @param regex A regular expression that matches the file name. If there are multiple matches, the most recently edited file will the chosen
-#' @param fileID A googledrive file ID. If regex is not provided
+#' @param fileID A googledrive file ID.
 #' @param output if provided, the file will be saved here. if not, a temporary file will be used
 #' @param overwrite If TRUE the new file will overwrite the old one. Not important if output isn't provided as the file will be deleted eventually
-#'
+#' @param ... Variables to pass to googledrive::drive_find (if regex is given) or googledrive::drive_get (if fileID is given).
 #' @return The output is a nested list extracted from the original XML file, edited to make certain fields more computer readable.
 #'
 #' @export
 #'
-importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE){
+importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE,...){
     if(is.null(regex) & is.null(fileID)){
         error('Either regex or fileID should be provided')
     }
     else if(!is.null(regex) & !is.null(fileID)){
         error('Either regex OR fileID should be provided, not both of them at once.')
     } else if(is.null(fileID)){
-        character = googledrive::drive_find(pattern = regex)[1,]
+        character = googledrive::drive_find(pattern = regex,verbose=FALSE,...)[1,]
     } else if(is.null(regex)){
-        character = googledrive::drive_get(fileID)
+        character = googledrive::drive_get(fileID,verbose=FALSE,...)
     }
 
     download_link <- character$drive_resource[[1]]$webContentLink
