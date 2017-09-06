@@ -16,8 +16,7 @@
 importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE,...){
     if(is.null(regex) & is.null(fileID)){
         error('Either regex or fileID should be provided')
-    }
-    else if(!is.null(regex) & !is.null(fileID)){
+    } else if(!is.null(regex) & !is.null(fileID)){
         error('Either regex OR fileID should be provided, not both of them at once.')
     } else if(is.null(fileID)){
         character = googledrive::drive_find(pattern = regex,verbose=FALSE,...)[1,]
