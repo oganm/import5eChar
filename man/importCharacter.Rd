@@ -26,3 +26,4 @@ Provided a regex or fileID this will import the character from your google drive
 googledrive authentication on first load. If you are using Rstudio server, you can authenticate using another machine and move the generated
 .httr-oauth file to your working directory.
 }
+

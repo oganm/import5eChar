@@ -6,8 +6,8 @@
 \usage{
 attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
   "Int", "Chr"), damageDice = "1d6", proficient = TRUE, modToHit = 0,
-  modToDamage = 0, useAmmo = FALSE, ammo = "arrow", vocal = TRUE,
-  critRange = 20, char = getOption("defaultCharacter"))
+  modToDamage = 0, ammo = NULL, vocal = TRUE, critRange = 20,
+  char = getOption("defaultCharacter"))
 }
 \arguments{
 \item{adv}{integer. 0: Normal, -1 Disadvantage, +1 Advantage}
@@ -24,9 +24,7 @@ attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
 
 \item{modToDamage}{integer. damage modifier}
 
-\item{useAmmo}{logical. should the shot expand ammo. This uses \code{<<-} to set the ammo variable so not exactly function friendly}
-
-\item{ammo}{character. what is the name of the ammo. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)}
+\item{ammo}{character. If provided ammo will be used. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)}
 
 \item{vocal}{logical. Should dice rolls and crit notifications be printed.}
 
@@ -40,3 +38,4 @@ Named vector. Attack roll and damage. If a 1 is rolled damage is always 0
 \description{
 Attack
 }
+
