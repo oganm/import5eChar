@@ -40,6 +40,17 @@ skillCheck(medicine) # medicine skill check
     ## Medicine 
     ##        9
 
+``` r
+weaponAttack(char$weapons$Dagger) # a weapon attack with a dagger
+```
+
+    ## [1] "Rolls: [ 12 ]"
+    ## [1] "Rolls: [ *4* ]"
+    ## [1] "Piercing damage"
+
+    ## Attack Damage   crit 
+    ##     19      8      0
+
 All these conveninece functions require an imported character as an input. If you use the variable name `char`, providing this will not be necesarry. If you want to use a different name you can either do `options(defaultCharacter='newVariableName')` to continue using the functions as before, or specify the object.
 
 ``` r
@@ -48,9 +59,9 @@ myBestCharacter = importCharacter('Tim_Fighter')
 init(char = myBestCharacter)
 ```
 
-    ## [1] "Rolls: [ 12 ]"
+    ## [1] "Rolls: [ 5 ]"
 
-    ## [1] 16
+    ## [1] 9
 
 Use example
 -----------

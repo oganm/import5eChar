@@ -32,7 +32,7 @@ importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE
                     httr::write_disk(output,overwrite = TRUE),
                     googledrive:::drive_token())
 
-    char = paste(readLines(output),collapse = '\n')
+    char = paste(readLines(output,encoding = 'UTF-8'),collapse = '\n')
 
     return(processCharacter(char))
 }
@@ -88,7 +88,7 @@ processCharacter = function(char){
     char$skillAttributes = skillAttributes
     # char$skillNames = skillNames
 
-    skillData = char$skillInfo %>% strsplit('⊠|(â\u008a.)') %>% {.[[1]]} %>% trimws()
+    skillData = char$skillInfo %>% strsplit('⊠|(â\u008a.)|(\u{22a0})') %>% {.[[1]]} %>% trimws()
 
     skillProf = skillData[1:18] %>% logicConvert
     names(skillProf) = skillNames
@@ -112,25 +112,115 @@ processCharacter = function(char){
 
 
 
-    weapons = char$weaponList %>% strsplit('⊠|(â\u008a.)')  %>% .[[1]]
+    weapons = char$weaponList %>% strsplit('⊠|(â\u008a.)|(\u{22a0})')  %>% .[[1]]
     weapons = weapons[-1]
-    numOfWeapons = (length(weapons))/13
+    suppressWarnings(
+    {splitPoints = weapons %>% ogbox::replaceElement(c('true'=1,
+                                                          'false' = 0)) %$%
+        newVector  %>% as.integer %>% is.na %>% which()
+    })
 
-    splitPoints = 1:numOfWeapons*13+1
+    splitPoints = splitPoints[-(which(diff(splitPoints)==1)+1)]
 
     weapons %<>% splitAt(splitPoints)
     weapons %<>% lapply(function(x){
         name = x[1]
         range = x[2]
-        dice = paste0(x[12],'d',x[13])
-        return(c(name = name,
+        dice = sapply(seq(length(12:length(x))/2),function(i){
+            out = paste0(x[12+(i-1)*2],'d',x[13+(i-1)*2])
+        })
+        proficient = x[9] %>%
+            logicConvert
+        miscInfo = x[[3]] %>% strsplit('') %>% .[[1]]
+        hands = miscInfo[2] %>% as.integer()
+        type = miscInfo[1] %>%
+            ogbox::replaceElement(dictionary = c('2'='ranged','1' = 'melee')) %$% newVector
+
+        damageType = miscInfo[4] %>%
+            ogbox::replaceElement(
+                dictionary = c('0'='Bludgeoning',
+                               '1' = 'Piercing',
+                               '2' = 'Slashing',
+                               '3' = 'Acid',
+                               '4' = 'Cold',
+                               '5' = 'Fire',
+                               '6' = 'Force',
+                               '7' = 'Lightning',
+                               '8' = 'Necrotic',
+                               '9' = 'Poison',
+                               '10' = 'Psychic',
+                               '11' = 'Radiant',
+                               '12' = 'Thunder')) %$%
+            newVector
+
+        miscDamageBonus = x[8] %>% as.integer()
+        magicDamageBonus = x[7] %>% as.integer()
+
+        miscAttackBonus = x[5] %>% as.integer
+        magicAttackBonus = x[6] %>% as.integer
+
+        attackStat = x[4] %>%
+            ogbox::replaceElement(dictionary = c('0'='Str',
+                                                 '1' = 'Dex',
+                                                 '2' = 'Con',
+                                                 '3' = 'Int',
+                                                 '4' = 'Wis',
+                                                 '5' = 'Chr')) %$% newVector
+
+        return(list(name = name,
                  range = range,
-                 dice=  dice))
+                 dice=  dice,
+                 hands = hands,
+                 attackStat =attackStat,
+                 proficient = proficient,
+                 type = type,
+                 damageType = damageType,
+                 miscDamageBonus = miscDamageBonus,
+                 magicDamageBonus = magicDamageBonus,
+                 miscAttackBonus = miscAttackBonus,
+                 magicAttackBonus = magicAttackBonus))
     })
 
     names(weapons) = weapons %>% purrr::map_chr('name')
 
     char$weapons = weapons
+
+    classData = char$classData %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
+
+    whereStart = classData %>% grep(pattern = '^[0-9]',x = .) %>% {.[[1]]}
+
+    weaponAttackMods = classData[whereStart] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
+
+    oneHandMeleeAttack = weaponAttackMods[5]
+    twoHandMeleeAttack = weaponAttackMods[8]
+    allMeleeAttack =  weaponAttackMods[2]
+
+    oneHandRangedAttack = weaponAttackMods[6]
+    twoHandRangedAttack = weaponAttackMods[9]
+    allRangedAttack = weaponAttackMods[3]
+
+    char$weaponAttackMods = c('oneHandMelee' = oneHandMeleeAttack,
+                              'twoHandMelee' = twoHandMeleeAttack,
+                              'allMelee' = allMeleeAttack,
+                              'oneHandRanged' = oneHandRangedAttack,
+                              'twoHandRanged' = twoHandRangedAttack,
+                              'allRanged' = allRangedAttack)
+
+    weaponDamageMods = classData[whereStart + 1] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
+    oneHandMeleeDamage = weaponDamageMods[5]
+    twoHandMeleeDamage = weaponDamageMods[8]
+    allMeleeDamage =  weaponDamageMods[2]
+
+    oneHandRangedDamage = weaponDamageMods[6]
+    twoHandRangedDamage = weaponDamageMods[9]
+    allRangedDamage = weaponDamageMods[3]
+
+    char$weaponDamageMods = c('oneHandMelee' = oneHandMeleeDamage,
+                              'twoHandMelee' = twoHandMeleeDamage,
+                              'allMelee' = allMeleeDamage,
+                              'oneHandRanged' = oneHandRangedDamage,
+                              'twoHandRanged' = twoHandRangedDamage,
+                              'allRanged' = allRangedDamage)
 
     return(char)
 }

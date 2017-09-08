@@ -1,3 +1,51 @@
+#' @export
+weaponAttack = function(weapon,
+                        adv = 0,
+                       sharpShoot = F,
+                       modToHit = 0,
+                       modToDamage = 0,
+                       ammo = NULL,
+                       vocal = TRUE,
+                       critRange = 20,
+                       char = getOption('defaultCharacter')){
+
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+
+
+    weaponTypeAttackBonus =
+        (weapon$type=='ranged')*char$weaponAttackMods['allRanged'] +
+        (weapon$type=='ranged' & weapon$hands == 1)*char$weaponAttackMods['oneHandRanged'] +
+        (weapon$type=='ranged' & weapon$hands == 2)*char$weaponAttackMods['twoHandRanged'] +
+        (weapon$type=='melee')*char$weaponAttackMods['allMelee'] +
+        (weapon$type=='melee' & weapon$hands == 1)*char$weaponAttackMods['oneHandMelee'] +
+        (weapon$type=='melee' & weapon$hands == 2)*char$weaponAttackMods['twoHandMelee']
+
+    weaponTypeDamageBonus =
+        (weapon$type=='ranged')*char$weaponDamageMods['allRanged'] +
+        (weapon$type=='ranged' & weapon$hands == 1)*char$weaponDamageMods['oneHandRanged'] +
+        (weapon$type=='ranged' & weapon$hands == 2)*char$weaponDamageMods['twoHandRanged'] +
+        (weapon$type=='melee')*char$weaponDamageMods['allMelee'] +
+        (weapon$type=='melee' & weapon$hands == 1)*char$weaponDamageMods['oneHandMelee'] +
+        (weapon$type=='melee' & weapon$hands == 2)*char$weaponDamageMods['twoHandMelee']
+
+    out = attack(adv = adv,
+           sharpShoot = sharpShoot,
+           attackStat = weapon$attackStat,
+           damageDice = weapon$dice,
+           proficient = weapon$proficient,
+           modToHit = weaponTypeAttackBonus + modToHit,
+           modToDamage = weaponTypeDamageBonus + modToDamage,
+           ammo = ammo,
+           vocal = vocal,
+           char = char)
+
+    print(paste(weapon$damageType,'damage'))
+    return(out)
+
+}
+
 
 #' Attack
 #'
@@ -8,8 +56,7 @@
 #' @param proficient logical. is the attacker proficient in the weapon. If so proficiency bonus will be added to hit rolls
 #' @param modToHit integer. hit modifier
 #' @param modToDamage integer. damage modifier
-#' @param useAmmo logical. should the shot expand ammo. This uses \code{<<-} to set the ammo variable so not exactly function friendly
-#' @param ammo character. what is the name of the ammo. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)
+#' @param ammo character. If provided ammo will be used. Before using, you need to set your ammo count manually by character$ammoName = 30 (character$bolt = 30)
 #' @param vocal logical. Should dice rolls and crit notifications be printed.
 #' @param critRange vector of integers. Which rolls to count as a critical hit
 #' @param char A list outputted from importCharacter or processCharacter, or a character naming such a list
@@ -24,8 +71,7 @@ attack = function(adv = 0,
                   proficient = TRUE,
                   modToHit = 0,
                   modToDamage = 0,
-                  useAmmo = FALSE,
-                  ammo = 'arrow',
+                  ammo = NULL,
                   vocal = TRUE,
                   critRange = 20,
                   char = getOption('defaultCharacter')){
@@ -35,8 +81,9 @@ attack = function(adv = 0,
     }
     attackStat = match.arg(attackStat)
 
-    if(useAmmo){
+    if(!is.null(ammo)){
         char[[ammo]] <<- char[[ammo]] - 1
+        char[[ammo]] = char[[ammo]] -1
         if(vocal){
             print(paste('Ammo left: ',char[[ammo]]))
         }

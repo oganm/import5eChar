@@ -12,3 +12,4 @@ skillCheck(skill, char = getOption("defaultCharacter"))
 \description{
 Title
 }
+

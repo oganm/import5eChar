@@ -36,6 +36,9 @@ init() # initiative roll
 
 
 skillCheck(medicine) # medicine skill check
+
+weaponAttack(char$weapons$Dagger) # a weapon attack with a dagger
+
 ```
 
 All these conveninece functions require an imported character as an input. If you use the variable name `char`, providing this will not be necesarry. If you want to use a different name you can either do `options(defaultCharacter='newVariableName')` to continue using the functions as before, or specify the object.

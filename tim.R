@@ -2,45 +2,18 @@ library(import5eChar)
 
 char = importCharacter('Tim_Fighter')
 
-# by default the name getOption('defaultCharacter') returns 'char'.
-# If another name is used use options(defaultCharacter = 'whatever') to set or manually
-# specify char when running functions
-
-# set a default attacking function for Tim the fighter.
-timAttack = function(adv = 0,
-                     sharpShoot = F,
-                     attackStat = 'Dex',
-                     damageDice = '1d6',
-                     proficient = TRUE,
-                     modToHit = 2, # tim's archery
-                     modToDamage = 0,
-                     useAmmo = TRUE,
-                     ammo = 'bolt',
-                     vocal = TRUE,
-                     char = getOption('defaultCharacter')){
-
-    attack(adv = adv,
-            sharpShoot = sharpShoot,
-            attackStat = attackStat,
-            damageDice = damageDice,
-            proficient = proficient,
-            modToHit = modToHit, # tim's archery
-            modToDamage = modToDamage,
-            useAmmo = useAmmo,
-            ammo = ammo,
-            vocal = vocal,
-            char = char)
-
-}
-
 # initiative --------------
 init()
 # ability scores ----------
 char$abilityMods
 # saves -------------
-quickSave()
+save('Str')
+save('Dex')
+save('Con')
+save('Chr')
+save('Int')
+save('Wis')
 
-# ability checks
 abilityCheck('Str')
 abilityCheck('Dex')
 abilityCheck('Con')
@@ -79,38 +52,40 @@ skillCheck(performance)
 # health ------------
 char$maxHealth
 
-# second wind *
+# second wind
 # d10+figter level
 r(r1d10) + 2
 
-# action surge *
-
 # attack --------------
-# ammuntion update at the end of session
+# weapon attacks can be automated if details are provided within the app
+# for more costumization see attack() function
+w = char$weapons
+
 char$bolt = 49
 char$arrow = 20
 
 # hand crossbow
-timAttack()
-timAttack(1)
-timAttack(-1)
+weaponAttack(w$`Crossbow, hand`,ammo = 'bolt')
+weaponAttack(w$`Crossbow, hand`,1,ammo = 'bolt')
+weaponAttack(w$`Crossbow, hand`,-1,ammo = 'bolt')
 
-timAttack(sharpShoot = TRUE)
-timAttack(1,sharpShoot = TRUE)
-timAttack(-1,sharpShoot = TRUE)
-
+weaponAttack(w$`Crossbow, hand`,sharpShoot = TRUE,ammo = 'bolt')
+weaponAttack(w$`Crossbow, hand`,sharpShoot = TRUE,1,ammo = 'bolt')
+weaponAttack(w$`Crossbow, hand`,sharpShoot = TRUE,-1,ammo = 'bolt')
 # dagger
-timAttack(damageDice= '1d4',useAmmo = FALSE,modToHit = 0)
-timAttack(1,damageDice= '1d4',useAmmo = FALSE,modToHit = 0)
-timAttack(-1,damageDice= '1d4',useAmmo = FALSE,modToHit = 0)
+weaponAttack(w$Dagger)
+weaponAttack(w$Dagger,1)
+weaponAttack(w$Dagger,-1)
 
 # longbow
-timAttack(damageDice = '1d8',ammo = 'arrow')
-timAttack(1,damageDice = '1d8',ammo = 'arrow')
-timAttack(-1,damageDice = '1d8',ammo = 'arrow')
+weaponAttack(w$Longbow,useAmmo = TRUE,ammo = 'arrow')
+weaponAttack(w$Longbow,1,useAmmo = TRUE,ammo = 'arrow')
+weaponAttack(w$Longbow,-1,useAmmo = TRUE,ammo = 'arrow')
 
-timAttack(damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
-timAttack(1,damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
-timAttack(-1,damageDice = '1d8',ammo = 'arrow',sharpShoot = TRUE)
+weaponAttack(w$Longbow,sharpShoot = TRUE,ammo = 'arrow')
+weaponAttack(w$Longbow,1,sharpShoot = TRUE,ammo = 'arrow')
+weaponAttack(w$Longbow,-1,sharpShoot = TRUE,ammo = 'arrow')
 
-# other notes below
+# inventory and stuff goes below
+
+

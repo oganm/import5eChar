@@ -9,3 +9,4 @@ quickCheck(char = getOption("defaultCharacter"))
 \description{
 Title
 }
+
