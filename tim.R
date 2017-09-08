@@ -1,6 +1,5 @@
 library(import5eChar)
 
-char = importCharacter('TestChar')
 char = importCharacter('Tim_Fighter')
 
 # initiative --------------
@@ -87,27 +86,6 @@ weaponAttack(w$Longbow,sharpShoot = TRUE,ammo = 'arrow')
 weaponAttack(w$Longbow,1,sharpShoot = TRUE,ammo = 'arrow')
 weaponAttack(w$Longbow,-1,sharpShoot = TRUE,ammo = 'arrow')
 
+# inventory and stuff goes below
 
-r(r1d20)
-
-# loot -----------
-###### wand of want not need
-##### 20 gold
-##### 30 gold
-###### 2 gold
-##### 10 silver
-
-# warlock
-###### 2 gold
-# weird bone thingy
-
-# briar glen
-
-10/4
-
-# Catrisca Giblari
-
-(20 +30 +2 +2)/4
-
-13.5 + 0.25
 
