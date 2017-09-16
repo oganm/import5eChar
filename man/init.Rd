@@ -9,4 +9,3 @@ init(char = getOption("defaultCharacter"))
 \description{
 Title
 }
-

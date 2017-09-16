@@ -38,4 +38,3 @@ Named vector. Attack roll and damage. If a 1 is rolled damage is always 0
 \description{
 Attack
 }
-

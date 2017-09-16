@@ -12,4 +12,3 @@ save(stat, char = getOption("defaultCharacter"))
 \description{
 Title
 }
-
