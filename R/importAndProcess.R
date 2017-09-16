@@ -48,8 +48,17 @@ processCharacter = function(char){
 
     char %<>% XML::xmlParse() %>%  (XML::xmlToList)
 
+    # simple statistics -----
     char$proficiencyBonus %<>% as.integer
-
+    char$armorBonus %<>% as.integer
+    char$shieldBonus %<>% as.integer
+    char$miscArmorBonus %<>% as.integer
+    char$maxDex %<>% as.integer
+    char$miscSpellDCBonus %<>% as.integer
+    char$miscSpellAttackBonus %<>% as.integer
+    char$castingStatCode %<>% as.integer
+    char$baseSpeed %<>% as.integer
+    char$speedMiscMod %<>% as.integer
 
     # ability score -------------
     abilityScores = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][1:6]} %>% as.integer()
@@ -117,6 +126,7 @@ processCharacter = function(char){
     char$skillHalfProfRoundUp = skillHalfProfRoundUp
 
 
+    # weapon lists ---------------
 
     weapons = char$weaponList %>% strsplit('⊠|(â\u008a.)|(\u{22a0})')  %>% .[[1]]
     weapons = weapons[-1]
@@ -158,6 +168,8 @@ processCharacter = function(char){
                                '11' = 'Radiant',
                                '12' = 'Thunder')) %$%
             newVector
+
+        # attack and damage bonuses --------------
 
         miscDamageBonus = x[8] %>% as.integer()
         magicDamageBonus = x[7] %>% as.integer()
@@ -227,6 +239,41 @@ processCharacter = function(char){
                               'oneHandRanged' = oneHandRangedDamage,
                               'twoHandRanged' = twoHandRangedDamage,
                               'allRanged' = allRangedDamage)
+
+    # character notes --------------
+    notes = char$noteList %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
+
+    char$Features = notes[1]
+    char$ArmorProficiencies = notes[2]
+    char$WeaponProficiencies = notes[3]
+    char$ToolProficiencies =notes[4]
+    char$LanguagesKnown = notes[5]
+    char$Equipment = notes[6]
+    # notes[7] is unkown
+    char$Class = notes[8]
+    char$Race = notes[9]
+    char$Background = notes[10]
+    char$Alignment= notes[11]
+    # 12-15 unkown
+    char$Name = notes[16]
+    char$ClassField = notes[17]
+
+    char$currency = list(CP = notes[18],
+                         SP = notes[19],
+                         EP = notes[20],
+                         GP = notes[21],
+                         PP = notes[22])
+
+    hitDice= char$hitDiceList %>% strsplit('⊠|\u{22a0}') %>% {.[[1]][-1]}
+    diceCount = length(hitDice)/3
+
+    char$hitDice = 1:diceCount %>% sapply(function(i){
+        paste0(hitDice[(i-1)*3+1],'d',hitDice[(i-1)*3+2])
+    })
+    char$hitDiceRemain = 1:diceCount %>% sapply(function(i){
+        paste0(hitDice[(i-1)*3+3],'d',hitDice[(i-1)*3+2])
+    })
+
 
     return(char)
 }
