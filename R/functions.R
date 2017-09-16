@@ -13,6 +13,32 @@ weaponAttack = function(weapon,
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
+    bonus = weaponBonus(weapon)
+
+    out = attack(adv = adv,
+           sharpShoot = sharpShoot,
+           attackStat = weapon$attackStat,
+           damageDice = weapon$dice,
+           proficient = weapon$proficient,
+           modToHit = bonus['weaponTypeAttackBonus'] + modToHit ,
+           modToDamage = bonus['weaponTypeDamageBonus'] + modToDamage,
+           ammo = ammo,
+           vocal = vocal,
+           char = char)
+
+    print(paste(weapon$damageType,'damage'))
+    return(out)
+
+}
+
+#' Calculate bonuses that affect a weapon attack
+#' @export
+weaponBonus =function(weapon,
+                      char = getOption('defaultCharacter')){
+
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
 
     weaponTypeAttackBonus =
         (weapon$type=='ranged')*char$weaponAttackMods['allRanged'] +
@@ -30,22 +56,10 @@ weaponAttack = function(weapon,
         (weapon$type=='melee' & weapon$hands == 1)*char$weaponDamageMods['oneHandMelee'] +
         (weapon$type=='melee' & weapon$hands == 2)*char$weaponDamageMods['twoHandMelee']
 
-    out = attack(adv = adv,
-           sharpShoot = sharpShoot,
-           attackStat = weapon$attackStat,
-           damageDice = weapon$dice,
-           proficient = weapon$proficient,
-           modToHit = weaponTypeAttackBonus + modToHit,
-           modToDamage = weaponTypeDamageBonus + modToDamage,
-           ammo = ammo,
-           vocal = vocal,
-           char = char)
-
-    print(paste(weapon$damageType,'damage'))
-    return(out)
+    c('weaponTypeAttackBonus' = unname(weaponTypeAttackBonus) + weapon$miscAttackBonus + weapon$magicAttackBonus,
+      'weaponTypeDamageBonus' = unname(weaponTypeDamageBonus) + weapon$miscDamageBonus + weapon$magicDamageBonus)
 
 }
-
 
 #' Attack
 #'
