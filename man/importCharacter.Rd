@@ -4,13 +4,15 @@
 \alias{importCharacter}
 \title{Import character from google drive}
 \usage{
-importCharacter(regex = NULL, fileID = NULL, output = NULL,
+importCharacter(regex = NULL, fileID = NULL, file = NULL, output = NULL,
   overwrite = TRUE, ...)
 }
 \arguments{
 \item{regex}{A regular expression that matches the file name. If there are multiple matches, the most recently edited file will the chosen}
 
 \item{fileID}{A googledrive file ID.}
+
+\item{file}{path to file}
 
 \item{output}{if provided, the file will be saved here. if not, a temporary file will be used}
 
@@ -26,4 +28,3 @@ Provided a regex or fileID this will import the character from your google drive
 googledrive authentication on first load. If you are using Rstudio server, you can authenticate using another machine and move the generated
 .httr-oauth file to your working directory.
 }
-

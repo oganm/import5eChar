@@ -6,6 +6,7 @@
 #'
 #' @param regex A regular expression that matches the file name. If there are multiple matches, the most recently edited file will the chosen
 #' @param fileID A googledrive file ID.
+#' @param file path to file
 #' @param output if provided, the file will be saved here. if not, a temporary file will be used
 #' @param overwrite If TRUE the new file will overwrite the old one. Not important if output isn't provided as the file will be deleted eventually
 #' @param ... Variables to pass to googledrive::drive_find (if regex is given) or googledrive::drive_get (if fileID is given).
@@ -13,10 +14,12 @@
 #'
 #' @export
 #'
-importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE,...){
-    if(is.null(regex) & is.null(fileID)){
-        error('Either regex or fileID should be provided')
-    } else if(!is.null(regex) & !is.null(fileID)){
+importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,overwrite=TRUE,...){
+    if(is.null(regex) & is.null(fileID) & is.null(file)){
+        error('Either regex, fileID or file should be provided')
+    }
+    if(is.null(file)){
+    if(!is.null(regex) & !is.null(fileID)){
         error('Either regex OR fileID should be provided, not both of them at once.')
     } else if(is.null(fileID)){
         character = googledrive::drive_find(pattern = regex,verbose=FALSE,...)[1,]
@@ -31,6 +34,9 @@ importCharacter = function(regex=NULL, fileID = NULL, output=NULL,overwrite=TRUE
     res = httr::GET(download_link,
                     httr::write_disk(output,overwrite = TRUE),
                     googledrive:::drive_token())
+    } else{
+        output = file
+    }
 
     char = paste(readLines(output,encoding = 'UTF-8'),collapse = '\n')
 
