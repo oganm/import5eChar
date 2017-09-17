@@ -240,6 +240,37 @@ processCharacter = function(char){
                               'twoHandRanged' = twoHandRangedDamage,
                               'allRanged' = allRangedDamage)
 
+    # class resources ---------------
+    # few things are not decoded because I'm bored
+    resources = classData[3] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% sapply(function(x){
+        resData = x %>%strsplit('⊡|\u{22A1}') %>% {.[[1]]}
+        c('name' = resData[1],
+          'shortName' = resData[2],
+          'remainingUse' = resData[4] %>% as.integer(),
+          'maxUse' = resData[3] %>% as.integer(),
+          'dice' = resData[5] %>% as.integer(),
+          'ResourceDisplay' = {
+              if(resData[5]>0){
+                  out = (paste0(resData[3],'d',resData[5]))
+              } else if(resData[3]>0){
+                  out = (resData[3])
+              } else{
+                  out = ('')
+              }
+              out
+          })
+    }) %>% t
+
+    resources %<>%as.data.frame %>% dplyr::mutate(remainingUse = as.integer(remainingUse %>% as.character),
+                         maxUse = as.integer(maxUse),
+                         dice = as.integer(dice))
+
+    rownames(resources) = NULL
+
+    char$resources = resources
+
+
+
     # character notes --------------
     notes = char$noteList %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
 
@@ -249,11 +280,17 @@ processCharacter = function(char){
     char$ToolProficiencies =notes[4]
     char$LanguagesKnown = notes[5]
     char$Equipment = notes[6]
-    # notes[7] is unkown
+    char$notes = notes[7]
     char$Class = notes[8]
     char$Race = notes[9]
     char$Background = notes[10]
     char$Alignment= notes[11]
+    char$personality = list()
+    char$personality$traits = notes[12]
+    char$personality$ideals = notes[13]
+    char$personality$bonds = notes[14]
+    char$personality$flaws = notes[15]
+
     # 12-15 unkown
     char$Name = notes[16]
     char$ClassField = notes[17]
@@ -273,6 +310,34 @@ processCharacter = function(char){
     char$hitDiceRemain = 1:diceCount %>% sapply(function(i){
         paste0(hitDice[(i-1)*3+3],'d',hitDice[(i-1)*3+2])
     })
+
+    # spells --------
+    spellData = char$spellList  %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
+    slots=  spellData[2] %>% strsplit('⊡|\u{22A1}') %>% {.[[1]]} %>% as.integer()
+    names(slots) = c('Cantrip',1:9)
+    char$spellSlots = slots
+
+    spells = spellData[9] %>%strsplit('⊡|\u{22A1}') %>% {.[[1]]} %>% sapply(function(x){
+        spell = x %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
+        level = spell[1] %>% as.integer()
+        name = spell[2]
+        prepared = spell[8] %>% logicConvert()
+        return(c('level' = level,
+                 'name' = name,
+                 'prepared' = prepared))
+    }) %>% t
+
+
+
+    rownames(spells)= NULL
+
+    spells %<>% as.data.frame %>% dplyr::mutate(level = level %>%as.character%>% as.integer, prepared = prepared %>% as.logical)
+
+    if(all(is.na(spells[1,]))){
+        spells = NULL
+    }
+
+    char$spells = spells
 
 
     return(char)

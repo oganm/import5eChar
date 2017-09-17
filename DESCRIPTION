@@ -10,9 +10,14 @@ LazyData: true
 Imports:
     googledrive,
     magrittr,
+    dplyr,
     diceSyntax,
     stringr,
     XML,
     purrr,
-    ogbox
-RoxygenNote: 5.0.1
+    ogbox,
+    rmarkdown,
+    kableExtra,
+    knitr,
+    bindrcpp
+RoxygenNote: 6.0.1
