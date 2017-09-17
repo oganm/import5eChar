@@ -1,0 +1,226 @@
+---
+output: 
+    pdf_document:
+        keep_tex: true
+        extra_dependencies: makecell,wasysym,multicol
+    # html_document:
+    #     keep_md: true
+documentclass: article
+classoption: 10pt,twoside,twocolumn
+geometry: margin=0.4in
+---
+
+```{r setup, include=FALSE}
+library(import5eChar)
+library(knitr)
+library(rmarkdown)
+library(kableExtra)
+library(dplyr)
+library(magrittr)
+library(ogbox)
+library(bindrcpp)
+knitr::opts_chunk$set(echo = FALSE)
+
+boldify = function(x){
+	paste0('\\textbf{',x,'}')
+}
+
+# char = import5eChar::importCharacter('Tim_Fighter')
+char = importCharacter(file = 'C:/Users/Ogan/Downloads/aaaLate')
+
+```
+
+`r char$Name`
+===============
+
+```{r}
+# 
+# kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'l',escape=FALSE) %>%
+# 	kable_styling(position = 'center', latex_options = "scale_down")
+
+AC = char$armorBonus + char$shieldBonus + char$miscArmorBonus + min(stat2mod(char$abilityScores['Dex']),char$maxDex)
+
+init = unname(char$abilityMods["Dex"] + char$initMiscMod)
+
+
+c1 = c('Class \\& Level',
+	   'Race',
+	   'Backrground',
+	   'Alignment',
+	   'Proficiency') %>% boldify()
+
+c2 = c(char$Class,
+	   char$Race,
+	   char$Background,
+	   char$Alignment,
+	   char$proficiencyBonus) 
+table = cbind(c1,c2)
+kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'l',escape=FALSE) %>%
+	kable_styling(position = 'center', latex_options = c("HOLD_position","scale_down"))
+
+
+table = data.frame(Score = char$abilityScores ,
+           Modifier = char$abilityMods,
+           Prof. = char$abilityProf %>% replaceElement(c('TRUE' = '\\XBox',
+                                               "FALSE" = '\\Square')) %$% newVector,
+           Save = char$abilityMods + char$abilityProf*char$proficiencyBonus)
+rownames(table) %<>% boldify()
+
+kable(table %>% t, format = 'latex',booktabs= TRUE,escape=FALSE)%>%
+    kable_styling(position = 'center', latex_options = c("scale_down","HOLD_position"))
+
+
+
+```
+
+
+
+```{r}
+
+r1 = c(AC,
+       init,
+       char$speedMiscMod + char$baseSpeed,
+       char$maxHealth,
+       paste0('\\makecell{',char$hitDice %>% paste(collapse='\\\\'),'}'))
+
+r2 = c('AC',
+       'Initiative',
+       'Speed',
+       'HP',
+       'Hit Dice') %>% boldify()
+
+
+table = rbind(r1,r2)
+
+kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'c',escape=FALSE,row.names=FALSE) %>%
+	kable_styling(position = 'center', latex_options = c("HOLD_position","scale_down"))
+
+
+
+```
+
+Skills
+==============
+```{r}
+skillBonus = char$skillProf*char$proficiencyBonus +
+        char$skillDoubleProf*char$proficiencyBonus +
+        (char$skillHalfProf*!char$skillProf*char$proficiencyBonus/2) +
+        char$abilityMods[char$skillAttributes]
+
+profMark = char$skillProf %>% replaceElement(c('TRUE' = '\\XBox',
+                                               "FALSE" = '\\Square')) %$% newVector
+
+statSep = char$skillAttributes %>% duplicated() %>% not %>% which %>% {.[-1] -1}
+
+skillAttributes = unique(char$skillAttributes)
+attributeRows = data.frame(skillName = skillAttributes %>% boldify(),
+                           profMark='',
+                           skillBonus = '',
+                           index = c(0,statSep+.1))
+
+
+
+charAts = data.frame(skillName = names(skillBonus),
+                     profMark,
+                     skillBonus,
+                     index = 1:length(skillBonus))
+
+charAts %<>% rbind(attributeRows) %>% arrange(index) %>% select(-index)
+
+
+charAts1 = charAts[1:12,]
+charAts2 = rbind(charAts[13:nrow(charAts),],data.frame(skillName = '',
+                                                       profMark = '',
+                                                       skillBonus = ''))
+charAts = cbind(charAts1,charAts2)
+
+out = kable(charAts, format = 'latex',booktabs= TRUE,escape=FALSE,col.names = NULL,linesep= '')%>%
+    kable_styling(position = 'center',latex_options = "HOLD_position")
+
+tableLines =out %>% stringr::str_replace_all(pattern = "\n\\\\hline", 
+        "") %>% stringr::str_split("\n") %>% {
+        .[[1]]  }
+
+tableLines[3] = "\\begin{tabular}{lll|lll}"
+outTable = tableLines
+attributes(outTable) = attributes(out)
+outTable
+```
+
+
+Weapons
+==========
+```{r}
+weaponTable = char$weapons %>% sapply(function(x){
+    c(x$name,
+      weaponBonus(x)['weaponTypeAttackBonus'] +
+          x$proficient*char$proficiencyBonus +
+          char$abilityMods[x$attackStat],
+      paste0(paste(x$dice,collapse=' + '),
+             '+',
+             weaponBonus(x)['weaponTypeDamageBonus'] + 
+                 char$abilityMods[x$attackStat]),
+      x$damageType,
+      x$range
+      )
+}) %>% t
+
+colnames(weaponTable) = c('Name','Attack','Damage','Type','Range')
+weaponTable[,'Damage'] %<>% gsub('\\+\\-','-',x=.)
+
+kable(weaponTable, format = 'latex',booktabs= TRUE,escape=FALSE,row.names=FALSE,linesep= '')%>%
+    kable_styling(position = 'center', latex_options = c("HOLD_position","scale_down"))
+```
+
+\newpage
+
+Resource Summary
+=========
+
+```{r}
+char$resources %>% select(name,ResourceDisplay) %>%
+    kable(format='latex',booktabs = TRUE,escape = FALSE,row.names=FALSE,col.names=NULL,linesep='') %>%
+    kable_styling(position = 'center', latex_options = c("HOLD_position"))
+
+
+```
+
+
+Spells
+==================
+
+
+
+```{r}
+if(!is.null(char$spells)){
+    
+    groups = char$spells$level %>% duplicated %>% not %>% which
+    groups = groups -1
+    groups %<>% c(nrow(char$spells))
+    out = char$spells %>% mutate(prepared = prepared %>%replaceElement(c('TRUE' = '\\XBox',
+                                               "FALSE" = '\\Square')) %$% newVector) %>%
+        select(-level) %>% 
+        kable(format='latex',booktabs = TRUE,escape = FALSE,row.names=FALSE,col.names=NULL,linesep='')  %>% 
+        kable_styling(position = 'center', latex_options = c("HOLD_position"))
+    for(i in min(char$spells$level):max(char$spells$level)){
+        if (i ==0){
+            text=  'Cantrip'
+        } else{
+            text = paste('Level',i,'(',char$spellSlots[i+1],')')
+        }
+        out = out %>% group_rows(text, groups[i+1],groups[i+2]-1, latex_gap_space = "1em")
+    }
+    out
+}
+
+```
+
+Features
+============
+```{r}
+
+char$Features %>% strsplit('\\n') %>% data.frame -> out
+
+out$index = 1:nrow(out)
+```
+
