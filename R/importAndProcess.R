@@ -270,6 +270,9 @@ processCharacter = function(char){
     char$resources = resources
 
 
+    # feats -------
+    char$feats = classData[4] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
+
 
     # character notes --------------
     notes = char$noteList %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
