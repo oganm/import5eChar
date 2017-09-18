@@ -27,8 +27,9 @@ boldify = function(x){
 # char = importCharacter(file = 'a local file')
 # char = importCharacter(regex = 'regular expression that matches the filename in google drive')
 # char = importCharacter(fileID = 'google drive file id')
-
-char = import5eChar::importCharacter('Tim_Fighter')
+# by default a sheet for an example character is created
+characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
+char = import5eChar::importCharacter(file = characterFile)
 
 ```
 

@@ -1,0 +1,76 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<character>
+<version>1</version>
+<initMiscMod>0</initMiscMod>
+<improvedInitiative>0</improvedInitiative>
+<currentHealth>49</currentHealth>
+<maxHealth>49</maxHealth>
+<currentTempHP>0</currentTempHP>
+<armorBonus>12</armorBonus>
+<shieldBonus>0</shieldBonus>
+<miscArmorBonus>0</miscArmorBonus>
+<maxDex>10</maxDex>
+<proficiencyBonus>3</proficiencyBonus>
+<miscSpellAttackBonus>0</miscSpellAttackBonus>
+<miscSpellDCBonus>0</miscSpellDCBonus>
+<castingStatCode>1</castingStatCode>
+<offenseAbilityDisplay>1</offenseAbilityDisplay>
+<deathSaveSuccesses>0</deathSaveSuccesses>
+<deathSaveFailures>0</deathSaveFailures>
+<showDeathSaves>true</showDeathSaves>
+<baseSpeed>30</baseSpeed>
+<speedMiscMod>0</speedMiscMod>
+<movementMode>Speed</movementMode>
+<raceCode>-1</raceCode>
+<subraceCode>-1</subraceCode>
+<backgroundCode>-1</backgroundCode>
+<pagePosition0>1</pagePosition0>
+<pagePosition1>2</pagePosition1>
+<pagePosition2>3</pagePosition2>
+<pagePosition3>4</pagePosition3>
+<pagePosition4>5</pagePosition4>
+<unarmoredDefense>0</unarmoredDefense>
+<featCode></featCode>
+<classData>Fighter⊡Battle Master⊡5⊡-1⊟⊠Extra Attack⊟Action Surge⊡Act. Surge⊡1⊡1⊡0⊡2⊡0⊡0⊡-1⊡0⊠Superiority Dice⊡Superiority⊡4⊡4⊡8⊡1⊡0⊡0⊡-1⊡0⊟⊠Crossbow Expert⊠Sharpshooter⊟combat superiority maneuvers⊡Trip Attack⊡Precision Attack⊡Menacing Attack⊠fighting style⊡Archery⊟⊟⊟Human⊟Human Variant⊟Criminal⊟0⊠0⊠2⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟20⊠20⊠20⊠20⊠20⊠20⊠⊟0⊟2⊟0⊟1⊟1⊟1</classData>
+<multiclassFeatures></multiclassFeatures>
+<weaponList>5⊠Longbow⊠150/600⊠2201⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠8⊠Crossbow, hand⊠30/120⊠2101⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠6⊠Handaxe⊠20/60⊠1102⊠0⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠6⊠Dagger⊠20/60⊠1101⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠4⊠Rapier⊠5 feet⊠1101⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠8</weaponList>
+<abilityScores>9⊠18⊠17⊠11⊠12⊠12⊠true⊠false⊠true⊠false⊠false⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0</abilityScores>
+<skillInfo>false⊠false⊠false⊠true⊠false⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠true⊠false⊠false⊠true⊠false⊠true⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false</skillInfo>
+<spellList>v1.1⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠true⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠-1⊠0⊠false⊠⊟</spellList>
+<noteList>Human Features:
+• One extra skill proficiency of your choosing
+• One bonus feat of your choosing
+Criminal Feature:
+• You know someone who can connect you with other criminals
+Fighter Features:
+• Fighting Style - Archery: +2 to attack with ranged weapons
+• Heal 1d10 + level hit points as a bonus action (once between rests)
+• Crossbow Expert: You don't have disadvantage from adjacent enemies on ranged attacks, you can load crossbows faster, and you can make a bonus action attack with a hand crossbow after attacking with a one-handed weapon
+• Take an extra action once between rests
+• Trip: You can cause one creature you hit to take Superiority Die extra damage and if it is at most Large size must make a Str save or fall prone
+• Precise Strike: You can gain Superiority Die to an attack roll
+• Frighten: You can cause one creature you hit to take Superiority Die extra damage and must make a Wis save or be frightened this round
+• Sharpshooter: Your ranged attacks ignore ½ and ¾ cover, don't have disadvantage from long range, and you can take -5 to a ranged attack for +10 damage
+• You can make two attacks on your turn
+⊠Light Armor, Medium Armor, Heavy Armor, Shields
+⊠Simple Weapons, Martial Weapons
+⊠One type of gaming set
+Thieves' Tools
+Poisoner's kit
+⊠Common
+Extra Language
+⊠qleather armor
+shield
+longbow
+crossbow, hand
+handaxe (2)
+arrows (20)
+dungeoneer's pack
+crowbar
+set of dark common clothes
+hood
+belt pouch
+⊠⊠Fighter 5⊠Human⊠Criminal⊠lawful neutral⊠⊠⊠⊠⊠Tim⊠Fighter 5⊠0⊠0⊠0⊠12⊠0⊠0</noteList>
+<hitDiceList>1⊠5⊠10⊠5</hitDiceList>
+<classResource>-1⊠-1⊠-1⊠-1⊠-1⊠-1⊠1⊠2⊠1000⊠3⊠4⊠5</classResource>
+</character>

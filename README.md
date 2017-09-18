@@ -21,6 +21,15 @@ First thing that need to be done is to import yoour character. You can either us
 char = importCharacter('Tim_Fighter')
 ```
 
+    ## Warning: package 'bindrcpp' was built under R version 3.3.3
+
+If you don't want to authenticate with google drive, a local file can be used
+
+``` r
+characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
+char = import5eChar::importCharacter(file = characterFile)
+```
+
 Once a character is loaded convenience functions can be used
 
 ``` r
@@ -62,6 +71,11 @@ init(char = myBestCharacter)
     ## [1] "Rolls: [ 5 ]"
 
     ## [1] 9
+
+PDF character sheets
+--------------------
+
+A rmarkdown template is available to print out pdf character sheets. To use it, create a new markdown document with `CharacterSheet` template. Replace the character import line with a character of your own.
 
 Use example
 -----------
