@@ -1,10 +1,7 @@
 ---
 output: 
     pdf_document:
-        keep_tex: true
         extra_dependencies: makecell,wasysym,multicol
-    # html_document:
-    #     keep_md: true
 documentclass: article
 classoption: 10pt,twoside,twocolumn
 geometry: margin=0.4in
@@ -25,8 +22,13 @@ boldify = function(x){
 	paste0('\\textbf{',x,'}')
 }
 
-# char = import5eChar::importCharacter('Tim_Fighter')
-char = importCharacter(file = 'C:/Users/Ogan/Downloads/aaaLate')
+# import your character here
+# example:
+# char = importCharacter(file = 'a local file')
+# char = importCharacter(regex = 'regular expression that matches the filename in google drive')
+# char = importCharacter(fileID = 'google drive file id')
+
+char = import5eChar::importCharacter('Tim_Fighter')
 
 ```
 
@@ -186,10 +188,63 @@ char$resources %>% select(name,ResourceDisplay) %>%
 ```
 
 
+Features
+============
+
+`r char$Features %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+
+Proficiencies
+=================
+**Armor:** `r char$ArmorProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Weapon:** `r char$WeaponProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Tool:** `r char$ToolProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Languages:** `r char$LanguagesKnown %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+Personality
+=================
+**Traits:** `r char$personality$traits %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Ideals:** `r char$personality$ideals %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Bonds:** `r char$personality$bonds %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+**Flaws:** `r char$personality$flaws %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+Equipment
+================
+
+`r char$Equipment %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+
+
+
+**Currency:** `r {
+currency = char$currency %>% unlist
+
+currencyChar = length(currency):1 %>% sapply(function(i){
+    paste0(currency[i],' ', names(currency)[i])
+}) %>% paste(collapse=', ')
+currencyChar
+}`
+
+
+
+
+
+
 Spells
 ==================
+```{r}
+DC = 8 + char$proficiencyBonus + char$abilityMods[char$castingStatCode+1] + char$miscSpellDCBonus
+spellAttack  =  char$proficiencyBonus  + char$abilityMods[char$castingStatCode+1] + char$miscSpellAttackBonus
+```
 
+**Spell DC:** `r DC`
 
+**Spell Attack:** `r spellAttack` 
 
 ```{r}
 if(!is.null(char$spells)){
@@ -214,13 +269,3 @@ if(!is.null(char$spells)){
 }
 
 ```
-
-Features
-============
-```{r}
-
-char$Features %>% strsplit('\\n') %>% data.frame -> out
-
-out$index = 1:nrow(out)
-```
-
