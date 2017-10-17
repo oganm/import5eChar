@@ -13,7 +13,7 @@ weaponAttack = function(weapon,
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    bonus = weaponBonus(weapon)
+    bonus = weaponBonus(weapon,char = char)
 
     out = attack(adv = adv,
            sharpShoot = sharpShoot,
@@ -245,6 +245,25 @@ quickSave = function(char = getOption('defaultCharacter')){
     diceSyntax::r(r1d20)  + char$abilityMods + char$proficiencyBonus*char$abilityProf
 }
 
+#' @export
+initBonus = function(char = getOption('defaultCharacter')){
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+
+    statAdd = 0
+    if(char$statToInit != ''){
+        statAdd = char$abilityMods[char$statToInit]
+    }
+
+    unname(char$abilityMods['Dex'] + char$initMiscMod +
+               char$profToInit['profToInit']*char$proficiencyBonus +
+               char$profToInit['doubleProfToInit']*char$proficiencyBonus +
+               char$profToInit['halfProfToInit']*floor(char$proficiencyBonus/2) +
+               char$profToInit['halfProfToInitRoundUp']*(char$proficiencyBonus %% 2) +
+               statAdd)
+}
+
 #' Title
 #'
 #' @export
@@ -254,5 +273,5 @@ init = function(char = getOption('defaultCharacter')){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    diceSyntax::r(r1d20) + unname(char$abilityMods['Dex'] + char$initMiscMod)
+    diceSyntax::r(r1d20) + initBonus(char)
 }

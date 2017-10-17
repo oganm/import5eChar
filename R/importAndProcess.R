@@ -18,22 +18,22 @@ importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,ov
     if(is.null(regex) & is.null(fileID) & is.null(file)){
         error('Either regex, fileID or file should be provided')
     }
-    if(is.null(file)){
-    if(!is.null(regex) & !is.null(fileID)){
-        error('Either regex OR fileID should be provided, not both of them at once.')
-    } else if(is.null(fileID)){
-        character = googledrive::drive_find(pattern = regex,verbose=FALSE,...)[1,]
-    } else if(is.null(regex)){
-        character = googledrive::drive_get(fileID,verbose=FALSE,...)
-    }
 
-    download_link <- character$drive_resource[[1]]$webContentLink
-    if(is.null(output)){
-        output = tempfile()
-    }
-    res = httr::GET(download_link,
-                    httr::write_disk(output,overwrite = TRUE),
-                    googledrive:::drive_token())
+    if(is.null(file)){
+        if(!is.null(regex) & !is.null(fileID)){
+            error('Either regex OR fileID should be provided, not both of them at once.')
+        } else if(is.null(fileID)){
+            character = googledrive::drive_find(pattern = regex,verbose=FALSE,...)[1,]
+        } else if(is.null(regex)){
+            character = googledrive::drive_get(fileID,verbose=FALSE,...)
+        }
+        download_link <- character$drive_resource[[1]]$webContentLink
+        if(is.null(output)){
+            output = tempfile()
+        }
+        res = httr::GET(download_link,
+                        httr::write_disk(output,overwrite = TRUE),
+                        googledrive:::drive_token())
     } else{
         output = file
     }
@@ -46,7 +46,7 @@ importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,ov
 
 processCharacter = function(char){
 
-    char %<>% XML::xmlParse() %>%  (XML::xmlToList)
+    char %<>% stringr::str_replace('&','and') %>%  XML::xmlParse() %>%  (XML::xmlToList)
 
     # simple statistics -----
     char$proficiencyBonus %<>% as.integer
@@ -95,17 +95,27 @@ processCharacter = function(char){
                    'Persuasion')
 
     skillAttributes = c('Str',
-                         rep('Dex',3),
-                         rep('Int',5),
-                         rep('Wis',5),
-                         rep('Chr',4))
+                        rep('Dex',3),
+                        rep('Int',5),
+                        rep('Wis',5),
+                        rep('Chr',4))
     names(skillAttributes) = skillNames
     char$skillAttributes = skillAttributes
     # char$skillNames = skillNames
 
     skillData = char$skillInfo %>% strsplit('⊠|(â\u008a.)|(\u{22a0})') %>% {.[[1]]} %>% trimws()
-
     skillProf = skillData[1:18] %>% logicConvert
+
+    profToInit = (skillData[19] %>% logicConvert())
+    doubleProfToInit = (skillData[57] %>% logicConvert()) & (skillData[19] %>% logicConvert())
+    halfProfToInit = (skillData[76] %>% logicConvert())
+    halfProfToInitRoundUp = (skillData[76] %>% logicConvert()) & (skillData[95] %>% logicConvert())
+
+    char$profToInit = c(profToInit = profToInit,
+                        doubleProfToInit = doubleProfToInit,
+                        halfProfToInit = halfProfToInit,
+                        halfProfToInitRoundUp = halfProfToInitRoundUp)
+
     names(skillProf) = skillNames
     skillMiscMod = skillData[20:37] %>% as.integer()
     names(skillMiscMod)= skillNames
@@ -131,10 +141,10 @@ processCharacter = function(char){
     weapons = char$weaponList %>% strsplit('⊠|(â\u008a.)|(\u{22a0})')  %>% .[[1]]
     weapons = weapons[-1]
     suppressWarnings(
-    {splitPoints = weapons %>% ogbox::replaceElement(c('true'=1,
-                                                          'false' = 0)) %$%
-        newVector  %>% as.integer %>% is.na %>% which()
-    })
+        {splitPoints = weapons %>% ogbox::replaceElement(c('true'=1,
+                                                           'false' = 0)) %$%
+            newVector  %>% as.integer %>% is.na %>% which()
+        })
 
     splitPoints = splitPoints[-(which(diff(splitPoints)==1)+1)]
 
@@ -186,17 +196,17 @@ processCharacter = function(char){
                                                  '5' = 'Chr')) %$% newVector
 
         return(list(name = name,
-                 range = range,
-                 dice=  dice,
-                 hands = hands,
-                 attackStat =attackStat,
-                 proficient = proficient,
-                 type = type,
-                 damageType = damageType,
-                 miscDamageBonus = miscDamageBonus,
-                 magicDamageBonus = magicDamageBonus,
-                 miscAttackBonus = miscAttackBonus,
-                 magicAttackBonus = magicAttackBonus))
+                    range = range,
+                    dice=  dice,
+                    hands = hands,
+                    attackStat =attackStat,
+                    proficient = proficient,
+                    type = type,
+                    damageType = damageType,
+                    miscDamageBonus = miscDamageBonus,
+                    magicDamageBonus = magicDamageBonus,
+                    miscAttackBonus = miscAttackBonus,
+                    magicAttackBonus = magicAttackBonus))
     })
 
     names(weapons) = weapons %>% purrr::map_chr('name')
@@ -205,7 +215,16 @@ processCharacter = function(char){
 
     classData = char$classData %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
 
+
     whereStart = classData %>% grep(pattern = '^[0-9]',x = .) %>% {.[[1]]}
+
+    char$statToInit = classData[whereStart+3] %>% ogbox::replaceElement(dictionary = c('0' = '',
+                                                                                       '1'='Str',
+                                                                                       '2' = 'Dex',
+                                                                                       '3' = 'Con',
+                                                                                       '4' = 'Int',
+                                                                                       '5' = 'Wis',
+                                                                                       '6' = 'Chr')) %$% newVector
 
     weaponAttackMods = classData[whereStart] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
 
@@ -262,8 +281,8 @@ processCharacter = function(char){
     }) %>% t
 
     resources %<>%as.data.frame %>% dplyr::mutate(remainingUse = as.integer(remainingUse %>% as.character),
-                         maxUse = as.integer(maxUse),
-                         dice = as.integer(dice))
+                                                  maxUse = as.integer(maxUse),
+                                                  dice = as.integer(dice))
 
     rownames(resources) = NULL
 
