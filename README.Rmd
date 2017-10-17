@@ -14,9 +14,6 @@ Walter Kammerer's [Fifth Edition Character Sheet](https://play.google.com/store/
 ## Installation
 
 ```
-devtools::install_github('tidyverse/googledrive')
-devtools::install_github('oganm/ogbox)
-devtools::install_github('oganm/diceSyntax)
 devtools::install_github('oganm/import5echar')
 ```
 
@@ -24,7 +21,7 @@ devtools::install_github('oganm/import5echar')
 
 First thing that need to be done is to import yoour character. You can either use a regex or a google drive file id (acquirable using `googledrive` package). If a regex is used, last modified file that matches the regex is pulled which is probably your latest export. First time you run the line below, you'll have to authenticate with google drive.
 
-```{r}
+```{r,eval=FALSE}
 char = importCharacter('Tim_Fighter')
 ```
 

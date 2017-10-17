@@ -7,9 +7,6 @@ Walter Kammerer's [Fifth Edition Character Sheet](https://play.google.com/store/
 Installation
 ------------
 
-    devtools::install_github('tidyverse/googledrive')
-    devtools::install_github('oganm/ogbox)
-    devtools::install_github('oganm/diceSyntax)
     devtools::install_github('oganm/import5echar')
 
 Basics
@@ -20,8 +17,6 @@ First thing that need to be done is to import yoour character. You can either us
 ``` r
 char = importCharacter('Tim_Fighter')
 ```
-
-    ## Warning: package 'bindrcpp' was built under R version 3.3.3
 
 If you don't want to authenticate with google drive, a local file can be used
 
@@ -70,12 +65,12 @@ init(char = myBestCharacter)
 
     ## [1] "Rolls: [ 5 ]"
 
-    ## [1] 9
+    ## [1] 10
 
 PDF character sheets
 --------------------
 
-A rmarkdown template is available to print out pdf character sheets. To use it, create a new markdown document with `CharacterSheet` template. Replace the character import line with a character of your own.
+A rmarkdown template is available to print out pdf character sheets. To use it, create a new markdown document with `CharacterSheet` template. Replace the character import line with a character of your own. See [example.pdf](inst/skeleton.pdf) to see what it looks like. It's ugly...
 
 Use example
 -----------
