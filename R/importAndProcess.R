@@ -59,6 +59,14 @@ processCharacter = function(char){
     char$castingStatCode %<>% as.integer
     char$baseSpeed %<>% as.integer
     char$speedMiscMod %<>% as.integer
+    char$unarmoredDefense %<>%  ogbox::replaceElement(dictionary = c('0' = '',
+                                                                     '1'='Str',
+                                                                     '2' = 'Dex',
+                                                                     '3' = 'Con',
+                                                                     '4' = 'Int',
+                                                                     '5' = 'Wis',
+                                                                     '6' = 'Chr')) %$% newVector
+
 
     # ability score -------------
     abilityScores = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][1:6]} %>% as.integer()

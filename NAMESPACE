@@ -3,6 +3,7 @@
 export("%$%")
 export("%<>%")
 export("%>%")
+export(AC)
 export(abilityCheck)
 export(attack)
 export(importCharacter)

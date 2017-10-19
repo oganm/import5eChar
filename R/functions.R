@@ -275,3 +275,19 @@ init = function(char = getOption('defaultCharacter')){
 
     diceSyntax::r(r1d20) + initBonus(char)
 }
+
+#' @export
+AC =  function(char = getOption('defaultCharacter')){
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+    statAdd = 0
+    if(char$unarmoredDefense != ''){
+        statAdd = char$abilityMods[char$unarmoredDefense]
+    }
+    char$armorBonus +
+        char$shieldBonus +
+        char$miscArmorBonus +
+        min(stat2mod(char$abilityScores['Dex']),char$maxDex) +
+        statAdd
+}
