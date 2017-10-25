@@ -19,7 +19,8 @@ Imports:
     rmarkdown,
     kableExtra,
     knitr,
-    bindrcpp
+    bindrcpp,
+    animation
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax
