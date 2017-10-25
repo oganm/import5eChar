@@ -25,6 +25,8 @@ characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
 char = import5eChar::importCharacter(file = characterFile)
 ```
 
+    ## Warning: package 'bindrcpp' was built under R version 3.3.3
+
 Once a character is loaded convenience functions can be used
 
 ``` r
@@ -75,4 +77,4 @@ A rmarkdown template is available to print out pdf character sheets. To use it, 
 Use example
 -----------
 
-See [tim.R](tim.R) for example usage. I keep a file like that open during session and ctrl+R the relevant lines as needed. If you are a caster see if you'd be interested in the [wizaRd](https://github.com/oganm/wizaRd) package.
+See [tim.R](tim.R) for example usage. I keep a file like that open during session and ctrl+R the relevant lines as needed. If you are a caster see if you'd be interested in the [wizaRd](https://github.com/oganm/wizaRd) package. If you turn into animals a lot see [monsteR](https://github.com/oganm/monsteR) package.

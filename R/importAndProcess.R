@@ -65,20 +65,34 @@ processCharacter = function(char){
                                                                      '3' = 'Con',
                                                                      '4' = 'Int',
                                                                      '5' = 'Wis',
-                                                                     '6' = 'Chr')) %$% newVector
+                                                                     '6' = 'Cha')) %$% newVector
 
 
     # ability score -------------
     abilityScores = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][1:6]} %>% as.integer()
-    names(abilityScores) = c('Str','Dex','Con','Int','Wis','Chr')
+    names(abilityScores) = c('Str','Dex','Con','Int','Wis','Cha')
+
+    miscSaveBonus = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][7:12]} %>% as.integer()
+    names(miscSaveBonus) = names(abilityScores)
+    statToSave =  char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][13]} %>%
+        ogbox::replaceElement(dictionary = c('0' = '',
+                                      '1'='Str',
+                                      '2' = 'Dex',
+                                      '3' = 'Con',
+                                      '4' = 'Int',
+                                      '5' = 'Wis',
+                                      '6' = 'Cha')) %$% newVector
+
     abilityMods = stat2mod(abilityScores)
     proficiency = char$abilityScores %>% stringr::str_extract_all('(true)|(false)') %>% {.[[1]][1:6]}
     proficiency %<>% ogbox::replaceElement(c('true'=TRUE,'false'=FALSE)) %$% newVector %>% as.logical()
-    names(proficiency) = c('Str','Dex','Con','Int','Wis','Chr')
+    names(proficiency) = c('Str','Dex','Con','Int','Wis','Cha')
 
     char$initMiscMod %<>% as.integer()
     char$abilityScores = abilityScores
     char$abilityProf = proficiency
+    char$miscSaveBonus = miscSaveBonus
+    char$statToSave = statToSave
     char$maxHealth %<>% as.integer()
     char$abilityMods = abilityMods
 
@@ -106,7 +120,7 @@ processCharacter = function(char){
                         rep('Dex',3),
                         rep('Int',5),
                         rep('Wis',5),
-                        rep('Chr',4))
+                        rep('Cha',4))
     names(skillAttributes) = skillNames
     char$skillAttributes = skillAttributes
     # char$skillNames = skillNames
@@ -201,7 +215,7 @@ processCharacter = function(char){
                                                  '2' = 'Con',
                                                  '3' = 'Int',
                                                  '4' = 'Wis',
-                                                 '5' = 'Chr')) %$% newVector
+                                                 '5' = 'Cha')) %$% newVector
 
         return(list(name = name,
                     range = range,
@@ -232,7 +246,7 @@ processCharacter = function(char){
                                                                                        '3' = 'Con',
                                                                                        '4' = 'Int',
                                                                                        '5' = 'Wis',
-                                                                                       '6' = 'Chr')) %$% newVector
+                                                                                       '6' = 'Cha')) %$% newVector
 
     weaponAttackMods = classData[whereStart] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
 

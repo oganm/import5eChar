@@ -80,7 +80,7 @@ weaponBonus =function(weapon,
 #'
 attack = function(adv = 0,
                   sharpShoot = F,
-                  attackStat = c('Str','Dex','Con','Wis','Int','Chr'),
+                  attackStat = c('Str','Dex','Con','Wis','Int','Cha'),
                   damageDice = '1d6',
                   proficient = TRUE,
                   modToHit = 0,
@@ -163,10 +163,7 @@ skillCheck = function(skill,
     skillNames = names(char$skillProf)
     skill = skillNames[grepl(pattern = tolower(skill), x = tolower(skillNames))]
 
-    bonus = char$skillProf[skill]*char$proficiencyBonus +
-        char$skillDoubleProf[skill]*char$proficiencyBonus +
-        (char$skillHalfProf[skill]*!char$skillProf[skill]*char$proficiencyBonus/2) +
-        char$abilityMods[char$skillAttributes[skill]]
+    bonus = skillBonus()[skill]
 
     if(char$skillHalfProfRoundUp[skill]){
         bonus %<>% ceiling()
@@ -198,16 +195,16 @@ quickCheck = function(char =  getOption('defaultCharacter')){
     }
 
     roll = diceSyntax::r(r1d20)
-    bonus = char$skillProf*char$proficiencyBonus +
-        char$skillDoubleProf*char$proficiencyBonus +
-        (char$skillHalfProf*!char$skillProf*char$proficiencyBonus/2) +
-        char$abilityMods[char$skillAttributes]
+    bonus = skillBonus()
 
 
     bonus %<>% rounding(char$skillHalfProfRoundUp)
 
     roll + bonus
 }
+
+
+
 
 #' @export
 abilityCheck = function(ability,char=  getOption('defaultCharacter')){
@@ -233,7 +230,7 @@ save = function(stat, char =  getOption('defaultCharacter')){
     }
 
 
-    unname(diceSyntax::r(r1d20) + char$abilityMods[stat] + char$proficiencyBonus*char$abilityProf[stat])
+    unname(diceSyntax::r(r1d20) + saveBonus(char = char)[stat])
 }
 
 
@@ -242,27 +239,9 @@ quickSave = function(char = getOption('defaultCharacter')){
     if(is.character(char)){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
-    diceSyntax::r(r1d20)  + char$abilityMods + char$proficiencyBonus*char$abilityProf
+    diceSyntax::r(r1d20)  + saveBonus(char = char)
 }
 
-#' @export
-initBonus = function(char = getOption('defaultCharacter')){
-    if(is.character(char)){
-        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
-    }
-
-    statAdd = 0
-    if(char$statToInit != ''){
-        statAdd = char$abilityMods[char$statToInit]
-    }
-
-    unname(char$abilityMods['Dex'] + char$initMiscMod +
-               char$profToInit['profToInit']*char$proficiencyBonus +
-               char$profToInit['doubleProfToInit']*char$proficiencyBonus +
-               char$profToInit['halfProfToInit']*floor(char$proficiencyBonus/2) +
-               char$profToInit['halfProfToInitRoundUp']*(char$proficiencyBonus %% 2) +
-               statAdd)
-}
 
 #' Title
 #'
@@ -276,18 +255,6 @@ init = function(char = getOption('defaultCharacter')){
     diceSyntax::r(r1d20) + initBonus(char)
 }
 
-#' @export
-AC =  function(char = getOption('defaultCharacter')){
-    if(is.character(char)){
-        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
-    }
-    statAdd = 0
-    if(char$unarmoredDefense != ''){
-        statAdd = char$abilityMods[char$unarmoredDefense]
-    }
-    char$armorBonus +
-        char$shieldBonus +
-        char$miscArmorBonus +
-        min(stat2mod(char$abilityScores['Dex']),char$maxDex) +
-        statAdd
-}
+
+
+

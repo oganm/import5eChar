@@ -10,14 +10,14 @@ char$abilityMods
 save('Str')
 save('Dex')
 save('Con')
-save('Chr')
+save('Cha')
 save('Int')
 save('Wis')
 
 abilityCheck('Str')
 abilityCheck('Dex')
 abilityCheck('Con')
-abilityCheck('Chr')
+abilityCheck('Cha')
 abilityCheck('Int')
 abilityCheck('Wis')
 
