@@ -5,7 +5,7 @@
 \title{Attack}
 \usage{
 attack(adv = 0, sharpShoot = F, attackStat = c("Str", "Dex", "Con", "Wis",
-  "Int", "Chr"), damageDice = "1d6", proficient = TRUE, modToHit = 0,
+  "Int", "Cha"), damageDice = "1d6", proficient = TRUE, modToHit = 0,
   modToDamage = 0, ammo = NULL, vocal = TRUE, critRange = 20,
   char = getOption("defaultCharacter"))
 }
