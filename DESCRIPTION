@@ -20,7 +20,8 @@ Imports:
     kableExtra,
     knitr,
     bindrcpp,
-    animation
+    animation,
+    glue
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax

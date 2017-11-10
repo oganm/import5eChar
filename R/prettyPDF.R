@@ -8,8 +8,8 @@ fdfEdit = function(x, field,fdf){
     } else if (x == FALSE & is.logical(x)){
         x = '/Off'
     } else {
-        x %<>% gsub(x = ., pattern = '\\(',replacement = '\\\\(') %>%
-            gsub(x = ., pattern = '\\)',replacement = '\\\\)')
+        x %<>% gsub(x = ., pattern = '(',replacement = '\\\\(',fixed = TRUE) %>%
+            gsub(x = ., pattern = ')',replacement = '\\\\)', fixed = TRUE)
         x = paste0('(',x,')')
     }
 
@@ -130,8 +130,13 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         fdf = fdf)
 
     # features
+    fdf = readLines(fdfFile) %>% paste(collapse = '\n')
+
     fdf = fdfEdit(
-        x = char$Features %>% stringr::str_replace_all('•|\u{2022}','-'),
+        x = char$Features %>% stringr::str_replace_all('•|\u{2022}','-') %>%
+            stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
+            stringr::str_replace('(¾)|(\u{00BE})','3/4') %>%
+            stringr::str_replace('(¼)|(\u{00BC})','1/4'),
         field = 'features-and-traits',
         fdf = fdf)
 
@@ -191,26 +196,32 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         for(i in 1:9){
             fdf = fdfEdit(
                 x = char$spellSlots[i+1],
-                field = glue('spell-slots-{i}-1'),
+                field = glue::glue('spell-slots-{i}-1'),
                 fdf = fdf)
         }
 
-
+        limits = c('0' = 8,
+                   '1' = 12,
+                   '2' = 13,
+                   '3' = 13,
+                   '4' = 13,
+                   '5' = 9,
+                   '6' = 9,
+                   '7' = 9,
+                   '8' = 7,
+                   '9' = 7)
         for(i in 0:9){
-            spells  = char$spells %>% filter(level ==i)
-            for(t in seq_len(nrow(spells))){
+            spells  = char$spells %>% dplyr::filter(level ==i)
+            for(t in seq_len(min(nrow(spells), limits[i]))){
                 fdf = fdfEdit(
                     x = spells$name[t],
-                    field = glue('spells-{i}-{t}-1'),
+                    field = glue::glue('spells-{i}-{t}-1'),
                     fdf = fdf)
             }
         }
 
 
     }
-
-
-
 
     # equipment
     fdf = fdfEdit(
