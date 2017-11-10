@@ -40,10 +40,9 @@ char = import5eChar::importCharacter(file = characterFile)
 # 
 # kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'l',escape=FALSE) %>%
 # 	kable_styling(position = 'center', latex_options = "scale_down")
+AC = AC(char=char)
 
-AC = AC()
-
-init = initBonus()
+init = initBonus(char= char)
 
 
 c1 = c('Class \\& Level',
@@ -66,7 +65,7 @@ table = data.frame(Score = char$abilityScores ,
            Modifier = char$abilityMods,
            Prof. = char$abilityProf %>% replaceElement(c('TRUE' = '\\XBox',
                                                "FALSE" = '\\Square')) %$% newVector,
-           Save = char$abilityMods + char$abilityProf*char$proficiencyBonus)
+           Save =  saveBonus(char = char))
 rownames(table) %<>% boldify()
 
 kable(table %>% t, format = 'latex',booktabs= TRUE,escape=FALSE)%>%
@@ -105,10 +104,7 @@ kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'c',escape=
 Skills
 ==============
 ```{r}
-skillBonus = char$skillProf*char$proficiencyBonus +
-        char$skillDoubleProf*char$proficiencyBonus +
-        (char$skillHalfProf*!char$skillProf*char$proficiencyBonus/2) +
-        char$abilityMods[char$skillAttributes]
+skillBonus = skillBonus(char = char)
 
 profMark = char$skillProf %>% replaceElement(c('TRUE' = '\\XBox',
                                                "FALSE" = '\\Square')) %$% newVector
@@ -153,15 +149,17 @@ outTable
 
 Weapons
 ==========
+
+
 ```{r}
 weaponTable = char$weapons %>% sapply(function(x){
     c(x$name,
-      weaponBonus(x)['weaponTypeAttackBonus'] +
+      weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
           x$proficient*char$proficiencyBonus +
           char$abilityMods[x$attackStat],
       paste0(paste(x$dice,collapse=' + '),
              '+',
-             weaponBonus(x)['weaponTypeDamageBonus'] + 
+             weaponBonus(x,char=char)['weaponTypeDamageBonus'] + 
                  char$abilityMods[x$attackStat]),
       x$damageType,
       x$range
@@ -239,8 +237,8 @@ currencyChar
 Spells
 ==================
 ```{r}
-DC = 8 + char$proficiencyBonus + char$abilityMods[char$castingStatCode+1] + char$miscSpellDCBonus
-spellAttack  =  char$proficiencyBonus  + char$abilityMods[char$castingStatCode+1] + char$miscSpellAttackBonus
+DC = spellDC(char = char)
+spellAttack  =  spellAttack(char = char)
 ```
 
 **Spell DC:** `r DC`
@@ -254,17 +252,16 @@ if(!is.null(char$spells)){
     groups = groups -1
     groups %<>% c(nrow(char$spells))
     out = char$spells %>% mutate(prepared = prepared %>%replaceElement(c('TRUE' = '\\XBox',
-                                                                         "FALSE" = '\\Square')) %$% newVector) %>%
+                                               "FALSE" = '\\Square')) %$% newVector) %>%
         select(-level) %>% 
         kable(format='latex',booktabs = TRUE,escape = FALSE,row.names=FALSE,col.names=NULL,linesep='')  %>% 
         kable_styling(position = 'center', latex_options = c("HOLD_position"))
-    
     availableLevels = unique(char$spells$level)
     for(i in seq_along(availableLevels)){
         if (availableLevels[i] ==0){
             text=  'Cantrip'
         } else{
-            text = paste('Level',i,'(',char$spellSlots[i+1],')')
+            text = paste('Level',availableLevels[i],'(',char$spellSlots[i+1],')')
         }
         out = out %>% group_rows(text, groups[i],groups[i+1]-1, latex_gap_space = "1em")
     }
