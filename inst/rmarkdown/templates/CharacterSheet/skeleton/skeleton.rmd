@@ -1,7 +1,7 @@
 ---
 output: 
     pdf_document:
-        extra_dependencies: makecell,wasysym,multicol,booktabs
+        extra_dependencies: makecell,wasysym,multicol,booktabs,float
 documentclass: article
 classoption: 10pt,twoside,twocolumn
 geometry: margin=0.4in
