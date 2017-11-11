@@ -210,7 +210,7 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
                    '9' = 7)
         for(i in 0:9){
             spells  = char$spells %>% dplyr::filter(level ==i)
-            for(t in seq_len(min(nrow(spells), limits[i]))){
+            for(t in seq_len(min(nrow(spells), limits[i %>% as.character()]))){
                 fdf = fdfEdit(
                     x = spells$name[t],
                     field = glue::glue('spells-{i}-{t}-1'),
