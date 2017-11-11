@@ -21,7 +21,7 @@ fdfEdit = function(x, field,fdf){
 
 
 fdfGet = function(field,fdf){
-    str_extract(string = fdf,
+    stringr::str_extract(string = fdf,
                 pattern =  paste0('/V\\s.*\n/T\\s\\(',field,'\\)'))
 }
 
@@ -130,8 +130,6 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         fdf = fdf)
 
     # features
-    fdf = readLines(fdfFile) %>% paste(collapse = '\n')
-
     fdf = fdfEdit(
         x = char$Features %>% stringr::str_replace_all('•|\u{2022}','-') %>%
             stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
