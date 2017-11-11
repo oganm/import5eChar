@@ -261,7 +261,7 @@ if(!is.null(char$spells)){
         if (availableLevels[i] ==0){
             text=  'Cantrip'
         } else{
-            text = paste('Level',availableLevels[i],'(',char$spellSlots[availableLevels[i]],')')
+            text = paste('Level',availableLevels[i],'(',char$spellSlots[availableLevels[i] %>% as.character()],')')
         }
         out = out %>% group_rows(text, groups[i],groups[i+1]-1, latex_gap_space = "1em")
     }
