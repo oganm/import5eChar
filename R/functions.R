@@ -1,4 +1,14 @@
 #' @export
+shinySheet = function(char =getOption('defaultCharacter')){
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+
+    shinyDir = system.file('shinySheet',package = 'import5eChar')
+    shiny::runApp(shinyDir)
+}
+
+#' @export
 weaponAttack = function(weapon,
                         adv = 0,
                        sharpShoot = F,

@@ -21,7 +21,9 @@ Imports:
     knitr,
     bindrcpp,
     animation,
-    glue
+    glue,
+    shiny,
+    shinthemes
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax
