@@ -23,7 +23,7 @@ Imports:
     animation,
     glue,
     shiny,
-    shinthemes
+    shinythemes
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax
