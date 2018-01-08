@@ -319,7 +319,7 @@ processCharacter = function(char){
           'RecoverPerLongRest' = resData[8])
     }) %>% t
 
-    resources %<>%as.data.frame %>% dplyr::mutate(remainingUse = as.integer(remainingUse %>% as.character),
+    resources %<>%as.data.frame(stringsAsFactors = FALSE) %>% dplyr::mutate(remainingUse = as.integer(remainingUse),
                                                   maxUse = as.integer(maxUse),
                                                   dice = as.integer(dice),
                                                   RecoverPerShortRest = as.integer(RecoverPerShortRest),
