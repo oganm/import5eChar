@@ -100,6 +100,20 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         field = 'hp-max',
         fdf = fdf)
 
+    fdf = fdfEdit(
+        x = char$currentHealth,
+        field = 'hp-current',
+        fdf = fdf)
+
+    if(char$currentTempHP>0){
+        fdf = fdfEdit(
+            x = char$currentTempHP,
+            field = 'hp-temp',
+            fdf = fdf)
+    }
+
+    char$currentHealth
+
     # hit dice
     fdf = fdfEdit(
         x = char$hitDice %>% paste(collapse=', '),
