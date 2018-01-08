@@ -8,22 +8,16 @@
 #
 
 library(shiny)
-library(shinyWidgets)
 
-source('charDescription.R')
+
+
 
 # Define UI for application that draws a histogram
 shinyUI(
     fluidPage(
+        useShinyjs(),
         includeCSS('www/style.css'),
         theme = shinythemes::shinytheme('cosmo'),
         characterDescription(char),
-        knobInput(
-            inputId = "knob6",
-            label = "Cursor mode:",
-            value = 50,
-            thickness = 0.3,
-            width = 50,
-            height = 50
-        )
+        healthUI(id = 'health', char = char)
     ))

@@ -11,3 +11,24 @@
 .minorText{
     font-size:10px;
 }
+
+.modButton{
+    padding:0px 5px;
+}
+
+.shiny-input-container{
+    margin-bottom:0;
+    margin-top:0;
+}
+
+.progress-bar-danger{
+    background-color:#8B1A1A;
+}
+
+.progress-bar-primary{
+    background-color:#6959CD;
+}
+
+.increment{
+    display:inline-block
+}
