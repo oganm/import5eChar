@@ -59,6 +59,9 @@ processCharacter = function(char){
     char$castingStatCode %<>% as.integer
     char$baseSpeed %<>% as.integer
     char$speedMiscMod %<>% as.integer
+    char$currentHealth %<>% as.integer
+    char$currentTempHP %<>% as.integer
+
     char$unarmoredDefense %<>%  ogbox::replaceElement(dictionary = c('0' = '',
                                                                      '1'='Str',
                                                                      '2' = 'Dex',
@@ -282,7 +285,6 @@ processCharacter = function(char){
                               'allRanged' = allRangedDamage)
 
     # class resources ---------------
-    # few things are not decoded because I'm bored
     resources = classData[3] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% sapply(function(x){
         resData = x %>%strsplit('⊡|\u{22A1}') %>% {.[[1]]}
         c('name' = resData[1],
@@ -299,12 +301,29 @@ processCharacter = function(char){
                   out = ('')
               }
               out
-          })
+          },
+          'Reset' = {
+              if(resData[10]==1){
+                  out = 'static'
+              }else if(resData[9] == 303){
+                  out = 'never'
+              }else{
+                  out=
+                      switch(resData[6] %>% as.integer,
+                             "short rest",
+                             'long rest')
+              }
+              out
+          },
+          'RecoverPerShortRest' = resData[7],
+          'RecoverPerLongRest' = resData[8])
     }) %>% t
 
     resources %<>%as.data.frame %>% dplyr::mutate(remainingUse = as.integer(remainingUse %>% as.character),
                                                   maxUse = as.integer(maxUse),
-                                                  dice = as.integer(dice))
+                                                  dice = as.integer(dice),
+                                                  RecoverPerShortRest = as.integer(RecoverPerShortRest),
+                                                  RecoverPerLongRest  = as.integer(RecoverPerLongRest))
 
     rownames(resources) = NULL
 
