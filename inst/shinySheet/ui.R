@@ -18,6 +18,7 @@ shinyUI(
         useShinyjs(),
         includeCSS('www/style.css'),
         theme = shinythemes::shinytheme('cosmo'),
-        characterDescription(char),
-        healthUI(id = 'health', char = char)
+        characterDescriptionUI(id = 'character'),
+        healthUI(id = 'health')# ,
+        # actionBttn('button',label ='dsads',style = 'fill')
     ))
