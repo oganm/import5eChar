@@ -21,4 +21,6 @@ shinyServer(function(input, output) {
     healthModule = callModule(health,'health',
                               char = char)
 
+    attributeModule = callModule(attributes,'attributes', char = char)
+
 })

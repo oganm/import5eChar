@@ -19,6 +19,8 @@ shinyUI(
         includeCSS('www/style.css'),
         theme = shinythemes::shinytheme('cosmo'),
         characterDescriptionUI(id = 'character'),
-        healthUI(id = 'health')# ,
+        fluidRow(
+            column(3,attributesUI(id = 'attributes')),
+            column(4,healthUI(id = 'health')))# ,
         # actionBttn('button',label ='dsads',style = 'fill')
     ))

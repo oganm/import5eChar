@@ -36,13 +36,19 @@ characterDescription = function(input,output,session,char){
 healthUI = function(id){
     ns = NS(id)
     tagList(
-        fluidRow(column(11,
+        fixedRow(column(11,
                         progressBar(id = ns("healthBar"), value = 1,
                                     total = 1)),
                  column(1,
                         dropdownButton(
                             numericInput(inputId = ns('maxHealth'),
                                          label = 'Max health',
+                                         value = -1),
+                            numericInput(inputId = ns('currentHealth'),
+                                         label = 'Current health',
+                                         value = -1),
+                            numericInput(inputId = ns('tempHealth'),
+                                         label = 'Temp health',
                                          value = -1),
                             circle = TRUE,
                             icon = icon("bars"),
@@ -62,20 +68,25 @@ healthUI = function(id){
 }
 
 health = function(input, output, session,
-                  char
-){
-    init = reactiveVal(FALSE)
+                  char){
+    # init = reactiveVal(FALSE)
 
     observe({
-        if(!init()){
-            init(TRUE)
+        if(input$maxHealth == -1){
+            # init(TRUE)
             updateNumericInput(session,inputId = 'maxHealth',value = char$maxHealth,min= 1)
+            updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
+            updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
+
         }
     })
 
     observe({
-        if(init() & input$maxHealth != -1){
+        if(input$maxHealth != -1){
             char$maxHealth = input$maxHealth
+            char$currentHealth = input$currentHealth
+            char$currentTempHP = input$tempHealth
+
             isolate({
                 if(char$currentHealth > char$maxHealth){
                     char$currentHealth = char$maxHealth
@@ -117,6 +128,9 @@ health = function(input, output, session,
                            'plusTempHealth',
                            label = glue::glue('+ {char$currentTempHP}'))
 
+        updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
+        updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
+
         updateProgressBar(session,
                           id = session$ns('healthBar'),
                           value =  char$currentHealth + char$currentTempHP,
@@ -124,4 +138,43 @@ health = function(input, output, session,
                           status= status)
     })
 
+}
+
+attributesUI = function(id){
+    ns = NS(id)
+    tagList(
+        attributeUI(ns('Str')),
+        attributeUI(ns('Dex')),
+        attributeUI(ns('Con')),
+        attributeUI(ns('Int')),
+        attributeUI(ns('Wis')),
+        attributeUI(ns('Cha'))
+    )
+}
+
+attributes = function(input, output, session, char){
+    strModule = callModule(attribute,'Str',char = char, attribute ='Str')
+    dexModule = callModule(attribute,'Dex',char = char, attribute ='Dex')
+    conModule = callModule(attribute,'Con',char = char, attribute ='Con')
+    intModule = callModule(attribute,'Int',char = char, attribute ='Int')
+    wisModule = callModule(attribute,'Wis',char = char, attribute ='Wis')
+    chaModule = callModule(attribute,'Cha',char = char, attribute ='Cha')
+}
+
+
+
+attributeUI = function(id){
+    ns = NS(id)
+    tagList(
+        htmlOutput(ns('name'))
+    )
+}
+
+attribute = function(input,output,session,char,attribute){
+
+    output$name = renderUI({
+        return(tagList(
+            strong(attribute)
+        ))
+    })
 }
