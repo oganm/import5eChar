@@ -2,8 +2,9 @@
 
 library(shiny)
 
-shinyServer(function(input, output) {
-    char = do.call(reactiveValues,char)
+shinyServer(function(input, output,session) {
+    char = do.call(reactiveValues,char2)
+    consoleOut = reactiveVal('')
 
 
     rolls = reactiveVal(value = '', label = 'rollLog')
@@ -16,11 +17,29 @@ shinyServer(function(input, output) {
 
     attributeModule = callModule(attributes,'attributes', char = char)
 
-    observe({
-        observe({
-            print('server')
-            print(input$`attributes-save_button`)
-        })
+
+    output$console = renderText({
+        print(input$`attributes-save_button`)
+
+        if(!is.null(input$`attributes-save_button`)){
+            out  = glue('{input$`attributes-save_button`} save:\n',
+                           '{save(stat = input$`attributes-save_button`,char = char)}')
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  'attributes-save_button')
+            consoleOut(out)
+        }
+
+        if(!is.null(input$`attributes-check_button`)){
+           out = glue('{input$`attributes-check_button`} save:\n',
+                      '{abilityCheck(input$`attributes-check_button`, char = char)}')
+           session$sendCustomMessage(type = 'resetInputValue',
+                                     message =  'attributes-check_button')
+
+           consoleOut(out)
+        }
+
+        return(consoleOut())
+
     })
 
 })

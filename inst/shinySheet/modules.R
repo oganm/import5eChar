@@ -143,7 +143,9 @@ health = function(input, output, session,
 attributesUI = function(id){
     ns = NS(id)
     tagList(
-
+        tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
+                    Shiny.onInputChange(variableName, null);
+                    });"),
         dataTableOutput(ns('attributesTable'))
         # attributeUI(ns('Str')),
         # attributeUI(ns('Dex')),
@@ -166,7 +168,7 @@ attributes = function(input, output, session, char){
 
         saveButtons = sapply(1:length(char$abilityScores),function(i){
             actionButton(label = saveBonus(char)[i],
-                         inputId=session$ns(paste0('save', names(char$abilityScores)[i])),
+                         inputId=names(char$abilityScores)[i],
                          icon =switch(char$abilityProf[i] %>% as.character(),
                                       'TRUE' = icon('check-square'),
                                       'FALSE' = icon('square')),
@@ -174,30 +176,35 @@ attributes = function(input, output, session, char){
                 as.character
         })
 
+        checkButtons=  sapply(1:length(char$abilityScores),function(i){
+            actionButton(label = char$abilityMods[i],
+                         inputId=names(char$abilityScores)[i],
+                         onclick = glue('Shiny.onInputChange("',session$ns('check_button'),'",  this.id)'))%>%
+                as.character
+        })
+
 
         table = data.frame(Score = char$abilityScores,
                            Mod =char$abilityMods,
-                           Saves =saveButtons)
+                           Saves =saveButtons,
+                           Checks = checkButtons)
 
         table = datatable(table,escape = FALSE,selection = 'none',
                           options = list(bFilter = 0,
                                          bLengthChange = 0,
                                          paging = 0,
-                                         ordering = 0))
+                                         ordering = 0,
+                                         bInfo = 0))
         return(table)
     })
 
 
-    observe({
-        print('module')
-        print(input$save_button)
-    })
-    # strModule = callModule(attribute,'Str',char = char, attribute ='Str')
-    # dexModule = callModule(attribute,'Dex',char = char, attribute ='Dex')
-    # conModule = callModule(attribute,'Con',char = char, attribute ='Con')
-    # intModule = callModule(attribute,'Int',char = char, attribute ='Int')
-    # wisModule = callModule(attribute,'Wis',char = char, attribute ='Wis')
-    # chaModule = callModule(attribute,'Cha',char = char, attribute ='Cha')
+    # observe({
+    #     print('module')
+    #     print(input$save_button)
+    #     session$sendCustomMessage(type = 'resetInputValue',
+    #                               message =  session$ns('save_button'))
+    # })
 }
 
 
