@@ -21,6 +21,7 @@ shinyUI(
         characterDescriptionUI(id = 'character'),
         fluidRow(
             column(3,attributesUI(id = 'attributes')),
-            column(4,healthUI(id = 'health')))# ,
+            column(4,healthUI(id = 'health')),
+            column(5))# ,
         # actionBttn('button',label ='dsads',style = 'fill')
     ))

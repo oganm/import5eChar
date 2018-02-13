@@ -3,17 +3,10 @@
 library(shiny)
 
 shinyServer(function(input, output) {
-    char = reactiveValues(maxHealth = char$maxHealth,
-                          currentHealth = char$currentHealth,
-                          currentTempHP = char$currentTempHP,
-                          hitDice = char$hitDice,
-                          hitDiceRemain = char$hitDiceRemain,
+    char = do.call(reactiveValues,char)
 
-                          Name =char$Name,
-                          ClassField = char$ClassField,
-                          Background = char$Background,
-                          Race = char$Race,
-                          Alignment = char$Alignment)
+
+    rolls = reactiveVal(value = '', label = 'rollLog')
 
     characterDescription = callModule(characterDescription,'character',
                                       char = char)
@@ -22,5 +15,12 @@ shinyServer(function(input, output) {
                               char = char)
 
     attributeModule = callModule(attributes,'attributes', char = char)
+
+    observe({
+        observe({
+            print('server')
+            print(input$`attributes-save_button`)
+        })
+    })
 
 })

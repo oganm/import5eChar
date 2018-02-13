@@ -143,22 +143,61 @@ health = function(input, output, session,
 attributesUI = function(id){
     ns = NS(id)
     tagList(
-        attributeUI(ns('Str')),
-        attributeUI(ns('Dex')),
-        attributeUI(ns('Con')),
-        attributeUI(ns('Int')),
-        attributeUI(ns('Wis')),
-        attributeUI(ns('Cha'))
+
+        dataTableOutput(ns('attributesTable'))
+        # attributeUI(ns('Str')),
+        # attributeUI(ns('Dex')),
+        # attributeUI(ns('Con')),
+        # attributeUI(ns('Int')),
+        # attributeUI(ns('Wis')),
+        # attributeUI(ns('Cha'))
     )
 }
 
 attributes = function(input, output, session, char){
-    strModule = callModule(attribute,'Str',char = char, attribute ='Str')
-    dexModule = callModule(attribute,'Dex',char = char, attribute ='Dex')
-    conModule = callModule(attribute,'Con',char = char, attribute ='Con')
-    intModule = callModule(attribute,'Int',char = char, attribute ='Int')
-    wisModule = callModule(attribute,'Wis',char = char, attribute ='Wis')
-    chaModule = callModule(attribute,'Cha',char = char, attribute ='Cha')
+    output$attributesTable = renderDataTable({
+        shinyInput <- function(FUN, len, id, ...) {
+            inputs <- character(len)
+            for (i in seq_len(len)) {
+                inputs[i] <- as.character(FUN(paste0(id, i), ...))
+            }
+            inputs
+        }
+
+        saveButtons = sapply(1:length(char$abilityScores),function(i){
+            actionButton(label = saveBonus(char)[i],
+                         inputId=session$ns(paste0('save', names(char$abilityScores)[i])),
+                         icon =switch(char$abilityProf[i] %>% as.character(),
+                                      'TRUE' = icon('check-square'),
+                                      'FALSE' = icon('square')),
+                         onclick = glue('Shiny.onInputChange("',session$ns('save_button'),'",  this.id)'))%>%
+                as.character
+        })
+
+
+        table = data.frame(Score = char$abilityScores,
+                           Mod =char$abilityMods,
+                           Saves =saveButtons)
+
+        table = datatable(table,escape = FALSE,selection = 'none',
+                          options = list(bFilter = 0,
+                                         bLengthChange = 0,
+                                         paging = 0,
+                                         ordering = 0))
+        return(table)
+    })
+
+
+    observe({
+        print('module')
+        print(input$save_button)
+    })
+    # strModule = callModule(attribute,'Str',char = char, attribute ='Str')
+    # dexModule = callModule(attribute,'Dex',char = char, attribute ='Dex')
+    # conModule = callModule(attribute,'Con',char = char, attribute ='Con')
+    # intModule = callModule(attribute,'Int',char = char, attribute ='Int')
+    # wisModule = callModule(attribute,'Wis',char = char, attribute ='Wis')
+    # chaModule = callModule(attribute,'Cha',char = char, attribute ='Cha')
 }
 
 
