@@ -5,3 +5,4 @@ library(glue)
 
 source('modules.R')
 
+consoleLength  = 10
