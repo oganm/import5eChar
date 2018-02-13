@@ -3,7 +3,7 @@
 library(shiny)
 
 shinyServer(function(input, output,session) {
-    char = do.call(reactiveValues,char2)
+    char = do.call(reactiveValues,char)
     consoleOut = reactiveVal(rep('\n',consoleLength) %>% paste(collapse = ''))
 
 
