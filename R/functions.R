@@ -266,5 +266,10 @@ init = function(char = getOption('defaultCharacter')){
 }
 
 
-
-
+#' @export
+shinySheet = function(char=getOption('defaultCharacter')){
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+    runApp(system.file('shinySheet',package='import5eChar'))
+}
