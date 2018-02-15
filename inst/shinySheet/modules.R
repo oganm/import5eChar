@@ -147,12 +147,6 @@ attributesUI = function(id){
                     Shiny.onInputChange(variableName, null);
                     });"),
         dataTableOutput(ns('attributesTable'))
-        # attributeUI(ns('Str')),
-        # attributeUI(ns('Dex')),
-        # attributeUI(ns('Con')),
-        # attributeUI(ns('Int')),
-        # attributeUI(ns('Wis')),
-        # attributeUI(ns('Cha'))
     )
 }
 
