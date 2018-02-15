@@ -208,19 +208,3 @@ attributes = function(input, output, session, char){
 }
 
 
-
-attributeUI = function(id){
-    ns = NS(id)
-    tagList(
-        htmlOutput(ns('name'))
-    )
-}
-
-attribute = function(input,output,session,char,attribute){
-
-    output$name = renderUI({
-        return(tagList(
-            strong(attribute)
-        ))
-    })
-}
