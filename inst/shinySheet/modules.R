@@ -172,14 +172,16 @@ attributes = function(input, output, session, char){
                          icon =switch(char$abilityProf[i] %>% as.character(),
                                       'TRUE' = icon('check-square'),
                                       'FALSE' = icon('square')),
-                         onclick = glue('Shiny.onInputChange("',session$ns('save_button'),'",  this.id)'))%>%
+                         onclick = glue('Shiny.onInputChange("',session$ns('save_button'),'",  this.id)'),
+                         class = 'attributeButton')%>%
                 as.character
         })
 
         checkButtons=  sapply(1:length(char$abilityScores),function(i){
             actionButton(label = char$abilityMods[i],
                          inputId=names(char$abilityScores)[i],
-                         onclick = glue('Shiny.onInputChange("',session$ns('check_button'),'",  this.id)'))%>%
+                         onclick = glue('Shiny.onInputChange("',session$ns('check_button'),'",  this.id)'),
+                         class = 'attributeButton')%>%
                 as.character
         })
 

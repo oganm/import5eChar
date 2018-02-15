@@ -25,7 +25,10 @@ shinyServer(function(input, output,session) {
 
         if(!is.null(input$`attributes-save_button`)){
             out  = glue('{input$`attributes-save_button`} save:\n',
-                           '{save(stat = input$`attributes-save_button`,char = char)}')
+                        capture.output(save(input$`attributes-save_button`,
+                                            char = char)) %>%
+                            gsub('(\\[1\\] )|"','',.) %>%
+                            paste(collapse = '\n'))
             session$sendCustomMessage(type = 'resetInputValue',
                                       message =  'attributes-save_button')
             # consoleOut(out)
@@ -33,7 +36,10 @@ shinyServer(function(input, output,session) {
 
         if(!is.null(input$`attributes-check_button`)){
            out = glue('{input$`attributes-check_button`} check:\n',
-                      '{abilityCheck(input$`attributes-check_button`, char = char)}')
+                      capture.output(abilityCheck(input$`attributes-check_button`,
+                                                  char = char)) %>%
+                          gsub('(\\[1\\] )|"','',.) %>%
+                          paste(collapse = '\n'))
            session$sendCustomMessage(type = 'resetInputValue',
                                      message =  'attributes-check_button')
 
