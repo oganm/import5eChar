@@ -203,4 +203,47 @@ attributes = function(input, output, session, char){
     # })
 }
 
+weaponsUI = function(id){
+    ns = NS(id)
+    tagList(
+        # not strictly necesary as the function is already defined. before. keeping
+        # it to ensure it'll work on its own
+        tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
+                    Shiny.onInputChange(variableName, null);
+                    });"),
+        dataTableOutput(ns('weaponsTable'))
+    )
+}
 
+weapons =function(input, output,session,char){
+    output$weaponsTable = renderDataTable({
+        weaponTable = char$weapons %>% sapply(function(x){
+
+            c(actionButton(label = x$name,
+                           inputId=x$name,
+                           onclick = glue('Shiny.onInputChange("',session$ns('weaponButton'),'",  this.id)'),
+                           class = 'weaponButton')%>%
+                  as.character,
+              weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
+                  x$proficient*char$proficiencyBonus +
+                  char$abilityMods[x$attackStat],
+              paste0(paste(x$dice,collapse=' + '),
+                     '+',
+                     weaponBonus(x,char=char)['weaponTypeDamageBonus'] +
+                         char$abilityMods[x$attackStat]),
+              x$damageType,
+              x$range
+            )
+        }) %>% t %>% as.data.frame()
+        names(weaponTable) = c('name','Atk Bonus','Damage','Type','Range')
+
+
+        table = datatable(weaponTable,escape = FALSE,selection = 'none',rownames = FALSE,
+                          options = list(bFilter = 0,
+                                         bLengthChange = 0,
+                                         paging = 0,
+                                         ordering = 0,
+                                         bInfo = 0))
+        return(table)
+    })
+}

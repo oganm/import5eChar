@@ -17,6 +17,8 @@ shinyServer(function(input, output,session) {
 
     attributeModule = callModule(attributes,'attributes', char = char)
 
+    weaponModule = callModule(weapons,'weapons',char = char)
+
 
     output$console = renderText({
         print(input$`attributes-save_button`)
@@ -35,15 +37,25 @@ shinyServer(function(input, output,session) {
         }
 
         if(!is.null(input$`attributes-check_button`)){
-           out = glue('{input$`attributes-check_button`} check:\n',
-                      capture.output(abilityCheck(input$`attributes-check_button`,
-                                                  char = char)) %>%
-                          gsub('(\\[1\\] )|"','',.) %>%
-                          paste(collapse = '\n'))
-           session$sendCustomMessage(type = 'resetInputValue',
-                                     message =  'attributes-check_button')
+            out = glue('{input$`attributes-check_button`} check:\n',
+                       capture.output(abilityCheck(input$`attributes-check_button`,
+                                                   char = char)) %>%
+                           gsub('(\\[1\\] )|"','',.) %>%
+                           paste(collapse = '\n'))
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  'attributes-check_button')
 
-           # consoleOut(out)
+            # consoleOut(out)
+        }
+
+        if(!is.null(input$`weapons-weaponButton`)){
+            w = char$weapons
+            out = capture.output(weaponAttack(w[[input$`weapons-weaponButton`]])) %>%
+                gsub('(\\[1\\] )|"','',.) %>%
+                paste(collapse = '\n')
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  'weapons-weaponButton')
         }
 
         isolate({

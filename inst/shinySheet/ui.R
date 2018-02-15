@@ -21,7 +21,8 @@ shinyUI(
         characterDescriptionUI(id = 'character'),
         fluidRow(
             column(3,attributesUI(id = 'attributes')),
-            column(4,healthUI(id = 'health')),
+            column(4,healthUI(id = 'health'),
+                   weaponsUI(id = 'weapons')),
             column(5,
                    wellPanel(verbatimTextOutput('console',placeholder = TRUE))))# ,
         # actionBttn('button',label ='dsads',style = 'fill')
