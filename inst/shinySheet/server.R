@@ -49,8 +49,15 @@ shinyServer(function(input, output,session) {
         }
 
         if(!is.null(input$`weapons-weaponButton`)){
+            advantage = switch(weaponModule()$advantage,
+                               Norm = 0,
+                               DisAdv = -1,
+                               Adv = 1)
+
             w = char$weapons
-            out = capture.output(weaponAttack(w[[input$`weapons-weaponButton`]])) %>%
+            out = capture.output(weaponAttack(w[[input$`weapons-weaponButton`]],
+                                              sharpShoot = weaponModule()$sharpshoot,
+                                              adv = advantage)) %>%
                 gsub('(\\[1\\] )|"','',.) %>%
                 paste(collapse = '\n')
 

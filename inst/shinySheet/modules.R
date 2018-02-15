@@ -211,6 +211,11 @@ weaponsUI = function(id){
         tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
                     Shiny.onInputChange(variableName, null);
                     });"),
+        fluidRow(column(6,radioGroupButtons(inputId = ns('advantage'),
+                                            choices = c('DisAdv','Norm','Adv'),
+                                            selected = 'Norm',
+                                            status = "primary")),
+                 column(6,switchInput(ns('sharpshoot'),label = 'SharpS/GreatWM'))),
         dataTableOutput(ns('weaponsTable'))
     )
 }
@@ -246,4 +251,12 @@ weapons =function(input, output,session,char){
                                          bInfo = 0))
         return(table)
     })
+
+
+    weaponOut = reactive({
+        list(advantage = input$advantage,
+             sharpshoot = input$sharpshoot)
+    })
+
+    return(weaponOut)
 }
