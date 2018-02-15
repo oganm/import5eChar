@@ -181,7 +181,7 @@ skillCheck = function(skill,
         bonus %>% floor()
     }
 
-    diceSyntax::r(r1d20) + bonus
+    diceSyntax::r(r1d20) + unname(bonus)
 }
 
 #' Title
@@ -224,7 +224,7 @@ abilityCheck = function(ability,char=  getOption('defaultCharacter')){
     roll = diceSyntax::r(r1d20)
     bonus = char$abilityMods[ability]
 
-    roll + bonus
+    roll + unname(bonus)
 
 }
 
