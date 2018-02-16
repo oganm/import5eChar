@@ -1,18 +1,10 @@
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
+
 
 library(shiny)
 
 
 
 
-# Define UI for application that draws a histogram
 shinyUI(
     fluidPage(
         useShinyjs(),
@@ -20,10 +12,16 @@ shinyUI(
         theme = shinythemes::shinytheme('cosmo'),
         characterDescriptionUI(id = 'character'),
         fluidRow(
-            column(3,attributesUI(id = 'attributes')),
+            column(3,attributesUI(id = 'attributes'),
+                   skillsUI(id = 'skills')),
             column(4,healthUI(id = 'health'),
-                   weaponsUI(id = 'weapons')),
+                   hr(),
+                   tabsetPanel(id = 'tabs',
+                               tabPanel('Weapons',
+                                        weaponsUI(id = 'weapons')),
+                               tabPanel('Spells'))),
             column(5,
-                   wellPanel(verbatimTextOutput('console',placeholder = TRUE))))# ,
-        # actionBttn('button',label ='dsads',style = 'fill')
-    ))
+                   wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
+                   resourcesUI('resources')))
+        )
+    )

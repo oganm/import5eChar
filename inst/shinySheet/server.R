@@ -19,10 +19,12 @@ shinyServer(function(input, output,session) {
 
     weaponModule = callModule(weapons,'weapons',char = char)
 
+    skillModule = callModule(skills,'skills',char = char)
+
+    resourceModule = callModule(resources,'resources',char = char)
+
 
     output$console = renderText({
-        print(input$`attributes-save_button`)
-
         out = ''
 
         if(!is.null(input$`attributes-save_button`)){
@@ -55,14 +57,40 @@ shinyServer(function(input, output,session) {
                                Adv = 1)
 
             w = char$weapons
-            out = capture.output(weaponAttack(w[[input$`weapons-weaponButton`]],
-                                              sharpShoot = weaponModule()$sharpshoot,
-                                              adv = advantage)) %>%
+            out = glue(input$`weapons-weaponButton`,':\n',
+                       capture.output(weaponAttack(w[[input$`weapons-weaponButton`]],
+                                                   sharpShoot = weaponModule()$sharpshoot,
+                                                   adv = advantage,
+                                                   char = char)) %>%
                 gsub('(\\[1\\] )|"','',.) %>%
-                paste(collapse = '\n')
+                paste(collapse = '\n'))
 
             session$sendCustomMessage(type = 'resetInputValue',
                                       message =  'weapons-weaponButton')
+        }
+
+        if(!is.null(input$`skills-skillButton`)){
+            out = glue(
+                input$`skills-skillButton`,' check:\n',
+                capture.output(skillCheck(input$`skills-skillButton`,char = char)) %>%
+                    gsub('(\\[1\\] )|"','',.) %>%
+                    paste(collapse = '\n'))
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  'skills-skillButton')
+        }
+
+        if(!is.null(input$`resources-resourceButton`)){
+            browser()
+            resourceToUse = char$resources %>% filter(shortName == input$`resources-resourceButton`)
+
+            # is it a consumable resource
+            if(resourceToUse$Reset != 'static' | resourceToUse$RecoverPerLongRest >0 | resourceToUse$RecoverPerShortRest > 0){
+
+            }
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  'resources-resourceButton')
         }
 
         isolate({

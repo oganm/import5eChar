@@ -5,6 +5,14 @@ characterDescriptionUI = function(id){
 
 characterDescription = function(input,output,session,char){
     output$description = renderUI({
+        descriptiveElement = function(field,label){
+            tagList(
+                p(field,class = 'narrowElement field'),
+                hr(class = 'narrowElement'),
+                p(label, class = 'narrowElement minorText')
+                )
+        }
+
         tagList(
             fluidRow(
                 column(4,
@@ -12,20 +20,16 @@ characterDescription = function(input,output,session,char){
                 column(8,
                        wellPanel(
                            fluidRow(
-                               column(6, p(char$ClassField, class ='narrowElement field'),
-                                      hr(class = 'narrowElement'),
-                                      p('Class & Level', class = 'narrowElement minorText')),
-                               column(6,p(char$Background, class ='narrowElement field'),
-                                      hr(class = 'narrowElement'),
-                                      p('Background', class = 'narrowElement minorText'))
+                               column(4, descriptiveElement(char$ClassField,'Class & Level')),
+                               column(4, descriptiveElement(char$Background,'Background')),
+                               column(2, descriptiveElement(AC(char),'AC')),
+                               column(2, descriptiveElement(initBonus(char),'Initiative'))
                            ),
                            fluidRow(
-                               column(6,p(char$Race, class ='narrowElement field'),
-                                      hr(class = 'narrowElement'),
-                                      p('Race',class='narrowElement minorText')),
-                               column(6,p(char$Alignment, class ='narrowElement field'),
-                                      hr(class = 'narrowElement'),
-                                      p('Alignment',class='narrowElement minorText'))
+                               column(4, descriptiveElement(char$Race, 'Race')),
+                               column(4,descriptiveElement(char$Alignment, 'Alignment')),
+                               column(2, descriptiveElement(char$proficiencyBonus,'Proficiency')),
+                               column(2, descriptiveElement(char$baseSpeed, 'Speed'))
                            )
                        ))
             )
@@ -152,14 +156,6 @@ attributesUI = function(id){
 
 attributes = function(input, output, session, char){
     output$attributesTable = renderDataTable({
-        shinyInput <- function(FUN, len, id, ...) {
-            inputs <- character(len)
-            for (i in seq_len(len)) {
-                inputs[i] <- as.character(FUN(paste0(id, i), ...))
-            }
-            inputs
-        }
-
         saveButtons = sapply(1:length(char$abilityScores),function(i){
             actionButton(label = saveBonus(char)[i],
                          inputId=names(char$abilityScores)[i],
@@ -221,10 +217,59 @@ weaponsUI = function(id){
 }
 
 weapons =function(input, output,session,char){
+    imagePick = function(weapon){
+        if(grepl('crossbow', tolower(weapon$name))){
+            icon = 'icons/crossbow.png'
+        } else if(grepl('bow', tolower(weapon$name))){
+            icon = 'icons/high-shot.png'
+        } else if(grepl('net', tolower(weapon$name))){
+            icon = 'icons/fishing-net.png'
+        } else if(grepl('blowgun|dart',tolower(weapon$name))){
+            icon = 'icons/dart.png'
+        } else if(grepl('whip',tolower(weapon$name))){
+            icon = 'icons/whip.png'
+        } else if(grepl('hammer|pick|maul', tolower(weapon$name))){
+            icon = 'icons/claw-hammer.png'
+        } else if(grepl('trident', tolower(weapon$name))){
+            icon = 'icons/trident.png'
+        } else if(grepl('sword|rapier|scimitar|dagger', tolower(weapon$name))){
+            icon = 'icons/pointy-sword.png'
+        } else if(grepl('pike|spear|lance|glaive', tolower(weapon$name))){
+            icon = 'icons/spear-hook.png'
+        } else if(grepl('halberd', tolower(weapon$name))){
+            icon = 'icons/sharp-halberd.png'
+        } else if(grepl('axe',tolower(weapon$name))){
+            icon = 'icons/battered-axe.png'
+        } else if(grepl('flail',tolower(weapon$name))){
+            icon = 'icons/flail.png'
+        } else if(grepl('sling',tolower(weapon$name))){
+            icon = 'icons/sling.png'
+        } else if(grepl('sickle',tolower(weapon$name))){
+            icon = 'icons/sickle.png'
+        } else if(grepl('quarterstaff',tolower(weapon$name))){
+            icon = 'icons/bo.png'
+        } else if(grepl('mace|morningstar',tolower(weapon$name))){
+            icon = 'icons/flanged-mace.png'
+        } else if(grepl('javelin',tolower(weapon$name))){
+            icon = 'icons/thrown-spear.png'
+        } else if(grepl('club',tolower(weapon$name))){
+            icon = 'icons/wood-club.png'
+        } else if(weapon$type =='ranged'){
+            icon = 'icons/high-shot.png'
+        } else if(weapon$damageType =='Bludgeoning'){
+            icon = 'icons/flanged-mace.png'
+        } else{
+            icon = 'icons/pointy-sword.png'
+        }
+
+        return(img(src = icon,width = 20,height = 20))
+    }
     output$weaponsTable = renderDataTable({
         weaponTable = char$weapons %>% sapply(function(x){
 
-            c(actionButton(label = x$name,
+
+
+            c(actionButton(label = div(imagePick(x),x$name),
                            inputId=x$name,
                            onclick = glue('Shiny.onInputChange("',session$ns('weaponButton'),'",  this.id)'),
                            class = 'weaponButton')%>%
@@ -259,4 +304,112 @@ weapons =function(input, output,session,char){
     })
 
     return(weaponOut)
+}
+
+
+skillsUI = function(id){
+    ns = NS(id)
+    tagList(
+        tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
+                    Shiny.onInputChange(variableName, null);
+                    });"),
+        dataTableOutput(ns('skillsTable'))
+    )
+}
+
+skills = function(input, output,session,char){
+    output$skillsTable = renderDataTable({
+
+        skillBonus = skillBonus(char = char)
+        profMark = char$skillProf
+        statSep = char$skillAttributes %>% duplicated() %>% not %>% which %>% {.[-1] -1}
+        skillAttributes = unique(char$skillAttributes)
+
+        attributeRows = data.frame(skillName = skillAttributes %>% map(strong) %>% map_chr(as.character),
+                                   profMark='',
+                                   skillBonus = '',
+                                   index = c(0,statSep+.1),
+                                   buttons = '',stringsAsFactors = FALSE)
+        charAts = data.frame(skillName = names(skillBonus),
+                             profMark,
+                             skillBonus,
+                             index = 1:length(skillBonus),stringsAsFactors = FALSE)
+
+
+        charAts$buttons = charAts$skillName %>% sapply(function(x){
+            actionButton(label = charAts$skillBonus[charAts$skillName == x],
+                         icon = switch(charAts$profMark[charAts$skillName == x] %>% as.character(),
+                                       'TRUE' = icon('check-square'),
+                                       'FALSE' = icon('square')),
+                         inputId=x,
+                         onclick = glue('Shiny.onInputChange("',session$ns('skillButton'),'",  this.id)'),
+                         class = 'skillButton')%>%
+                as.character
+        })
+
+        charAts %<>% rbind(attributeRows) %>% arrange(index) %>% select(skillName,buttons)
+
+
+        charAts1 = charAts[1:12,]
+        charAts2 = rbind(charAts[13:nrow(charAts),],data.frame(skillName = '',
+                                                               buttons = ''))
+        charAts = cbind(charAts1,charAts2)
+
+        table = datatable(charAts,escape = FALSE,selection = 'none',rownames = FALSE,
+                          colnames= rep('',4),
+                          options = list(bFilter = 0,
+                                         bLengthChange = 0,
+                                         paging = 0,
+                                         ordering = 0,
+                                         bInfo = 0))
+        return(table)
+
+    })
+
+}
+
+resourcesUI = function(id){
+    ns = NS(id)
+    tagList(
+        tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
+                    Shiny.onInputChange(variableName, null);
+                    });"),
+        dataTableOutput(ns('resourcesTable'))
+    )
+}
+
+resources = function(input,output,session,char){
+    output$resourcesTable = renderDataTable({
+        buttons = char$resources$shortName %>% sapply(function(x){
+            actionButton(label = x,
+                         inputId= x,
+                         onclick = glue('Shiny.onInputChange("',session$ns('resourceButton'),'",  this.id)'),
+                         class = 'resourceButton') %>% as.character
+        })
+
+        displays = 1:nrow(char$resources) %>% sapply(function(i){
+            if(char$resources$dice[i]>0){
+                out = (paste0(char$resources$remainingUse[i],
+                              'd',
+                              char$resources$dice[i]))
+            } else if(char$resources$remainingUse[i]>=0){
+                out = char$resources$remainingUse[i]
+            } else{
+                out = ('')
+            }
+        })
+
+        resourceTable = data.frame(name = buttons,
+                                   display = displays,
+                                   stringsAsFactors = FALSE)
+
+        table = datatable(resourceTable,escape = FALSE,selection = 'none',rownames = FALSE,
+                          colnames= rep('',2),
+                          options = list(bFilter = 0,
+                                         bLengthChange = 0,
+                                         paging = 0,
+                                         ordering = 0,
+                                         bInfo = 0))
+
+    })
 }
