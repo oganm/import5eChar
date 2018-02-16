@@ -394,7 +394,7 @@ processCharacter = function(char){
 
     rownames(spells)= NULL
 
-    spells %<>% as.data.frame %>% dplyr::mutate(level = level %>%as.character%>% as.integer, prepared = prepared %>% as.logical)
+    spells %<>% as.data.frame(stringsAsFactors=FALSE) %>% dplyr::mutate(level = level %>%as.character%>% as.integer, prepared = prepared %>% as.logical)
 
     if(all(is.na(spells[1,]))){
         spells = NULL

@@ -38,7 +38,7 @@ Once a character is loaded convenience functions can be used
 init() # initiative roll
 
 
-skillCheck(medicine) # medicine skill check
+skillCheck('medicine') # medicine skill check
 
 weaponAttack(char$weapons$Dagger) # a weapon attack with a dagger
 

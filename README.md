@@ -25,8 +25,6 @@ characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
 char = import5eChar::importCharacter(file = characterFile)
 ```
 
-    ## Warning: package 'bindrcpp' was built under R version 3.3.3
-
 Once a character is loaded convenience functions can be used
 
 ``` r
@@ -38,13 +36,12 @@ init() # initiative roll
     ## [1] 10
 
 ``` r
-skillCheck(medicine) # medicine skill check
+skillCheck('medicine') # medicine skill check
 ```
 
     ## [1] "Rolls: [ 8 ]"
 
-    ## Medicine 
-    ##        9
+    ## [1] 9
 
 ``` r
 weaponAttack(char$weapons$Dagger) # a weapon attack with a dagger
@@ -61,7 +58,11 @@ All these conveninece functions require an imported character as an input. If yo
 
 ``` r
 myBestCharacter = importCharacter('Tim_Fighter')
+```
 
+    ## Auto-refreshing stale OAuth token.
+
+``` r
 init(char = myBestCharacter)
 ```
 

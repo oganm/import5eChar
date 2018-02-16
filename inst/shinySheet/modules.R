@@ -3,7 +3,7 @@ characterDescriptionUI = function(id){
     tagList(htmlOutput(ns('description')))
 }
 
-characterDescription = function(input,output,session,char){
+characterDescription = function(input,output,session,char,charInitial){
     output$description = renderUI({
         descriptiveElement = function(field,label){
             tagList(
@@ -16,7 +16,12 @@ characterDescription = function(input,output,session,char){
         tagList(
             fluidRow(
                 column(4,
-                       wellPanel(h2(char$Name))),
+                       wellPanel(fluidRow(
+                           column(8,h2(char$Name)),
+                           column(4,fileInput(session$ns('charInput'),label = 'Load char'))
+                       )
+                       )
+                ),
                 column(8,
                        wellPanel(
                            fluidRow(
@@ -35,6 +40,24 @@ characterDescription = function(input,output,session,char){
             )
         )
     })
+
+    observe({
+        input$charInput
+        if(!is.null(input$charInput)){
+            character = importCharacter(file = input$charInput$datapath)
+            isolate({
+                for(x in names(reactiveValuesToList(char))){
+                    char[[x]] = character[[x]]
+                }
+                for(x in names(reactiveValuesToList(charInitial))){
+                    charInitial[[x]] = character[[x]]
+                }
+
+            })
+
+        }
+    })
+
 }
 
 healthUI = function(id){
@@ -72,7 +95,7 @@ healthUI = function(id){
 }
 
 health = function(input, output, session,
-                  char){
+                  char,charInitial){
     # init = reactiveVal(FALSE)
 
     observe({
@@ -87,11 +110,11 @@ health = function(input, output, session,
 
     observe({
         if(input$maxHealth != -1){
-            char$maxHealth = input$maxHealth
             char$currentHealth = input$currentHealth
             char$currentTempHP = input$tempHealth
-
             isolate({
+                char$maxHealth = input$maxHealth
+
                 if(char$currentHealth > char$maxHealth){
                     char$currentHealth = char$maxHealth
                 }
@@ -142,6 +165,13 @@ health = function(input, output, session,
                           status= status)
     })
 
+    observe({
+        charInitial$maxHealth
+        isolate({
+            updateNumericInput(session,inputId = 'maxHealth',value = charInitial$maxHealth,min= 1)
+        })
+    },priority = 9999)
+
 }
 
 attributesUI = function(id){
@@ -190,6 +220,38 @@ attributes = function(input, output, session, char){
         return(table)
     })
 
+
+
+    out = reactive({
+        out = ''
+        if(!is.null(input$save_button)){
+            out  = glue('{input$save_button} save:\n',
+                        capture.output(save(input$save_button,
+                                            char = char)) %>%
+                            gsub('(\\[1\\] )|"','',.) %>%
+                            paste(collapse = '\n'))
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('save_button'))
+            # consoleOut(out)
+        }
+
+        if(!is.null(input$check_button)){
+            out = glue('{input$check_button} check:\n',
+                       capture.output(abilityCheck(input$check_button,
+                                                   char = char)) %>%
+                           gsub('(\\[1\\] )|"','',.) %>%
+                           paste(collapse = '\n'))
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('check_button'))
+
+            # consoleOut(out)
+        }
+
+        return(out)
+    })
+
+
+    return(out)
 
     # observe({
     #     print('module')
@@ -254,6 +316,8 @@ weapons =function(input, output,session,char){
             icon = 'icons/thrown-spear.png'
         } else if(grepl('club',tolower(weapon$name))){
             icon = 'icons/wood-club.png'
+        } else if(grepl('unarmed',tolower(weapon$name))){
+            icon = 'icons/fist.png'
         } else if(weapon$type =='ranged'){
             icon = 'icons/high-shot.png'
         } else if(weapon$damageType =='Bludgeoning'){
@@ -298,12 +362,34 @@ weapons =function(input, output,session,char){
     })
 
 
-    weaponOut = reactive({
-        list(advantage = input$advantage,
-             sharpshoot = input$sharpshoot)
+
+
+    out = reactive({
+        out = ''
+
+        if(!is.null(input$weaponButton)){
+            advantage = switch(input$advantage,
+                               Norm = 0,
+                               DisAdv = -1,
+                               Adv = 1)
+
+            w = char$weapons
+            out = glue(input$weaponButton,':\n',
+                       capture.output(weaponAttack(w[[input$weaponButton]],
+                                                   sharpShoot =input$sharpshoot,
+                                                   adv = advantage,
+                                                   char = char)) %>%
+                           gsub('(\\[1\\] )|"','',.) %>%
+                           paste(collapse = '\n'))
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('weaponButton'))
+        }
+
+        return(out)
     })
 
-    return(weaponOut)
+    return(out)
 }
 
 
@@ -366,6 +452,24 @@ skills = function(input, output,session,char){
 
     })
 
+
+    out = reactive({
+        out = ''
+
+        if(!is.null(input$skillButton)){
+            out = glue(
+                input$skillButton,' check:\n',
+                capture.output(skillCheck(input$skillButton,char = char)) %>%
+                    gsub('(\\[1\\] )|"','',.) %>%
+                    paste(collapse = '\n'))
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('skillButton'))
+        }
+        return(out)
+    })
+    return(out)
+
 }
 
 resourcesUI = function(id){
@@ -380,6 +484,18 @@ resourcesUI = function(id){
 
 resources = function(input,output,session,char){
     output$resourcesTable = renderDataTable({
+        # remove first resource if its the default one created
+        char$resources %<>% filter(!(name == 'Resource' &
+                                         shortName == 'Resource' &
+                                         remainingUse ==0 &
+                                         maxUse == 0 &
+                                         dice == 0))
+
+        if(nrow(char$resources) == 0){
+            return(NULL)
+        }
+
+
         buttons = char$resources$shortName %>% sapply(function(x){
             actionButton(label = x,
                          inputId= x,
@@ -389,9 +505,9 @@ resources = function(input,output,session,char){
 
         displays = 1:nrow(char$resources) %>% sapply(function(i){
             if(char$resources$dice[i]>0){
-                out = (paste0(char$resources$remainingUse[i],
+                out = paste0(char$resources$remainingUse[i],
                               'd',
-                              char$resources$dice[i]))
+                              char$resources$dice[i])
             } else if(char$resources$remainingUse[i]>=0){
                 out = char$resources$remainingUse[i]
             } else{
@@ -399,8 +515,23 @@ resources = function(input,output,session,char){
             }
         })
 
+        refill = 1:nrow(char$resources) %>% sapply(function(i){
+            resource = char$resources[i,]
+            if(resource$Reset != 'static' |
+               resource$RecoverPerLongRest >0 |
+               resource$RecoverPerShortRest > 0){
+                actionButton(inputId = resource$name, # ids must be unique per element shortname is used so using name now
+                             label = '+',
+                             onclick =  glue('Shiny.onInputChange("',session$ns('recoverResource'),'",  this.id)'),
+                             class = 'resourceButton') %>% as.character
+            } else{
+                ''
+            }
+        })
+
         resourceTable = data.frame(name = buttons,
                                    display = displays,
+                                   refill = refill,
                                    stringsAsFactors = FALSE)
 
         table = datatable(resourceTable,escape = FALSE,selection = 'none',rownames = FALSE,
@@ -412,4 +543,185 @@ resources = function(input,output,session,char){
                                          bInfo = 0))
 
     })
+
+    observe({
+
+    })
+
+    out = reactive({
+        out = ''
+
+        if(!is.null(input$resourceButton)){
+            isolate({
+                resourceToUse = char$resources %>% filter(shortName == input$resourceButton)
+                resourceIndex = char$resources$shortName %in% input$resourceButton
+
+                # is it a consumable resource
+                if(resourceToUse$Reset != 'static' | resourceToUse$RecoverPerLongRest >0 | resourceToUse$RecoverPerShortRest > 0){
+                    if(resourceToUse$remainingUse <=0){
+                        out = paste0('Unable to use ',resourceToUse$name,'. No uses left')
+                    } else{
+                        char$resources$remainingUse[resourceIndex] =
+                            char$resources$remainingUse[resourceIndex]-1
+                        out = paste('Used',resourceToUse$name)
+                        if(resourceToUse$dice>0){
+                            out = paste0(out,'\n',roll(glue('1d{resourceToUse$dice}')))
+                        }
+                    }
+                } else{
+                    # non consumable resources
+                    out = paste('Used',resourceToUse$name)
+                    if(resourceToUse$dice > 0){
+                        out = paste0(out,'\n',
+                                     capture.output(roll(glue('{resourceToUse$remainingUse}d{resourceToUse$dice}'))) %>%
+                                         paste(collapse = '\n'))
+                    }
+                }
+            })
+
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('resourceButton'))
+        }
+
+
+        if(!is.null(input$recoverResource)){
+            isolate({
+                resourceIndex = char$resources$name %in% input$recoverResource
+                if(char$resources$remainingUse[resourceIndex] <
+                   char$resources$maxUse[resourceIndex]){
+
+                    out = paste('Recovered',char$resources$name[resourceIndex])
+
+                    char$resources$remainingUse[resourceIndex] =
+                        char$resources$remainingUse[resourceIndex] + 1
+                } else{
+                    out = paste(char$resources$name[resourceIndex], 'already at max')
+                }
+
+                session$sendCustomMessage(type = 'resetInputValue',
+                                          message =  session$ns('recoverResource'))
+
+            })
+        }
+
+
+        return(out)
+    })
+
+    return(out)
+}
+
+
+spellsUI = function(id){
+    ns = NS(id)
+    tagList(
+        tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
+                    Shiny.onInputChange(variableName, null);
+                    });"),
+        dataTableOutput(ns('spellTable')))
+}
+
+spells = function(input,output,session,char){
+
+    output$spellTable = renderDataTable({
+        if(!is.null(char$spells)){
+            groups = char$spells$level %>% duplicated %>% not %>% which
+            groups = groups -1
+            groups %<>% c(nrow(char$spells))
+
+            availableLevels = unique(char$spells$level)
+            # maxLevel = (char$spellSlots>0) %>% which %>% max %>% {.-1} # max level with spell slots
+
+
+            nameButtons = char$spells$name %>% sapply(function(x){
+                a(href = paste0('https://thebombzen.com/grimoire/spells/',
+                                x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
+                  target= '_blank',x
+                ) %>% as.character()
+            })
+
+            prepared = char$spells$name %>% sapply(function(x){
+                checkboxInput(inputId = paste0(x,'-prep'),
+                              label = '',
+                              value = char$spells %>% filter(name == x) %$% prepared) %>%
+                    as.character
+            })
+
+
+            table  = data.frame(nameButtons, prepared,
+                                level = char$spells$level  + .1,
+                                stringsAsFactors = FALSE)
+
+
+            slotInfo = 1:10 %>% sapply(function(x){
+                if(names(char$spellSlots[x]) == 'Cantrip'){
+                    text = 'Cantrip'
+                } else{
+                    text = paste0('Level ',names(char$spellSlots[x]), ' (',char$spellSlots[x],')')
+                }
+
+                strong(text) %>% as.character()
+            })
+
+            slotButtons = 0:9 %>% sapply(function(x){
+                if(x>0){
+                    tagList(
+                               actionButton(inputId = paste0(x,'_cast'),
+                                            label = '-',
+                                            class = 'modButton',
+                                            onclick =  glue('Shiny.onInputChange("',session$ns('spellCast'),'",  this.id)')),
+                               actionButton(inputId = paste0(x,'_recover'),
+                                            label = '+',
+                                            class = 'modButton',
+                                            onclick =  glue('Shiny.onInputChange("',session$ns('spellRecover'),'",  this.id)')
+                    )) %>% as.character
+                } else{
+                    ''
+                }
+
+            })
+
+            levelTable = data.frame(nameButtons = slotInfo,
+                                    prepared = slotButtons,
+                                    level = 0:9,
+                                    stringsAsFactors = FALSE)
+
+            finalTable = rbind(table,levelTable) %>% arrange(level) %>% select(-level)
+
+            dt = datatable(finalTable,escape = FALSE,selection = 'none',rownames = FALSE,
+                      colnames= rep('',2),
+                      options = list(bFilter = 0,
+                                     bLengthChange = 0,
+                                     paging = 1,
+                                     ordering = 0,
+                                     bInfo = 0))
+
+            return(dt)
+
+        }
+    })
+
+    observe({
+        if(!is.null(input$spellCast)){
+            isolate({
+                level = input$spellCast %>% strsplit('_') %>% {.[[1]][1]}
+                char$spellSlots[level] = char$spellSlots[level] - 1
+
+                session$sendCustomMessage(type = 'resetInputValue',
+                                          message =  session$ns('spellCast'))
+            })
+        }
+
+        if(!is.null(input$spellRecover)){
+            isolate({
+                level = input$spellRecover %>% strsplit('_') %>% {.[[1]][1]}
+                char$spellSlots[level] = char$spellSlots[level] + 1
+
+                session$sendCustomMessage(type = 'resetInputValue',
+                                          message =  session$ns('spellRecover'))
+            })
+        }
+    })
+
+
 }

@@ -1,10 +1,5 @@
 
 
-library(shiny)
-
-
-
-
 shinyUI(
     fluidPage(
         useShinyjs(),
@@ -19,7 +14,8 @@ shinyUI(
                    tabsetPanel(id = 'tabs',
                                tabPanel('Weapons',
                                         weaponsUI(id = 'weapons')),
-                               tabPanel('Spells'))),
+                               tabPanel('Spells',
+                                        spellsUI(id = 'spells')))),
             column(5,
                    wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
                    resourcesUI('resources')))

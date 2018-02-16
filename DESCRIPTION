@@ -24,10 +24,8 @@ Imports:
     glue,
     shiny,
     shinythemes,
-    wizaRd,
     shinyjs
 Remotes:
     oganm/ogbox,
-    oganm/diceSyntax,
-    oganm/wizaRd
+    oganm/diceSyntax
 RoxygenNote: 6.0.1
