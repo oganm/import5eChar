@@ -2,6 +2,13 @@
 
 
 shinyServer(function(input, output,session) {
+    # close the R session when Chrome closes
+    session$onSessionEnded(function() {
+        stopApp()
+        q("no")
+    })
+
+
     charInitial = do.call(reactiveValues,char) # used to detect when character changes
 
     char = do.call(reactiveValues,char)
