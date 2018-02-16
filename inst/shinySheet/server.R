@@ -4,8 +4,11 @@
 shinyServer(function(input, output,session) {
     # close the R session when Chrome closes
     session$onSessionEnded(function() {
-        stopApp()
-        q("no")
+        if(!is.null(getOption('ImThePortableClient'))){
+            stopApp()
+            q("no")
+        }
+
     })
 
 
