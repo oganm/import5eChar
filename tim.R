@@ -24,28 +24,28 @@ abilityCheck('Wis')
 # checks -----------
 quickCheck()
 
-skillCheck(athletics)
+skillCheck('athletics')
 
-skillCheck(acrobatics)
-skillCheck(sleight)
-skillCheck(stealth)
+skillCheck('acrobatics')
+skillCheck('sleight')
+skillCheck('stealth')
 
-skillCheck(arcana)
-skillCheck(history)
-skillCheck(investigation)
-skillCheck(nature)
-skillCheck(religion)
+skillCheck('arcana')
+skillCheck('history')
+skillCheck('investigation')
+skillCheck('nature')
+skillCheck('religion')
 
-skillCheck(animal)
-skillCheck(insight)
-skillCheck(medicine)
-skillCheck(perception)
-skillCheck(survival)
+skillCheck('animal')
+skillCheck('insight')
+skillCheck('medicine')
+skillCheck('perception')
+skillCheck('survival')
 
-skillCheck(deception)
-skillCheck(intimidation)
-skillCheck(persuasion)
-skillCheck(performance)
+skillCheck('deception')
+skillCheck('intimidation')
+skillCheck('persuasion')
+skillCheck('performance')
 
 
 

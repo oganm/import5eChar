@@ -169,7 +169,6 @@ skillCheck = function(skill,
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    skill = as.character(substitute(skill))
     skillNames = names(char$skillProf)
     skill = skillNames[grepl(pattern = tolower(skill), x = tolower(skillNames))]
 
