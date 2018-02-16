@@ -172,7 +172,7 @@ skillCheck = function(skill,
     skillNames = names(char$skillProf)
     skill = skillNames[grepl(pattern = tolower(skill), x = tolower(skillNames))]
 
-    bonus = skillBonus()[skill]
+    bonus = skillBonus(char = char)[skill]
 
     if(char$skillHalfProfRoundUp[skill]){
         bonus %<>% ceiling()
@@ -204,7 +204,7 @@ quickCheck = function(char =  getOption('defaultCharacter')){
     }
 
     roll = diceSyntax::r(r1d20)
-    bonus = skillBonus()
+    bonus = skillBonus(char = char)
 
 
     bonus %<>% rounding(char$skillHalfProfRoundUp)
