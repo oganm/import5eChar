@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<character>
+<version>1</version>
+<initMiscMod>0</initMiscMod>
+<improvedInitiative>0</improvedInitiative>
+<currentHealth>8</currentHealth>
+<maxHealth>8</maxHealth>
+<currentTempHP>0</currentTempHP>
+<armorBonus>10</armorBonus>
+<shieldBonus>0</shieldBonus>
+<miscArmorBonus>0</miscArmorBonus>
+<maxDex>10</maxDex>
+<proficiencyBonus>2</proficiencyBonus>
+<miscSpellAttackBonus>0</miscSpellAttackBonus>
+<miscSpellDCBonus>0</miscSpellDCBonus>
+<castingStatCode>3</castingStatCode>
+<offenseAbilityDisplay>0</offenseAbilityDisplay>
+<deathSaveSuccesses>0</deathSaveSuccesses>
+<deathSaveFailures>0</deathSaveFailures>
+<showDeathSaves>true</showDeathSaves>
+<baseSpeed>30</baseSpeed>
+<speedMiscMod>0</speedMiscMod>
+<movementMode>Speed</movementMode>
+<raceCode>-1</raceCode>
+<subraceCode>-1</subraceCode>
+<backgroundCode>-1</backgroundCode>
+<pagePosition0>1</pagePosition0>
+<pagePosition1>2</pagePosition1>
+<pagePosition2>3</pagePosition2>
+<pagePosition3>4</pagePosition3>
+<pagePosition4>5</pagePosition4>
+<unarmoredDefense>0</unarmoredDefense>
+<featCode></featCode>
+<classData>Rogue⊡⊡1⊡-1⊟⊟Resource⊡Resource⊡0⊡0⊡0⊡2⊡0⊡0⊡-1⊡0⊠Sneak Attack⊡Sneak Atk⊡1⊡1⊡6⊡2⊡0⊡0⊡303⊡1⊟⊟expertise⊡Perception⊡Insight⊟⊟⊟Human⊟Human⊟Urchin⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟20⊠20⊠20⊠20⊠20⊠20⊠⊟0⊟2⊟0⊟1⊟1⊟0</classData>
+<multiclassFeatures></multiclassFeatures>
+<weaponList>3⊠Rapier⊠5 feet⊠1101⊠0⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠8⊠Shortbow⊠80/320⊠2201⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠6⊠Dagger⊠20/60⊠1101⊠0⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠4</weaponList>
+<abilityScores>10⊠10⊠10⊠10⊠10⊠10⊠false⊠true⊠false⊠true⊠false⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0</abilityScores>
+<skillInfo>false⊠false⊠true⊠true⊠false⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠true⊠false⊠false⊠false⊠true⊠true⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠true⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false</skillInfo>
+<spellList>v1.1⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠-1⊠0⊠false⊠⊟</spellList>
+<noteList>Human Features:
+Urchin Feature:
+• Your party can travel through a city twice as fast when not in combat
+Rogue Features:
+• Double proficiency with chosen skills
+• Sneak Attack (1d6)
+• Understand a secret language
+• Double proficiency with chosen skills (Insight,Perception)
+⊠Light Armor
+⊠Simple Weapons, Hand Crossbows, Longswords, Rapiers, Shortswords
+⊠Disguise kit
+Thieves' tools
+Thieves' Tools
+⊠Common
+Extra Language
+Thieves' Cant
+⊠rapier
+shortbow
+dagger (2)
+arrows (20)
+burglar's pack
+thieves' tools
+small knife
+map of your home city
+pet mouse
+token of your parents
+set of common clothes
+belt pouch
+⊠⊠Rogue 1⊠Human⊠Urchin⊠⊠⊠⊠⊠⊠Jim The Commoner⊠Rogue 1⊠0⊠0⊠0⊠10⊠0⊠0</noteList>
+<hitDiceList>1⊠1⊠8⊠1</hitDiceList>
+<classResource>-1⊠-1⊠-1⊠-1⊠-1⊠-1⊠1⊠2⊠1000⊠3⊠4⊠5</classResource>
+</character>
