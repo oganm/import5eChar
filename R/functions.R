@@ -1,5 +1,7 @@
 #' @export
-shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE){
+shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE,
+                      spellSource = 'https://www.dndbeyond.com/spells/'){
+
     if(autoClose){
         options(AutoClosCharSheet = TRUE)
     }
@@ -18,8 +20,9 @@ shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE)
 }
 
 #' @export
-shinySheetAC =  function(char =getOption('defaultCharacter'),...){
-    shinySheet(char = char, ..., autoClose = TRUE)
+shinySheetAC =  function(char =getOption('defaultCharacter'),...,
+                         spellSource = 'https://www.dndbeyond.com/spells/'){
+    shinySheet(char = char, ..., autoClose = TRUE,spellSource = spellSource)
 }
 
 #' @export

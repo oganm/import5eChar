@@ -15,16 +15,19 @@ consoleLength  = 15
 
 
 if(!exists('char')){
-    characterFile <- system.file("JimTheCommoner_Fighter1", package = "import5eChar")
+    characterFile <- system.file("JimTheCommoner_Rogue1", package = "import5eChar")
     char = import5eChar::importCharacter(file = characterFile)
 
 }
 
+helpLink = ''
 
 iconCredits = c('Lorc',
                 'Delapouite',
                 'Carl Olsen',
                 'Skoll')
+if(!exists(spellSource)){
+    spellSource = 'https://www.dndbeyond.com/spells/'
+    # spellSource = 'https://thebombzen.com/grimoire/spells/'
+}
 
-spellSource = 'https://www.dndbeyond.com/spells/'
-# spellSource = 'https://thebombzen.com/grimoire/spells/'
