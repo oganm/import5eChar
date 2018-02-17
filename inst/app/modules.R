@@ -19,9 +19,18 @@ characterDescription = function(input,output,session,char,charInitial){
                        wellPanel(fluidRow(
                            column(5,h2(char$Name)),
                            column(4,
-                                  div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
-                                  actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
-                                  bsTooltip(session$ns('driveSubmit'),'Search in Google Drive',placement = 'bottom')),
+                                  {
+                                      if(is.null(getOption('ImThePortableClient'))){
+                                          tagList(
+                                              div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
+                                              actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
+                                              bsTooltip(session$ns('driveSubmit'),'Search in Google Drive',placement = 'bottom')
+                                          )
+                                      } else{
+                                          NULL
+                                      }
+                                  }
+                                  ),
                            column(3,
                                   fileInput(session$ns('charInput'),label = 'Local import'),
                                   bsTooltip(session$ns('charInput'),'Load local file',placement = 'bottom'))
