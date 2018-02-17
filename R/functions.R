@@ -1,7 +1,7 @@
 #' @export
 shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE){
     if(autoClose){
-        options(ImThePortableClient = TRUE)
+        options(AutoClosCharSheet = TRUE)
     }
     if(is.character(char)){
         if(exists(char,envir = parent.frame())){
@@ -13,7 +13,7 @@ shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE)
     shiny::runApp(shinyDir,...)
 
     if(autoClose){
-        options(ImThePortableClient = NULL)
+        options(AutoClosCharSheet = NULL)
     }
 }
 
