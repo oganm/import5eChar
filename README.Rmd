@@ -56,6 +56,10 @@ init(char = myBestCharacter)
 
 A rmarkdown template is available to print out pdf character sheets. To use it, create a new markdown document with `CharacterSheet` template. Replace the character import line with a character of your own. See [example.pdf](inst/skeleton.pdf) to see what it looks like. Alternatively use `prettyPDF` function to get a proper fillable character sheet.
 
+## Shiny character sheet
+
+To run the interactive character sheet, just use `shinySheet()`. 
+
 ## Use example
 
 See [tim.R](tim.R) for example usage. I keep a file like that open during session and ctrl+R the relevant lines as needed. If you are a caster see if you'd be interested in the [wizaRd](https://github.com/oganm/wizaRd) package. If you turn into animals a lot see [monsteR](https://github.com/oganm/monsteR) package.

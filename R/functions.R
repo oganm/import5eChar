@@ -4,7 +4,7 @@ shinySheet = function(char =getOption('defaultCharacter'),...){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    shinyDir = system.file('shinySheet',package = 'import5eChar')
+    shinyDir = system.file('app',package = 'import5eChar')
     shiny::runApp(shinyDir,...)
 }
 

@@ -75,6 +75,11 @@ PDF character sheets
 
 A rmarkdown template is available to print out pdf character sheets. To use it, create a new markdown document with `CharacterSheet` template. Replace the character import line with a character of your own. See [example.pdf](inst/skeleton.pdf) to see what it looks like. Alternatively use `prettyPDF` function to get a proper fillable character sheet.
 
+Shiny character sheet
+---------------------
+
+To run the interactive character sheet, just use `shinySheet()`.
+
 Use example
 -----------
 

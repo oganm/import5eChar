@@ -19,3 +19,7 @@ if(!exists('char')){
     char = import5eChar::importCharacter(file = characterFile)
 
 }
+
+
+spellSource = 'https://www.dndbeyond.com/spells/'
+# spellSource = 'https://thebombzen.com/grimoire/spells/'

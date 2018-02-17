@@ -24,7 +24,9 @@ Imports:
     glue,
     shiny,
     shinythemes,
-    shinyjs
+    shinyjs,
+    shinyWidgets,
+    DT
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax

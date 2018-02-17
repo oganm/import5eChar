@@ -406,6 +406,7 @@ skillsUI = function(id){
 skills = function(input, output,session,char){
     output$skillsTable = renderDataTable({
 
+
         skillBonus = skillBonus(char = char)
         profMark = char$skillProf
         statSep = char$skillAttributes %>% duplicated() %>% not %>% which %>% {.[-1] -1}
@@ -457,6 +458,7 @@ skills = function(input, output,session,char){
         out = ''
 
         if(!is.null(input$skillButton)){
+
             out = glue(
                 input$skillButton,' check:\n',
                 capture.output(skillCheck(input$skillButton,char = char)) %>%
@@ -634,7 +636,8 @@ spells = function(input,output,session,char){
 
 
             nameButtons = char$spells$name %>% sapply(function(x){
-                a(href = paste0('https://thebombzen.com/grimoire/spells/',
+                a(href = paste0(# 'https://thebombzen.com/grimoire/spells/',
+                                'https://www.dndbeyond.com/spells/',
                                 x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
                   target= '_blank',x
                 ) %>% as.character()
