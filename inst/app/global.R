@@ -8,7 +8,6 @@ library(DT)
 library(magrittr)
 library(purrr)
 library(dplyr)
-
 source('modules.R')
 
 consoleLength  = 15
@@ -20,6 +19,11 @@ if(!exists('char')){
 
 }
 
+
+iconCredits = c('Lorc',
+                'Delapouite',
+                'Carl Olsen',
+                'Skoll')
 
 spellSource = 'https://www.dndbeyond.com/spells/'
 # spellSource = 'https://thebombzen.com/grimoire/spells/'

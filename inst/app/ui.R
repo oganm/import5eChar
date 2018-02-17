@@ -9,15 +9,19 @@ shinyUI(
         fluidRow(
             column(3,attributesUI(id = 'attributes'),
                    skillsUI(id = 'skills')),
-            column(4,healthUI(id = 'health'),
+            column(5,healthUI(id = 'health'),
                    hr(),
                    tabsetPanel(id = 'tabs',
                                tabPanel('Weapons',
                                         weaponsUI(id = 'weapons')),
                                tabPanel('Spells',
                                         spellsUI(id = 'spells')))),
-            column(5,
+            column(3,
                    wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
-                   resourcesUI('resources')))
+                   resourcesUI('resources'))),
+        fluidRow(
+            wellPanel(p('Icon credits:',
+                        paste0(paste(iconCredits,collapse =', '),'.')))
+            )
         )
     )
