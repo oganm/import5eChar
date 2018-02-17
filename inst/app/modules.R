@@ -15,26 +15,33 @@ characterDescription = function(input,output,session,char,charInitial){
 
         tagList(
             fluidRow(
-                column(4,
+                column(5,
                        wellPanel(fluidRow(
-                           column(8,h2(char$Name)),
-                           column(4,fileInput(session$ns('charInput'),label = 'Load char'))
+                           column(5,h2(char$Name)),
+                           column(4,
+                                  div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
+                                  actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
+                                  bsTooltip(session$ns('driveSubmit'),'Search in Google Drive',placement = 'bottom')),
+                           column(3,
+                                  fileInput(session$ns('charInput'),label = 'Local import'),
+                                  bsTooltip(session$ns('charInput'),'Load local file',placement = 'bottom'))
                        )
                        )
                 ),
-                column(8,
+                column(7,
                        wellPanel(
                            fluidRow(
-                               column(4, descriptiveElement(char$ClassField,'Class & Level')),
-                               column(4, descriptiveElement(char$Background,'Background')),
                                column(2, descriptiveElement(AC(char),'AC')),
-                               column(2, descriptiveElement(initBonus(char),'Initiative'))
+                               column(2, descriptiveElement(initBonus(char),'Initiative')),
+                               column(4, descriptiveElement(char$ClassField,'Class & Level')),
+                               column(4, descriptiveElement(char$Background,'Background'))
+
                            ),
                            fluidRow(
-                               column(4, descriptiveElement(char$Race, 'Race')),
-                               column(4,descriptiveElement(char$Alignment, 'Alignment')),
                                column(2, descriptiveElement(char$proficiencyBonus,'Proficiency')),
-                               column(2, descriptiveElement(char$baseSpeed, 'Speed'))
+                               column(2, descriptiveElement(char$baseSpeed, 'Speed')),
+                               column(4, descriptiveElement(char$Race, 'Race')),
+                               column(4,descriptiveElement(char$Alignment, 'Alignment'))
                            )
                        ))
             )
@@ -56,6 +63,23 @@ characterDescription = function(input,output,session,char,charInitial){
             })
 
         }
+    })
+
+    observe({
+        input$driveSubmit
+        isolate({
+        if(!is.null(input$driveSubmit) && !is.null(input$driveInput) && input$driveInput != ''){
+            withProgress({
+                character = importCharacter(regex = input$driveInput)
+                for(x in names(reactiveValuesToList(char))){
+                    char[[x]] = character[[x]]
+                }
+                for(x in names(reactiveValuesToList(charInitial))){
+                    charInitial[[x]] = character[[x]]
+                }
+            },value  =0.5 ,message = 'Reading from Google Drive')
+        }
+        })
     })
 
 }
@@ -89,7 +113,11 @@ healthUI = function(id){
         actionButton(ns('minusHealth'),'-', class = 'modButton'),
         actionButton(ns('plusHealth'),'+',class = 'modButton'),
         actionButton(ns('plusTempHealth'),'+ 0',
-                     class = 'modButton',style = 'background-color:#6959CD')
+                     class = 'modButton',style = 'background-color:#6959CD'),
+        bsTooltip(ns('minusHealth'),'Damage Health',placement = 'bottom'),
+        bsTooltip(ns('plusHealth'),'Heal',placement = 'bottom'),
+        bsTooltip(ns('plusTempHealth'),'Add temp. HP',placement = 'bottom'),
+        bsTooltip(ns('increment'),'HP to change',placement = 'bottom')
 
     )
 }
@@ -636,8 +664,7 @@ spells = function(input,output,session,char){
 
 
             nameButtons = char$spells$name %>% sapply(function(x){
-                a(href = paste0(# 'https://thebombzen.com/grimoire/spells/',
-                                'https://www.dndbeyond.com/spells/',
+                a(href = paste0(spellSource,
                                 x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
                   target= '_blank',x
                 ) %>% as.character()
@@ -727,4 +754,39 @@ spells = function(input,output,session,char){
     })
 
 
+}
+
+
+diceRollerUI = function(id){
+    ns = NS(id)
+    tagList(
+        tags$script("Shiny.addCustomMessageHandler('inputZero', function(variableName){
+                    Shiny.onInputChange(variableName, 0);
+                    });"),
+        div(textInput(ns('diceText'),placeholder = 'eg. 4d6k3',label = 'Roll dice'),style = 'display: inline-block;width: 30%'),
+        actionButton(ns('diceRoll'),
+                     label = div(img(src = 'icons/dice-twenty-faces-twenty.png',
+                                     height = 20,
+                                     width = 20),'Roll!'), style = "display: inline-block")
+
+    )
+}
+
+diceRoller = function(input,output,session){
+    out = reactive({
+        if(input$diceRoll>0){
+            isolate({
+                out = tryCatch(capture.output(roll(input$diceText)) %>% paste(collapse='\n'),
+                               error = function(e){''})
+
+                session$sendCustomMessage(type = 'inputZero',
+                                          message =  session$ns('diceRoll'))
+            })
+        } else {
+            out = ''
+        }
+        return(out)
+    })
+
+    return(out)
 }

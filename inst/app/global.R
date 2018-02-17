@@ -8,6 +8,7 @@ library(DT)
 library(magrittr)
 library(purrr)
 library(dplyr)
+library(shinyBS)
 source('modules.R')
 
 consoleLength  = 15

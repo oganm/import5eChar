@@ -38,8 +38,9 @@ shinyServer(function(input, output,session) {
 
     resourceModule = callModule(resources,'resources',char = char)
 
-
     spellsModule = callModule(spells,'spells',char=char)
+
+    diceModule = callModule(diceRoller,'diceRoller')
 
     output$console = renderText({
         out = ''
@@ -55,6 +56,9 @@ shinyServer(function(input, output,session) {
         }
         if(out == ''){
             out = resourceModule()
+        }
+        if(out == ''){
+            out = diceModule()
         }
 
 
