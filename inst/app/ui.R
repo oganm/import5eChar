@@ -16,7 +16,11 @@ shinyUI(
                                         weaponsUI(id = 'weapons')),
                                tabPanel('Spells',
                                         spellsUI(id = 'spells'))),
-                   diceRollerUI(id = 'diceRoller')),
+                   fluidRow(column(6,diceRollerUI(id = 'diceRoller')),
+                            column(6,
+                                   actionButton('help',label = 'Help!',style = 'margin-top: 28px;float:right',
+                                                onclick =
+                                                    "window.open('https://github.com/oganm/import5eChar/blob/master/interactiveSheetDocumentation.md', '_blank')")))),
             column(3,
                    wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
                    resourcesUI('resources'))),
