@@ -19,18 +19,13 @@ characterDescription = function(input,output,session,char,charInitial){
                        wellPanel(fluidRow(
                            column(5,h2(char$Name)),
                            column(4,
-                                  {
-                                      if(is.null(getOption('ImThePortableClient'))){
-                                          tagList(
-                                              div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
-                                              actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
-                                              bsTooltip(session$ns('driveSubmit'),'Search in Google Drive',placement = 'bottom')
-                                          )
-                                      } else{
-                                          NULL
-                                      }
-                                  }
-                                  ),
+                                  tagList(
+                                      div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
+                                      actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
+                                      bsTooltip(session$ns('driveSubmit'),'Search in Google Drive',placement = 'bottom')
+                                  )
+
+                           ),
                            column(3,
                                   fileInput(session$ns('charInput'),label = 'Local import'),
                                   bsTooltip(session$ns('charInput'),'Load local file',placement = 'bottom'))
@@ -79,6 +74,7 @@ characterDescription = function(input,output,session,char,charInitial){
         isolate({
         if(!is.null(input$driveSubmit) && !is.null(input$driveInput) && input$driveInput != ''){
             withProgress({
+                googledrive::drive_auth(cache=TRUE)
                 character = importCharacter(regex = input$driveInput)
                 for(x in names(reactiveValuesToList(char))){
                     char[[x]] = character[[x]]
