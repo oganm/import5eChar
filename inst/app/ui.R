@@ -2,6 +2,12 @@
 
 shinyUI(
     fluidPage(
+        tags$head(
+            tags$link(
+                rel = "icon",
+                type = "image/x-icon",
+                href = "http://localhost:1984/default.ico")
+        ),
         useShinyjs(),
         includeCSS('www/style.css'),
         theme = shinythemes::shinytheme('cosmo'),
