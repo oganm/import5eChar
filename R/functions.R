@@ -1,11 +1,25 @@
 #' @export
-shinySheet = function(char =getOption('defaultCharacter'),...){
+shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE){
+    if(autoClose){
+        options(ImThePortableClient = TRUE)
+    }
     if(is.character(char)){
-        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+        if(exists(char,envir = parent.frame())){
+            char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+        }
     }
 
     shinyDir = system.file('app',package = 'import5eChar')
     shiny::runApp(shinyDir,...)
+
+    if(autoClose){
+        options(ImThePortableClient = NULL)
+    }
+}
+
+#' @export
+shinySheetAC =  function(char =getOption('defaultCharacter'),...){
+    shinySheet(char = char, ..., autoClose = TRUE)
 }
 
 #' @export
