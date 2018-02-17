@@ -58,7 +58,7 @@ You can spend or replenish slots by clicking the buttons next to spell levels. S
 
 The spells themselves link to dndbeyond spell lists. If you have written the name of the spell correctly, you should be directed to the relevant page. If the conent is paywalled, Dndbeyond will ask you to buy the book instead of showing you the spell info.
 
-The linking behavior can be changed through the `spellSource` variable of the `shinySheet` and `shinySheetAC` functions. If you are using windows and used the installer see `global.R` in your installation directory.
+The linking behavior can be changed through the `spellSource` variable of the `shinySheet` and `shinySheetAC` functions.
 
 8-Skill checks
 --------------
