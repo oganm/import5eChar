@@ -26,7 +26,7 @@ iconCredits = c('Lorc',
                 'Delapouite',
                 'Carl Olsen',
                 'Skoll')
-if(!exists(spellSource)){
+if(!exists('spellSource')){
     spellSource = 'https://www.dndbeyond.com/spells/'
     # spellSource = 'https://thebombzen.com/grimoire/spells/'
 }
