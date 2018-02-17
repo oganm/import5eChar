@@ -2,3 +2,7 @@
 ^\.Rproj\.user$
 tim.R
 ^\.httr-oauth$
+interactiveSheetDocumentation.Rmd
+interactiveSheetDocumentation.md
+interactiveSheetDocumentation_files
+
