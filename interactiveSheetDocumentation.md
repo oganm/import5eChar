@@ -13,42 +13,42 @@ Below is an annotated version. I will be explaining each numbered part seperatel
 
 ![](interactiveSheetDocumentation_files/Annotated.png)
 
-1. Name
--------
+1-Name
+------
 
 Who is Jim? He's a nobody, you'll shortly replace this with your own character's name
 
-2. Google drive import
-----------------------
+2-Google drive import
+---------------------
 
 This is not available to Windows users who installed it through the exe file. After exporting your character to googlerdive through the app, write a part of the filename that is specific enough to identify your file. Under the hood, this is a regular expression that tries to match your input to the files in your googledrive. So your if your filename is `Tim_Fighter8Cleric1`, you'll be fine if you just write `Tim`. It'll try to load the latest edited file that matches your input, so you don't have to worry about cleaning up your googledrive that often.
 
 Just write text and click the check button. On your first time, you'll be prompted with a authentication. The token is created locally and nothing is sent outside so worry not, I'm not stealing your google accounts.
 
-3. Local file import
---------------------
+3-Local file import
+-------------------
 
 This option is available to everyone. You need to download your exported character, click here and load it. That's all.
 
-4. Static character information
--------------------------------
+4-Static character information
+------------------------------
 
 Nothing interesting here. Just some general info about your character
 
-5. Ability Scores
------------------
+5-Ability Scores
+----------------
 
 This lists your ability scores and saves. You can make checks and saves by clicking the buttons
 
-6. Health
----------
+6-Health
+--------
 
 This is your health bar. The menu icon allows you to directly set your max HP current HP and temporary HP. The buttons under the bar allow you to increase or decrease your health by the number on the left. Purple one adds temporary HP. If your health bar is purple instead of red, that means you have temporary HP
 
 Hit dice are not implemented yet
 
-7. Weapons & Spells
--------------------
+7-Weapons & Spells
+------------------
 
 This lists all your weapons and spells (not picured). Clicking the black button rolls attack and damage rolls. Advantage buttons above allow you to set whether or not you have advantage, the `SharS/GWM` weapon toggles the -5/+10 bonus that comes from the relevant feats.
 
@@ -60,22 +60,22 @@ The spells themselves link to dndbeyond spell lists. If you have written the nam
 
 The linking behavior can be changed through the `spellSource` variable of the `shinySheet` and `shinySheetAC` functions. If you are using windows and used the installer see `global.R` in your installation directory.
 
-8. Skill checks
----------------
+8-Skill checks
+--------------
 
 Press button, skill check is rolled.
 
-9. Generic dice
----------------
+9-Generic dice
+--------------
 
 Roll a dice, any dice. Syntax is similar to roll20 but all rolls need to start with an integer (`d6` bad, `1d6` good). See [here](https://github.com/oganm/diceSyntax/blob/master/README.md) for full details. You are interested in what's written in `roll()` calls in that documentation file.
 
-10. Character resources
------------------------
+10-Character resources
+----------------------
 
 If your character has access to some resources as codified by the fifth edition char sheet app, you'll see them here. Clicking the button will expand them if they are expandable and roll relevant dice. Expandable resources has a `+` button that allows you to replenish them.
 
-11. Output console
-------------------
+11-Output console
+-----------------
 
 This is where you'll see all outputs.
