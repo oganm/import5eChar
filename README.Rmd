@@ -58,7 +58,8 @@ A rmarkdown template is available to print out pdf character sheets. To use it, 
 
 ## Shiny character sheet
 
-To run the interactive character sheet, just use `shinySheet()`. 
+To run the interactive character sheet, just use `shinySheet()`. The interactive
+sheet is documented [here](interactiveSheetDocumentation.md)
 
 ## Use example
 

@@ -58,11 +58,7 @@ All these conveninece functions require an imported character as an input. If yo
 
 ``` r
 myBestCharacter = importCharacter('Tim_Fighter')
-```
 
-    ## Auto-refreshing stale OAuth token.
-
-``` r
 init(char = myBestCharacter)
 ```
 
@@ -78,7 +74,7 @@ A rmarkdown template is available to print out pdf character sheets. To use it, 
 Shiny character sheet
 ---------------------
 
-To run the interactive character sheet, just use `shinySheet()`.
+To run the interactive character sheet, just use `shinySheet()`. The interactive sheet is documented [here](interactiveSheetDocumentation.md)
 
 Use example
 -----------
