@@ -20,7 +20,7 @@ characterDescription = function(input,output,session,char,charInitial){
                            column(5,h2(char$Name)),
                            column(4,
                                   {
-                                      if(is.null(getOption('ImThePortableClient'))){
+                                      if(is.null(getOption('ImThePortableClient')) & is.null(getOption('ImTheWebClient'))){
                                           tagList(
                                               div(textInput(session$ns('driveInput'),label = 'G Drive Import',width = '150px') ,style= 'display: inline-block'),
                                               actionButton(session$ns('driveSubmit'),label = '',icon = icon('check'),class = 'modButton',style = 'display: inline-block'),
