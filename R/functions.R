@@ -10,12 +10,12 @@ shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE,
             char = char %>% parse(text = .) %>% eval(envir = parent.frame())
         }
     }
-
+    spellSource = spellSource
     shinyDir = system.file('app',package = 'import5eChar')
     shiny::runApp(shinyDir,...)
 
     if(autoClose){
-        options(AutoClosCharSheet = NULL)
+        options(AutoCloseCharSheet = NULL)
     }
 }
 
