@@ -767,13 +767,13 @@ spells = function(input,output,session,char){
 }
 
 
-diceRollerUI = function(id){
+diceRollerUI = function(id,label = 'Roll dice'){
     ns = NS(id)
     tagList(
         tags$script("Shiny.addCustomMessageHandler('inputZero', function(variableName){
                     Shiny.onInputChange(variableName, 0);
                     });"),
-        div(textInput(ns('diceText'),placeholder = 'eg. 4d6k3',label = 'Roll dice'),style = 'display: inline-block;width: 30%'),
+        div(textInput(ns('diceText'),placeholder = 'eg. 4d6k3',label = label),style = 'display: inline-block;width: 30%'),
         actionButton(ns('diceRoll'),
                      label = div(img(src = 'icons/dice-twenty-faces-twenty.png',
                                      height = 20,

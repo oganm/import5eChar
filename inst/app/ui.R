@@ -22,7 +22,12 @@ shinyUI(
                                         weaponsUI(id = 'weapons')),
                                tabPanel('Spells',
                                         spellsUI(id = 'spells'))),
-                   fluidRow(column(6,diceRollerUI(id = 'diceRoller')),
+                   fluidRow(column(6,
+                                   diceRollerUI(id = 'diceRoller'),
+                                   br(),
+                                   diceRollerUI(id = 'diceRoller2', label = ''),
+                                   br(),
+                                   diceRollerUI(id = 'diceRoller3', label = '')),
                             column(6,
                                    actionButton('help',label = 'Help!',style = 'margin-top: 28px;float:right',
                                                 onclick =

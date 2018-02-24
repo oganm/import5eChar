@@ -42,6 +42,8 @@ shinyServer(function(input, output,session) {
     spellsModule = callModule(spells,'spells',char=char)
 
     diceModule = callModule(diceRoller,'diceRoller')
+    diceModule2 = callModule(diceRoller,'diceRoller2')
+    diceModule3 = callModule(diceRoller,'diceRoller2')
 
     output$console = renderText({
         out = ''
@@ -61,6 +63,13 @@ shinyServer(function(input, output,session) {
         if(out == ''){
             out = diceModule()
         }
+        if(out == ''){
+            out = diceModule2()
+        }
+        if(out == ''){
+            out = diceModule3()
+        }
+
 
 
         isolate({
