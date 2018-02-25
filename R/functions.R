@@ -10,7 +10,10 @@ shinySheet = function(char =getOption('defaultCharacter'),...,autoClose = FALSE,
             char = char %>% parse(text = .) %>% eval(envir = parent.frame())
         }
     }
-    spellSource = spellSource
+
+    .GlobalEnv$.sheetApp.spellSource <- spellSource
+    on.exit(rm(.sheetApp.spellSource, envir=.GlobalEnv))
+
     shinyDir = system.file('app',package = 'import5eChar')
     shiny::runApp(shinyDir,...)
 

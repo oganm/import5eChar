@@ -674,7 +674,7 @@ spells = function(input,output,session,char){
 
 
             nameButtons = char$spells$name %>% sapply(function(x){
-                a(href = paste0(spellSource,
+                a(href = paste0(.sheetApp.spellSource,
                                 x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
                   target= '_blank',x
                 ) %>% as.character()
