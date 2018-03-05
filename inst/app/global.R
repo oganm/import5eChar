@@ -22,7 +22,7 @@ if(!exists('char')){
 
 helpLink = ''
 
-options(ImTheWebClient= TRUE)
+# options(ImTheWebClient= TRUE)
 
 iconCredits = c('Lorc',
                 'Delapouite',
