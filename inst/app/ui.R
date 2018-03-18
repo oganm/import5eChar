@@ -37,7 +37,7 @@ shinyUI(
                    resourcesUI('resources'))),
         fluidRow(
             hr(),
-            fluidRow(column(2),
+            fluidRow(column(1),
                      column(2,
                             p('Developed by',a(href = 'https://github.com/oganm', target="_blank",'Ogan Mancarci'),
                               style = 'text-align:center'),
@@ -53,7 +53,9 @@ shinyUI(
                               style = 'text-align:center'),
                             p('Released under', a(href = 'https://creativecommons.org/licenses/by/3.0/', target="_blank",'CC BY 3.0'),
                               style = 'text-align:center')),
-                     column(2))
+                     column(1),
+                     column(1,packageVersionUI('pVersion'))
+                     )
 
             )
         )

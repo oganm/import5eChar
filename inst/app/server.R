@@ -17,6 +17,8 @@ shinyServer(function(input, output,session) {
 
     char = do.call(reactiveValues,char)
 
+    callModule(packageVersion,
+               'pVersion')
 
     consoleOut = reactiveVal(rep('\n',consoleLength) %>% paste(collapse = ''))
 
