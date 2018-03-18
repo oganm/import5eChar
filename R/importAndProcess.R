@@ -76,7 +76,7 @@ processCharacter = function(char){
 
     abilityScores = abilityScoresData[1:6] %>% as.integer()
     names(abilityScores) = c('Str','Dex','Con','Int','Wis','Cha')
-    miscSaveBonus = abilityScoresData[13:18]
+    miscSaveBonus = abilityScoresData[13:18] %>% as.integer()
     names(miscSaveBonus) = names(abilityScores)
     statToSave =  abilityScoresData[19] %>%
         ogbox::replaceElement(dictionary = c('0' = '',
