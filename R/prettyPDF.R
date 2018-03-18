@@ -152,6 +152,14 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         field = 'features-and-traits',
         fdf = fdf)
 
+    fdf = fdfEdit(
+        x = char$notes %>% stringr::str_replace_all('•|\u{2022}','-') %>%
+            stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
+            stringr::str_replace('(¾)|(\u{00BE})','3/4') %>%
+            stringr::str_replace('(¼)|(\u{00BC})','1/4'),
+        field = 'features-and-traits-2',
+        fdf = fdf)
+
     # class level
     fdf = fdfEdit(
         x = char$ClassField,

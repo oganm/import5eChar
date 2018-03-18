@@ -1,7 +1,7 @@
 Package: import5eChar
 Type: Package
 Title: Import Exported 5e Characters
-Version: 0.1.5
+Version: 0.1.6
 Author@R: person('Ogan','Mancarci', 'ogan.mancarcii@gmail.com',c('aut','cre'))
 Description: Imports fifth edition characters exported by Walter Kammerer's
     "Fifth Edition Character Sheet" iOS and Android app
