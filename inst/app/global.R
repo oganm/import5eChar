@@ -30,6 +30,6 @@ iconCredits = c('Lorc',
                 'Skoll')
 if(!exists('.sheetApp.spellSource')){
     .sheetApp.spellSource = 'https://www.dndbeyond.com/spells/'
-    # spellSource = 'https://thebombzen.com/grimoire/spells/'
+    # .sheetApp.spellSource = 'https://thebombzen.com/grimoire/spells/'
 }
 

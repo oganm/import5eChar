@@ -72,12 +72,13 @@ processCharacter = function(char){
 
 
     # ability score -------------
-    abilityScores = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][1:6]} %>% as.integer()
-    names(abilityScores) = c('Str','Dex','Con','Int','Wis','Cha')
+    abilityScoresData = char$abilityScores %>% strsplit('⊠|(â\u008a.)|(\u{22a0})') %>% {.[[1]]}
 
-    miscSaveBonus = char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][7:12]} %>% as.integer()
+    abilityScores = abilityScoresData[1:6] %>% as.integer()
+    names(abilityScores) = c('Str','Dex','Con','Int','Wis','Cha')
+    miscSaveBonus = abilityScoresData[13:18]
     names(miscSaveBonus) = names(abilityScores)
-    statToSave =  char$abilityScores %>% stringr::str_extract_all('[0-9]+') %>% {.[[1]][13]} %>%
+    statToSave =  abilityScoresData[19] %>%
         ogbox::replaceElement(dictionary = c('0' = '',
                                       '1'='Str',
                                       '2' = 'Dex',
@@ -87,8 +88,12 @@ processCharacter = function(char){
                                       '6' = 'Cha')) %$% newVector
 
     abilityMods = stat2mod(abilityScores)
-    proficiency = char$abilityScores %>% stringr::str_extract_all('(true)|(false)') %>% {.[[1]][1:6]}
-    proficiency %<>% ogbox::replaceElement(c('true'=TRUE,'false'=FALSE)) %$% newVector %>% as.logical()
+    proficiency = abilityScoresData[7:12]
+    if(proficiency[1] %in% c('true','false')){
+        proficiency = proficiency %>% ogbox::replaceElement(c('true'=TRUE,'false'=FALSE)) %$% newVector %>% as.logical()
+    } else if(proficiency[1] %in% c('1','0')){
+        proficiency = proficiency %>% as.integer() %>% as.logical()
+    }
     names(proficiency) = c('Str','Dex','Con','Int','Wis','Cha')
 
     char$initMiscMod %<>% as.integer()
@@ -333,6 +338,14 @@ processCharacter = function(char){
     # feats -------
     char$feats = classData[4] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
 
+    # classChoices
+    char$classChoices = classData[5] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
+    names(char$classChoices) = char$classChoices %>% sapply(function(x){
+        x %>% strsplit('⊡|\u{22A1}')  %>% {.[[1]][1]}
+    })
+    char$classChoices  = char$classChoices %>% sapply(function(x){
+        x %>% strsplit('⊡|\u{22A1}')  %>% {.[[1]][-1]}
+    })
 
     # character notes --------------
     notes = char$noteList %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]}
@@ -353,8 +366,6 @@ processCharacter = function(char){
     char$personality$ideals = notes[13]
     char$personality$bonds = notes[14]
     char$personality$flaws = notes[15]
-
-    # 12-15 unkown
     char$Name = notes[16]
     char$ClassField = notes[17]
 
