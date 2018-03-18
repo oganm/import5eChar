@@ -529,7 +529,8 @@ resources = function(input,output,session,char){
                                          shortName == 'Resource' &
                                          remainingUse ==0 &
                                          maxUse == 0 &
-                                         dice == 0))
+                                         dice == 0)) %>%
+            filter(shortName != '')
 
         if(nrow(char$resources) == 0){
             return(NULL)
