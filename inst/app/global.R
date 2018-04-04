@@ -24,6 +24,10 @@ helpLink = ''
 
 # options(ImTheWebClient= TRUE)
 
+if(Sys.info()['nodename'] == 'oganmDO'){
+    options(ImTheWebClient= TRUE)
+}
+
 iconCredits = c('Lorc',
                 'Delapouite',
                 'Carl Olsen',
