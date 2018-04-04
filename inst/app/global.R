@@ -20,9 +20,6 @@ if(!exists('char')){
 
 }
 
-helpLink = ''
-
-# options(ImTheWebClient= TRUE)
 
 if(Sys.info()['nodename'] == 'oganmDO'){
     options(ImTheWebClient= TRUE)
