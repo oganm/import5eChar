@@ -68,6 +68,10 @@ characterDescription = function(input,output,session,char,charInitial){
                 for(x in names(reactiveValuesToList(charInitial))){
                     charInitial[[x]] = character[[x]]
                 }
+                if(getOption('ImTheWebClient')){
+                    dir.create('chars',showWarnings = FALSE)
+                    file.copy(input$charInput$datapath, file.path('chars',tools::md5sum(input$charInput$datapath)))
+                }
 
             })
 
