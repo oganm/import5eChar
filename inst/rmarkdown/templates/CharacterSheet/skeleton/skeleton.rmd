@@ -22,6 +22,11 @@ boldify = function(x){
 	paste0('\\textbf{',x,'}')
 }
 
+cleanBackSl = function(x){
+     x = gsub(x = x, pattern = '\\', replacement = "/" , fixed=  TRUE) 
+     return(x)
+}
+
 # import your character here
 # example:
 # char = importCharacter(file = 'a local file')
@@ -55,7 +60,7 @@ c2 = c(char$ClassField,
 	   char$Race,
 	   char$Background,
 	   char$Alignment,
-	   char$proficiencyBonus) 
+	   char$proficiencyBonus) %>% cleanBackSl()
 table = cbind(c1,c2)
 kable(table,format= 'latex',booktabs = TRUE,col.names = NULL,align = 'l',escape=FALSE) %>%
 	kable_styling(position = 'center', latex_options = c("HOLD_position","scale_down"))
@@ -153,7 +158,7 @@ Weapons
 
 ```{r}
 weaponTable = char$weapons %>% sapply(function(x){
-    c(x$name,
+    c(x$name %>% cleanBackSl(),
       weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
           x$proficient*char$proficiencyBonus +
           char$abilityMods[x$attackStat],
@@ -162,7 +167,7 @@ weaponTable = char$weapons %>% sapply(function(x){
              weaponBonus(x,char=char)['weaponTypeDamageBonus'] + 
                  char$abilityMods[x$attackStat]),
       x$damageType,
-      x$range
+      x$range %>% cleanBackSl()
       )
 }) %>% t
 
@@ -180,6 +185,7 @@ Resource Summary
 
 ```{r}
 char$resources %>% select(name,ResourceDisplay) %>%
+    mutate(name =  cleanBackSl(name)) %>% 
     kable(format='latex',booktabs = TRUE,escape = FALSE,row.names=FALSE,col.names=NULL,linesep='') %>%
     kable_styling(position = 'center', latex_options = c("HOLD_position"))
 
@@ -190,33 +196,33 @@ char$resources %>% select(name,ResourceDisplay) %>%
 Features
 ============
 
-`r char$Features %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+`r char$Features %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
 
 Proficiencies
 =================
-**Armor:** `r char$ArmorProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Armor:** `r char$ArmorProficiencies %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Weapon:** `r char$WeaponProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Weapon:** `r char$WeaponProficiencies %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Tool:** `r char$ToolProficiencies %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Tool:** `r char$ToolProficiencies %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Languages:** `r char$LanguagesKnown %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Languages:** `r char$LanguagesKnown %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
 Personality
 =================
-**Traits:** `r char$personality$traits %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Traits:** `r char$personality$traits %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Ideals:** `r char$personality$ideals %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Ideals:** `r char$personality$ideals %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Bonds:** `r char$personality$bonds %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Bonds:** `r char$personality$bonds %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
-**Flaws:** `r char$personality$flaws %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+**Flaws:** `r char$personality$flaws %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
 Equipment
 ================
 
-`r char$Equipment %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
+`r char$Equipment %>% cleanBackSl() %>% gsub(pattern = '\n',replacement = '\n\n',x = .)`
 
 
 

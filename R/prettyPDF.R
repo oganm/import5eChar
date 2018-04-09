@@ -8,8 +8,11 @@ fdfEdit = function(x, field,fdf){
     } else if (x == FALSE & is.logical(x)){
         x = '/Off'
     } else {
-        x %<>% gsub(x = ., pattern = '(',replacement = '\\\\(',fixed = TRUE) %>%
+        x %<>%
+            gsub(x = ., pattern = '\\', replacement = "\\\\\\\\" , fixed=  TRUE) %>%
+            gsub(x = ., pattern = '(',replacement = '\\\\(',fixed = TRUE) %>%
             gsub(x = ., pattern = ')',replacement = '\\\\)', fixed = TRUE)
+
         x = paste0('(',x,')')
     }
 
