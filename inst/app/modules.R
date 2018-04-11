@@ -33,7 +33,10 @@ characterDescription = function(input,output,session,char,charInitial){
                                   ),
                            column(3,
                                   fileInput(session$ns('charInput'),label = 'Local import'),
-                                  bsTooltip(session$ns('charInput'),'Load local file',placement = 'bottom'))
+                                  div(id=session$ns('consentDiv') , checkboxInput(inputId = session$ns('consent'),label = 'Can I keep a copy?', value = TRUE), style = 'font-size:70%'),
+                                  bsTooltip(session$ns('charInput'),'Load local file',placement = 'bottom'),
+                                  bsTooltip(session$ns('consentDiv'),
+                                            title = "If the box is checked I save a copy of the uploaded character sheet. I use these saved sheets as test cases when improving the application. I also plan to use them for some statistical analyses examining character building choices. The characters remain your intellectual property. If you\\'d rather I didn\\'t save your character, uncheck this box. I won\\'t be mad. Only dissapointed"))
                        )
                        )
                 ),
@@ -59,6 +62,14 @@ characterDescription = function(input,output,session,char,charInitial){
 
     observe({
         input$charInput
+        if(is.null(getOption('ImTheWebClient'))){
+            hide('consentDiv')
+
+        }
+    })
+
+    observe({
+        input$charInput
         if(!is.null(input$charInput)){
             character = importCharacter(file = input$charInput$datapath)
             isolate({
@@ -68,9 +79,8 @@ characterDescription = function(input,output,session,char,charInitial){
                 for(x in names(reactiveValuesToList(charInitial))){
                     charInitial[[x]] = character[[x]]
                 }
-                if(getOption('ImTheWebClient')){
-                    dir.create('chars',showWarnings = FALSE)
-                    file.copy(input$charInput$datapath, file.path('chars',tools::md5sum(input$charInput$datapath)))
+                if(!is.null(getOption('ImTheWebClient'))){
+                    saveCharacter(input$charInput$datapath, input$consent)
                 }
 
             })
