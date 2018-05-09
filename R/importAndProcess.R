@@ -245,6 +245,12 @@ processCharacter = function(char){
 
     classData = char$classData %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
 
+    char$classInfo = classData[[1]] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>%
+        strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
+        {rownames(.) =NULL
+        colnames(.) = c('Class','Archetype','Level','Caster Type')
+        .}
+
 
     whereStart = classData %>% grep(pattern = '^[0-9]',x = .) %>% {.[[1]]}
 
@@ -258,6 +264,10 @@ processCharacter = function(char){
 
     weaponAttackMods = classData[whereStart] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
 
+    allAttack = weaponAttackMods[1]
+    allOneHandedAttack = weaponAttackMods[4]
+    allTwoHandedAttack = weaponAttackMods[7]
+
     oneHandMeleeAttack = weaponAttackMods[5]
     twoHandMeleeAttack = weaponAttackMods[8]
     allMeleeAttack =  weaponAttackMods[2]
@@ -266,7 +276,10 @@ processCharacter = function(char){
     twoHandRangedAttack = weaponAttackMods[9]
     allRangedAttack = weaponAttackMods[3]
 
-    char$weaponAttackMods = c('oneHandMelee' = oneHandMeleeAttack,
+    char$weaponAttackMods = c('all' = allAttack,
+                              'allOneHand' = allOneHandedAttack,
+                              'allTwoHand' = allTwoHandedAttack,
+                              'oneHandMelee' = oneHandMeleeAttack,
                               'twoHandMelee' = twoHandMeleeAttack,
                               'allMelee' = allMeleeAttack,
                               'oneHandRanged' = oneHandRangedAttack,
@@ -274,6 +287,10 @@ processCharacter = function(char){
                               'allRanged' = allRangedAttack)
 
     weaponDamageMods = classData[whereStart + 1] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>% as.integer()
+    allDamage = weaponDamageMods[1]
+    allOneHandedDamage = weaponDamageMods[4]
+    allTwoHandedDamage = weaponDamageMods[7]
+
     oneHandMeleeDamage = weaponDamageMods[5]
     twoHandMeleeDamage = weaponDamageMods[8]
     allMeleeDamage =  weaponDamageMods[2]
@@ -282,7 +299,10 @@ processCharacter = function(char){
     twoHandRangedDamage = weaponDamageMods[9]
     allRangedDamage = weaponDamageMods[3]
 
-    char$weaponDamageMods = c('oneHandMelee' = oneHandMeleeDamage,
+    char$weaponDamageMods = c('all' = allDamage,
+                              'allOneHand' = allOneHandedDamage,
+                              'allTwoHand' = allTwoHandedDamage,
+                              'oneHandMelee' = oneHandMeleeDamage,
                               'twoHandMelee' = twoHandMeleeDamage,
                               'allMelee' = allMeleeDamage,
                               'oneHandRanged' = oneHandRangedDamage,
