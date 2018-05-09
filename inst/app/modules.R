@@ -4,6 +4,36 @@ characterDescriptionUI = function(id){
 }
 
 characterDescription = function(input,output,session,char,charInitial){
+
+    inputUserid <- function(inputId, value='') {
+        #   print(paste(inputId, "=", value))
+        tagList(
+            singleton(tags$head(tags$script(src = "js/md5.js", type='text/javascript'))),
+            singleton(tags$head(tags$script(src = "js/shinyBindings.js", type='text/javascript'))),
+            tags$body(onload="setvalues()"),
+            tags$input(id = inputId, class = "userid", value=as.character(value), type="text", style="display:none;")
+        )
+    }
+
+    inputIp <- function(inputId, value='', ns){
+        tagList(
+            singleton(tags$head(tags$script(src = "js/md5.js", type='text/javascript'))),
+            singleton(tags$head(tags$script(src = "js/shinyBindings.js", type='text/javascript'))),
+            tags$body(onload="setvalues()"),
+            tags$input(id = inputId, class = "ipaddr", value=as.character(value), type="text", style="display:none;")
+        )
+    }
+    saveCharacter = function(characterFile, consent, fingerprint = ''){
+        randomName = tools::md5sum(characterFile)
+        if(consent){
+            dir.create('chars',showWarnings = FALSE)
+            file.copy(characterFile, file.path('chars',paste0(fingerprint,'_',randomName)))
+        } else {
+            dir.create('naysayer',showWarnings = FALSE)
+            file.create(file.path('naysayer',paste0(fingerprint,'_',randomName)))
+        }
+    }
+
     output$description = renderUI({
         descriptiveElement = function(field,label){
             tagList(
@@ -15,6 +45,15 @@ characterDescription = function(input,output,session,char,charInitial){
 
         tagList(
             fluidRow(
+                {
+                    if(!is.null(getOption('ImTheWebClient'))){
+                        tagList(inputIp(session$ns("ipid")),
+                                inputUserid(session$ns("fingerprint")))
+                    } else  {
+                        NULL
+                    }
+                },
+
                 column(5,
                        wellPanel(fluidRow(
                            column(5,h2(char$Name)),
@@ -80,7 +119,8 @@ characterDescription = function(input,output,session,char,charInitial){
                     charInitial[[x]] = character[[x]]
                 }
                 if(!is.null(getOption('ImTheWebClient'))){
-                    saveCharacter(input$charInput$datapath, input$consent)
+                    browser()
+                    saveCharacter(input$charInput$datapath, input$consent, paste0(input$fingerprint,'_',input$ipid))
                 }
 
             })

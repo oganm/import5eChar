@@ -71,6 +71,9 @@ weaponBonus =function(weapon,
     }
 
     weaponTypeAttackBonus =
+        char$weaponAttackMods['all'] +
+        (weapon$hands == 1)*char$weaponAttackMods['allOneHand'] +
+        (weapon$hands == 2)*char$weaponAttackMods['allTwoHand'] +
         (weapon$type=='ranged')*char$weaponAttackMods['allRanged'] +
         (weapon$type=='ranged' & weapon$hands == 1)*char$weaponAttackMods['oneHandRanged'] +
         (weapon$type=='ranged' & weapon$hands == 2)*char$weaponAttackMods['twoHandRanged'] +
@@ -79,6 +82,9 @@ weaponBonus =function(weapon,
         (weapon$type=='melee' & weapon$hands == 2)*char$weaponAttackMods['twoHandMelee']
 
     weaponTypeDamageBonus =
+        char$weaponDamageMods['all'] +
+        (weapon$hands == 1)*char$weaponDamageMods['allOneHand'] +
+        (weapon$hands == 2)*char$weaponDamageMods['allTwoHand'] +
         (weapon$type=='ranged')*char$weaponDamageMods['allRanged'] +
         (weapon$type=='ranged' & weapon$hands == 1)*char$weaponDamageMods['oneHandRanged'] +
         (weapon$type=='ranged' & weapon$hands == 2)*char$weaponDamageMods['twoHandRanged'] +
