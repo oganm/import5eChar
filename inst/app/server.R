@@ -45,7 +45,7 @@ shinyServer(function(input, output,session) {
 
     diceModule = callModule(diceRoller,'diceRoller')
     diceModule2 = callModule(diceRoller,'diceRoller2')
-    diceModule3 = callModule(diceRoller,'diceRoller2')
+    diceModule3 = callModule(diceRoller,'diceRoller3')
 
     output$console = renderText({
         out = ''
@@ -70,6 +70,9 @@ shinyServer(function(input, output,session) {
         }
         if(out == ''){
             out = diceModule3()
+        }
+        if(out ==''){
+            out = characterDescription()
         }
 
 

@@ -83,7 +83,11 @@ characterDescription = function(input,output,session,char,charInitial){
                        wellPanel(
                            fluidRow(
                                column(2, descriptiveElement(AC(char),'AC')),
-                               column(2, descriptiveElement(initBonus(char),'Initiative')),
+                               column(2,
+                                      actionButton(session$ns('init'), label = initBonus(char), class = 'skillButton'),
+                                      hr(class = 'narrowElement'),
+                                      p('Initiative', class = 'narrowElement minorText')
+                                      ),
                                column(4, descriptiveElement(char$ClassField,'Class & Level')),
                                column(4, descriptiveElement(char$Background,'Background'))
 
@@ -119,7 +123,6 @@ characterDescription = function(input,output,session,char,charInitial){
                     charInitial[[x]] = character[[x]]
                 }
                 if(!is.null(getOption('ImTheWebClient'))){
-                    browser()
                     saveCharacter(input$charInput$datapath, input$consent, paste0(input$fingerprint,'_',input$ipid))
                 }
 
@@ -145,6 +148,22 @@ characterDescription = function(input,output,session,char,charInitial){
         }
         })
     })
+
+    out = reactive({
+        out = ''
+        if(!is.null(input$init) && input$init > 0){
+            out = paste0('Initiative:\n',
+                         capture.output(init(char)) %>%
+                             gsub('(\\[1\\] )|"','',.) %>%
+                             paste(collapse = '\n'))
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('init'))
+
+        }
+        return(out)
+    })
+
+    return(out)
 
 }
 
