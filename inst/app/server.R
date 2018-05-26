@@ -74,6 +74,9 @@ shinyServer(function(input, output,session) {
         if(out ==''){
             out = characterDescription()
         }
+        if(out ==''){
+            out = healthModule()
+        }
 
 
 

@@ -55,3 +55,30 @@
 .increment{
     display:inline-block
 }
+
+
+.normHealth .irs-bar {
+border-top-color: #8B1A1A;
+border-bottom-color: #8B1A1A;
+}
+
+.normHealth .irs-bar-edge {
+border-color: #8B1A1A;
+}
+
+.normHealth .irs-single, .normHealth .irs-bar-edge, .normHealth .irs-bar {
+background: #8B1A1A;
+}
+
+.tempHealth .irs-bar {
+border-top-color: #6959CD;
+border-bottom-color: #6959CD;
+}
+
+.tempHealth .irs-bar-edge {
+border-color: #6959CD;
+}
+
+.tempHealth .irs-single, .tempHealth .irs-bar-edge, .tempHealth .irs-bar {
+background: #6959CD;
+}
