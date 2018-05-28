@@ -243,6 +243,7 @@ health = function(input, output, session,
     observeEvent(input$healthDropdown,{
         updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
         updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
+        updateNumericInput(session,inputId = 'maxHealth',value = charInitial$maxHealth,min= 1)
     })
 
     observe({
@@ -295,7 +296,6 @@ health = function(input, output, session,
     observe({
         charInitial$maxHealth
         isolate({
-            updateNumericInput(session,inputId = 'maxHealth',value = charInitial$maxHealth,min= 1)
             updateSliderInput(session,
                               inputId = 'healthSlider',
                               value = char$currentHealth + char$currentTempHP,
