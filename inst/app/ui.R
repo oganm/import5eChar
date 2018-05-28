@@ -9,6 +9,8 @@ shinyUI(
                 href = "http://localhost:1984/default.ico")
         ),
         useShinyjs(),
+        setSliderColor('#8B1A1A',1),
+        chooseSliderSkin(skin = 'Square'),
         includeCSS('www/style.css'),
         theme = shinythemes::shinytheme('cosmo'),
         characterDescriptionUI(id = 'character'),

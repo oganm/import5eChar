@@ -22,7 +22,8 @@ healthUI = function(id){
                    icon = icon("bars"),
                    size=  'xs',
                    width = '30px',
-                   right = TRUE))),
+                   right = TRUE,
+                   inputId = ns('healthDropdown')))),
         div(
             numericInput(inputId = ns('increment'),
                          label = '', value = 1,step =1, min = 1,
@@ -239,6 +240,11 @@ health = function(input, output, session,
         }
     })
 
+    observeEvent(input$healthDropdown,{
+        updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
+        updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
+    })
+
     observe({
 
         if(char$currentTempHP>0){
@@ -251,11 +257,6 @@ health = function(input, output, session,
                            'plusTempHealth',
                            label = glue::glue('+ {char$currentTempHP}'))
         print('old update and update boxes')
-
-
-        updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
-        updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
-
 
         # updateProgressBar(session,
         #                   id = session$ns('healthBar'),
