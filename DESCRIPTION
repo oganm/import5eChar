@@ -1,7 +1,7 @@
 Package: import5eChar
 Type: Package
 Title: Import Exported 5e Characters
-Version: 0.1.11
+Version: 0.1.12
 Author@R: person('Ogan','Mancarci', 'ogan.mancarcii@gmail.com',c('aut','cre'))
 Description: Imports fifth edition characters exported by Walter Kammerer's
     "Fifth Edition Character Sheet" iOS and Android app
@@ -28,8 +28,10 @@ Imports:
     shinyWidgets,
     DT,
     shinyBS,
-    jsonlite
+    jsonlite,
+    wizaRd
 Remotes:
     oganm/ogbox,
-    oganm/diceSyntax
+    oganm/diceSyntax,
+    oganm/wizaRd
 RoxygenNote: 6.0.1

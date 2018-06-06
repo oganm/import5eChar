@@ -77,6 +77,9 @@ shinyServer(function(input, output,session) {
         if(out ==''){
             out = healthModule()
         }
+        if(out == ''){
+            out = spellsModule()
+        }
 
 
 

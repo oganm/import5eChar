@@ -9,15 +9,20 @@ library(magrittr)
 library(purrr)
 library(dplyr)
 library(shinyBS)
+library(wizaRd)
+spellData = wizaRd::spells
 source('modules.R')
 source('modules/healthModule.R')
+source('modules/spellsModule.R')
+# source('modules/resourceModule.R')
 
 consoleLength  = 15
 
 
 if(!exists('char')){
     characterFile <- system.file("JimTheCommoner_Rogue1", package = "import5eChar")
-    # characterFile = 'inst/app/chars/_137.82.157.147_c51e88ade00d9508710bbbc476b6061b'
+    #characterFile = 'chars/_137.82.157.147_c51e88ade00d9508710bbbc476b6061b'
+    #characterFile = 'inst/app/chars/_137.82.157.147_c51e88ade00d9508710bbbc476b6061b'
     char = import5eChar::importCharacter(file = characterFile)
 
 }
