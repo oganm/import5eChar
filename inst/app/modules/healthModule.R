@@ -3,7 +3,10 @@ healthUI = function(id){
     ns = NS(id)
     tagList(
         fixedRow(column(11,
-                        sliderInput(inputId = ns('healthSlider'), value = 1, label = 'HP',min = 0,max = 1,step = 1, width = '100%')#,
+                        htmlOutput(ns('HPSliderColorController')),
+                        div(class = ns('HPsliderDiv'),
+                            sliderInput(inputId = ns('healthSlider'), value = 1, label = 'HP',min = 0,max = 1,step = 1, width = '100%')
+                        )#,
                         # progressBar(id = ns("healthBar"), value = 1,
                         #             total = 1)
         ),
@@ -240,6 +243,7 @@ health = function(input, output, session,
         }
     })
 
+    # update the dropdown fields only when clicking the dropdown button
     observeEvent(input$healthDropdown,{
         updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
         updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
@@ -247,51 +251,39 @@ health = function(input, output, session,
     })
 
     observe({
-
-        if(char$currentTempHP>0){
-            status = 'primary'
-        } else{
-            status = 'danger'
-        }
-
         updateActionButton(session,
                            'plusTempHealth',
                            label = glue::glue('+ {char$currentTempHP}'))
         print('old update and update boxes')
 
-        # updateProgressBar(session,
-        #                   id = session$ns('healthBar'),
-        #                   value =  char$currentHealth + char$currentTempHP,
-        #                   total = char$maxHealth + char$currentTempHP,
-        #                   status= status)
-
-        # print('update')
-
-        # updateSliderInput(session,
-        #                   inputId = 'healthSlider',
-        #                   value = char$currentHealth + char$currentTempHP,
-        #                   max = char$maxHealth + char$currentTempHP)
-
     },priority = -999)
 
 
-    observe({
-        print('set slider color')
-        char$currentTempHP
-        char$currentHealth
-        char$maxHealth
-        char$hitDiceRemain
-        delay(3,{
-            if(char$currentTempHP>0){
-                shinyjs::removeClass(selector = '.js-irs-0', class = 'normHealth')
-                shinyjs::addClass(selector = '.js-irs-0', class = 'tempHealth')
-            } else{
-                shinyjs::removeClass(selector = '.js-irs-0', class = 'tempHealth')
-                shinyjs::addClass(selector = '.js-irs-0', class = 'normHealth')
 
-            }
-        })
-    },priority = -99999999)
+    output$HPSliderColorController = renderUI({
+        controllerID = session$ns('HPsliderDiv')
+        if(char$currentTempHP>0){
+            color = '#6959CD'
+        } else{
+            color = '#8B1A1A'
+        }
+
+        tagList(tags$head(
+            tags$style(HTML(glue("
+.{controllerID} .irs-bar{{
+    border-top-color: {color};
+    border-bottom-color: {color};
+    }}
+
+.{controllerID} .irs-bar-edge {{
+    border-color: {color};
+    }}
+
+.{controllerID} .irs-single, .{controllerID} .irs-bar-edge, .{controllerID} .irs-bar {{
+    background: {color};
+    }}")))
+        ))
+    })
 
     observe({
         charInitial$maxHealth
