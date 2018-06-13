@@ -14,7 +14,7 @@ spellData = wizaRd::spells
 source('modules.R')
 source('modules/healthModule.R')
 source('modules/spellsModule.R')
-# source('modules/resourceModule.R')
+source('modules/resourceModule.R')
 
 consoleLength  = 15
 
