@@ -10,7 +10,9 @@ library(purrr)
 library(dplyr)
 library(shinyBS)
 library(wizaRd)
-spellData = wizaRd::spells
+library(jsonlite)
+spellData = fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>% paste(collapse = '\n'))
+# spellData = wizaRd::spells
 source('modules.R')
 source('modules/healthModule.R')
 source('modules/spellsModule.R')

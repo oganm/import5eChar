@@ -28,8 +28,7 @@ Imports:
     shinyWidgets,
     DT,
     shinyBS,
-    jsonlite,
-    wizaRd
+    jsonlite
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax,

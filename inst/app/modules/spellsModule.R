@@ -68,7 +68,7 @@ spells = function(input,output,session,char){
                 spellIndex = which(tolower(names(spellData)) %in% tolower(x))
 
                 if(length(spellIndex==1)){
-                    spellDice = spellData[[which(tolower(names(spellData)) %in% tolower(x))]]$dice
+                    spellDice = spellData[[which(tolower(names(spellData)) %in% tolower(x))]]
                     spellDice %<>%
                         gsub(pattern = 'SPELL\\+PROF', replacement = spellAttack(char),.) %>%
                         gsub(pattern = 'SPELL',replacement = char$abilityMods[char$castingStatCode + 1],.)
