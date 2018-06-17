@@ -34,7 +34,7 @@ cleanBackSl = function(x){
 # char = importCharacter(fileID = 'google drive file id')
 # by default a sheet for an example character is created
 characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
-char = import5eChar::importCharacter(file = 'SpellTest (1)')
+char = import5eChar::importCharacter(file = characterFile)
 
 ```
 
