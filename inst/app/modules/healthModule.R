@@ -57,12 +57,12 @@ health = function(input, output, session,
             lapply(char$hitDiceRemain,function(x){
                 actionButton(session$ns(paste0(x)),x,class = 'modButton',
                              onclick = glue('Shiny.onInputChange("',session$ns('hitDice'),'",  this.id)'))
-            }) %>% do.call(tagList,.),
+            }) %>% tagList,
             HTML('<strong>&emsp;&emsp;&emsp;&emsp;Recover: </strong>'),
             lapply(char$hitDice,function(x){
                 actionButton(session$ns(paste0(x)),x,class = 'modButton',
                              onclick = glue('Shiny.onInputChange("',session$ns('recoverHD'),'",  this.id)'))
-            }) %>% do.call(tagList,.)
+            }) %>% tagList
         )
     })
 

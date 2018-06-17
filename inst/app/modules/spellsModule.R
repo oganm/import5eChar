@@ -77,7 +77,7 @@ spells = function(input,output,session,char){
                                      label= y,
                                      class= 'modButton',
                                      onclick =  glue('Shiny.onInputChange("',session$ns('spellDice'),'",  this.id)'))
-                    }) %>% do.call(tagList,.) %>% as.character
+                    }) %>% tagList %>% as.character
                 } else{
                     return('')
                 }
