@@ -34,7 +34,7 @@ cleanBackSl = function(x){
 # char = importCharacter(fileID = 'google drive file id')
 # by default a sheet for an example character is created
 characterFile <- system.file("Tim_Fighter5", package = "import5eChar")
-char = import5eChar::importCharacter(file = characterFile)
+char = import5eChar::importCharacter(file = 'SpellTest (1)')
 
 ```
 
@@ -269,7 +269,9 @@ if(!is.null(char$spells)){
         } else{
             text = paste('Level',availableLevels[i],'(',char$spellSlots[availableLevels[i] %>% as.character()],')')
         }
-        out = out %>% group_rows(text, groups[i],groups[i+1]-1, latex_gap_space = "1em")
+        out = out %>% group_rows(group_label = text,
+                                 start_row = groups[i]+1,
+                                 end_row = groups[i+1]-1+1, latex_gap_space = "1em")
     }
     out
 }
