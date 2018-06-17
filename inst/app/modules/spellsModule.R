@@ -91,7 +91,7 @@ spells = function(input,output,session,char){
                                 stringsAsFactors = FALSE)
 
             slots = spellSlots(char)
-            maxLevel = max(which(slots>0))
+            maxLevel = max(which(slots>0),0)
 
             slotInfo = 1:(1+maxLevel) %>% sapply(function(x){
                 if(names(char$spellSlots[x]) == 'Cantrip'){
