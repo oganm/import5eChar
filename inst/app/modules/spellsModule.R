@@ -90,8 +90,10 @@ spells = function(input,output,session,char){
                                 level = char$spells$level  + .1,
                                 stringsAsFactors = FALSE)
 
+            slots = spellSlots(char)
+            maxLevel = max(which(slots>0))
 
-            slotInfo = 1:10 %>% sapply(function(x){
+            slotInfo = 1:(1+maxLevel) %>% sapply(function(x){
                 if(names(char$spellSlots[x]) == 'Cantrip'){
                     text = 'Cantrip'
                 } else{
@@ -101,14 +103,13 @@ spells = function(input,output,session,char){
                 strong(text) %>% as.character()
             })
 
-            slots = spellSlots(char)
 
-            slotMarks = 0:9 %>% sapply(function(x){
+            slotMarks = 0:maxLevel %>% sapply(function(x){
                 if(x>0 && slots[[x]]>0){
                     radioGroupButtons(
                         status = 'primary',
                         size = 'sm',
-                        inputId = "slotMark",
+                        inputId = session$ns(paste0("slotMark",x)),
                         label = '',
                         choices = seq_len(slots[x]),
                         selected = char$spellSlots[as.character(x)]
@@ -125,20 +126,21 @@ spells = function(input,output,session,char){
             levelTable = data.frame(nameButtons = slotInfo,
                                     prepared = slotMarks,
                                     diceButtons = '',
-                                    level = 0:9,
+                                    level = 0:maxLevel,
                                     stringsAsFactors = FALSE)
 
             # browser()
 
             finalTable = rbind(table,levelTable) %>% arrange(level) %>% select(-level)
 
-            dt = datatable(finalTable,escape = FALSE,selection = 'none',rownames = FALSE,
+            dt = datatable(finalTable,escape = FALSE,selection = 'none',rownames = FALSE,width = '100%',
                            colnames= rep('',3),
                            options = list(bFilter = 0,
                                           bLengthChange = 0,
-                                          paging = 1,
+                                          paging = 0,
                                           ordering = 0,
-                                          bInfo = 0))
+                                          bInfo = 0,
+                                          pageLength = nrow(finalTable)))
 
             return(dt)
 
@@ -149,6 +151,7 @@ spells = function(input,output,session,char){
 
     out = reactive({
         if(!is.null(input$spellAttack)  && input$spellAttack > 0){
+
             # out('heyey')
             session$sendCustomMessage(type = 'resetInputValue',
                                       message =  session$ns('spellAttack'))
