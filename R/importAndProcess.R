@@ -363,7 +363,7 @@ processCharacter = function(char){
     names(char$classChoices) = char$classChoices %>% sapply(function(x){
         x %>% strsplit('⊡|\u{22A1}')  %>% {.[[1]][1]}
     })
-    char$classChoices  = char$classChoices %>% sapply(function(x){
+    char$classChoices  = char$classChoices %>% lapply(function(x){
         x %>% strsplit('⊡|\u{22A1}')  %>% {.[[1]][-1]}
     })
 
