@@ -20,6 +20,26 @@ choices = function(input,output,session,char){
            )
         })
 
+        feats = char$feats[char$feats!='']
+
+        if(length(feats)>0){
+            tabs = c(tabs,
+                     tabPanel('Feats',feats %>%
+                                  lapply(tags$li) %>%
+                                  do.call(tags$ul,.)) %>%
+                         list)
+        }
+        if(char$Features!=''){
+            tabs = c(tabs,
+                     tabPanel('Features',
+                              char$Features  %>%
+                                  gsub('\n','<br/>',.,fixed = TRUE) %>%
+                                  HTML ) %>%
+                         list)
+        }
+
+
+
         do.call(tabsetPanel,c(id = session$ns('choicesTab'),tabs))
     })
 

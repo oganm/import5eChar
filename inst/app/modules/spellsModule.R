@@ -95,32 +95,35 @@ spells = function(input,output,session,char){
                 if(names(char$spellSlots[x]) == 'Cantrip'){
                     text = 'Cantrip'
                 } else{
-                    text = paste0('Level ',names(char$spellSlots[x]), ' (',char$spellSlots[x],')')
+                    text = paste0('Level ',names(char$spellSlots[x]))
                 }
 
                 strong(text) %>% as.character()
             })
 
-            slotButtons = 0:9 %>% sapply(function(x){
-                if(x>0){
-                    tagList(
-                        actionButton(inputId = paste0(x,'_cast'),
-                                     label = '-',
-                                     class = 'modButton',
-                                     onclick =  glue('Shiny.onInputChange("',session$ns('spellCast'),'",  this.id)')),
-                        actionButton(inputId = paste0(x,'_recover'),
-                                     label = '+',
-                                     class = 'modButton',
-                                     onclick =  glue('Shiny.onInputChange("',session$ns('spellRecover'),'",  this.id)')
-                        )) %>% as.character
-                } else{
+            slots = spellSlots(char)
+
+            slotMarks = 0:9 %>% sapply(function(x){
+                if(x>0 && slots[[x]]>0){
+                    radioGroupButtons(
+                        status = 'primary',
+                        size = 'sm',
+                        inputId = "slotMark",
+                        label = '',
+                        choices = seq_len(slots[x]),
+                        selected = char$spellSlots[as.character(x)]
+                    ) %>% as.character()
+                    #
+                    #
+                    # checkboxGroupInput('slotMark','',choices = rep('',slots[x]),selected = char$spellSlots[as.character(x)]>=seq_len(slots[x]), inline = TRUE) %>%
+                    #     as.character()
+                } else {
                     ''
                 }
-
             })
 
             levelTable = data.frame(nameButtons = slotInfo,
-                                    prepared = slotButtons,
+                                    prepared = slotMarks,
                                     diceButtons = '',
                                     level = 0:9,
                                     stringsAsFactors = FALSE)
@@ -139,28 +142,6 @@ spells = function(input,output,session,char){
 
             return(dt)
 
-        }
-    })
-
-    observe({
-        if(!is.null(input$spellCast)){
-            isolate({
-                level = input$spellCast %>% strsplit('_') %>% {.[[1]][1]}
-                char$spellSlots[level] = char$spellSlots[level] - 1
-
-                session$sendCustomMessage(type = 'resetInputValue',
-                                          message =  session$ns('spellCast'))
-            })
-        }
-
-        if(!is.null(input$spellRecover)){
-            isolate({
-                level = input$spellRecover %>% strsplit('_') %>% {.[[1]][1]}
-                char$spellSlots[level] = char$spellSlots[level] + 1
-
-                session$sendCustomMessage(type = 'resetInputValue',
-                                          message =  session$ns('spellRecover'))
-            })
         }
     })
 

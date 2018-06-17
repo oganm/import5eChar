@@ -351,7 +351,8 @@ weapons =function(input, output,session,char){
                                          bLengthChange = 0,
                                          paging = 0,
                                          ordering = 0,
-                                         bInfo = 0))
+                                         bInfo = 0,
+                                         pageLength = nrow(weaponTable)))
         return(table)
     })
 
