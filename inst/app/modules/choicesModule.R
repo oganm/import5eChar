@@ -10,7 +10,7 @@ choices = function(input,output,session,char){
 
     output$choices = renderUI({
         tabs = seq_along(char$classChoices) %>% lapply(function(i){
-            tabPanel(names(char$classChoices)[i] %>% abbreviate(),
+            tabPanel(names(char$classChoices)[i] %>% abbreviate(minlength = 3),
                      tagList(
                          strong(names(char$classChoices)[i]),
                          char$classChoices[[i]] %>%
