@@ -215,10 +215,12 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         field = 'spellcasting-ability-1',
         fdf = fdf)
 
+    slots = spellSlots(char)
+
     if(!is.null(char$spells)){
         for(i in 1:9){
             fdf = fdfEdit(
-                x = char$spellSlots[i+1],
+                x = slots[i],
                 field = glue::glue('spell-slots-{i}-1'),
                 fdf = fdf)
         }
