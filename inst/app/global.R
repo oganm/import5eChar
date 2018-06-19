@@ -9,9 +9,13 @@ library(magrittr)
 library(purrr)
 library(dplyr)
 library(shinyBS)
-library(wizaRd)
 library(jsonlite)
-spellData = fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>% paste(collapse = '\n'))
+library(shinythemes)
+
+spellData = tryCatch(fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>% paste(collapse = '\n')),
+                     error = function(e){
+                         spellData = list()
+                     })
 # spellData = wizaRd::spells
 source('modules.R')
 source('modules/healthModule.R')
@@ -40,6 +44,6 @@ iconCredits = c('Lorc',
                 'Carl Olsen',
                 'Skoll')
 if(!exists('.sheetApp.spellSource')){
-    # .sheetApp.spellSource = 'https://www.dndbeyond.com/spells/'
-    .sheetApp.spellSource = 'https://thebombzen.com/grimoire/spells/'
+    .sheetApp.spellSource = 'https://www.dndbeyond.com/spells/'
+    # .sheetApp.spellSource = 'https://thebombzen.com/grimoire/spells/'
 }

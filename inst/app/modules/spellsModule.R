@@ -31,12 +31,29 @@ spells = function(input,output,session,char){
                        hr(class = 'narrowElement'),
                        p('Spell Attack', class = 'narrowElement minorText')
                 ),
-                column(4,
-                       descriptiveElement(names(spellDC(char)),'Casting Stat'))
+                column(3,
+                       descriptiveElement(names(spellDC(char)),'Casting Stat')),
+                column(1,
+                       dropdownButton(
+                           strong('Spell Source'),
+                           shinysky::textInput.typeahead(id = session$ns('spellSource'),
+                                               placeholder = 'dndbeyond',
+                                               local = data.frame(name = c("https://www.dndbeyond.com/spells/",
+                                                                           "https://thebombzen.com/grimoire/spells/")),
+                                               valueKey = 'name',
+                                               tokens =  c('dndbeyond','grimoire'),
+                                               template =  HTML("<p class='repo-language'>{{info}}</p> <p class='repo-name'>{{name}}</p>")),
+                           circle = TRUE,
+                           icon = icon("bars"),
+                           size=  'xs',
+                           width = '30px',
+                           right = TRUE,
+                           inputId = session$ns('spellDropdown')))
             )
         )
 
     })
+
 
     output$spellTable = renderDataTable({
 
@@ -51,7 +68,12 @@ spells = function(input,output,session,char){
 
 
             nameButtons = char$spells$name %>% sapply(function(x){
-                a(href = paste0(.sheetApp.spellSource,
+                if(is.null(input$spellSource) || input$spellSource == ''){
+                    spSource = .sheetApp.spellSource
+                } else{
+                    spSource = input$spellSource
+                }
+                a(href = paste0(spSource,
                                 x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
                   target= '_blank',x
                 ) %>% as.character()
