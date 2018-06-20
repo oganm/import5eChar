@@ -133,7 +133,7 @@ spells = function(input,output,session,char){
                         size = 'sm',
                         inputId = session$ns(paste0("slotMark",x)),
                         label = '',
-                        choices = seq_len(slots[x]),
+                        choices = c(0,seq_len(slots[x])),
                         selected = char$spellSlots[as.character(x)]
                     ) %>% as.character()
                     #
