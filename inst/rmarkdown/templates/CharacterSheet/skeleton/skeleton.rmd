@@ -157,7 +157,8 @@ Weapons
 
 
 ```{r}
-weaponTable = char$weapons %>% sapply(function(x){
+if(length(char$weapons)>0){
+    weaponTable = char$weapons %>% sapply(function(x){
     c(x$name %>% cleanBackSl(),
       weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
           x$proficient*char$proficiencyBonus +
@@ -176,6 +177,8 @@ weaponTable[,'Damage'] %<>% gsub('\\+\\-','-',x=.)
 
 kable(weaponTable, format = 'latex',booktabs= TRUE,escape=FALSE,row.names=FALSE,linesep= '')%>%
     kable_styling(position = 'center', latex_options = c("HOLD_position","scale_down"))
+}
+
 ```
 
 \newpage

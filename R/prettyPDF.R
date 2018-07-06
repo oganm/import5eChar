@@ -212,47 +212,50 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
                          'Languages\n',char$LanguagesKnown)
 
     # weapons
-    weaponTable = char$weapons %>% sapply(function(x){
-        c(x$name,
-          weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
-              x$proficient*char$proficiencyBonus +
-              char$abilityMods[x$attackStat],
-          paste0(paste(x$dice,collapse=' + '),
-                 '+',
-                 weaponBonus(x,char=char)['weaponTypeDamageBonus'] +
-                     char$abilityMods[x$attackStat]),
-          x$damageType,
-          x$range
-        )
-    }) %>% t
+    if(length(char$weapons)>0){
+        weaponTable = char$weapons %>% sapply(function(x){
+            c(x$name,
+              weaponBonus(x,char=char)['weaponTypeAttackBonus'] +
+                  x$proficient*char$proficiencyBonus +
+                  char$abilityMods[x$attackStat],
+              paste0(paste(x$dice,collapse=' + '),
+                     '+',
+                     weaponBonus(x,char=char)['weaponTypeDamageBonus'] +
+                         char$abilityMods[x$attackStat]),
+              x$damageType,
+              x$range
+            )
+        }) %>% t
 
-    colnames(weaponTable) = c('Name','Attack','Damage','Type','Range')
-    weaponTable[,'Damage'] %<>% gsub('\\+\\-','-',x=.)
+        colnames(weaponTable) = c('Name','Attack','Damage','Type','Range')
+        weaponTable[,'Damage'] %<>% gsub('\\+\\-','-',x=.)
 
-    for(i in 1:min(3,nrow(weaponTable))){
+        for(i in 1:min(3,nrow(weaponTable))){
 
-        fields[[paste0('weapon-name-',i)]]$value = paste0(weaponTable[i,1],' (',weaponTable[i,5],')')
-
-
-        fields[[paste0('weapon-attack-bonus-',i)]]$value = weaponTable[i,2]
+            fields[[paste0('weapon-name-',i)]]$value = paste0(weaponTable[i,1],' (',weaponTable[i,5],')')
 
 
-        fields[[paste0('weapon-damage-',i)]]$value = paste0(weaponTable[i,3],'/',weaponTable[i,4])
+            fields[[paste0('weapon-attack-bonus-',i)]]$value = weaponTable[i,2]
+
+
+            fields[[paste0('weapon-damage-',i)]]$value = paste0(weaponTable[i,3],'/',weaponTable[i,4])
+
+        }
+
+        moreWeapons = ''
+        for(i in seq_len(max(nrow(weaponTable)-3,0))){
+            index= 3+i
+            wepDat = paste0(weaponTable[index,1],' (',weaponTable[index,5],')    ',
+                            weaponTable[index,2],'    ',
+                            weaponTable[index,3],'/',weaponTable[index,4])
+            moreWeapons = paste0(moreWeapons,
+                                 wepDat,
+                                 '\n')
+        }
+
+        fields[['attacks-and-spellcasting']]$value = moreWeapons
 
     }
-
-    moreWeapons = ''
-    for(i in seq_len(max(nrow(weaponTable)-3,0))){
-        index= 3+i
-        wepDat = paste0(weaponTable[index,1],' (',weaponTable[index,5],')    ',
-                        weaponTable[index,2],'    ',
-                        weaponTable[index,3],'/',weaponTable[index,4])
-        moreWeapons = paste0(moreWeapons,
-                             wepDat,
-                             '\n')
-    }
-
-    fields[['attacks-and-spellcasting']]$value = moreWeapons
 
 
     # skills
