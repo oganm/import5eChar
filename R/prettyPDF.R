@@ -2,27 +2,6 @@
 # staplr::get_fields(input_filepath = sourcePDF)
 
 
-fdfEdit = function(x, field,fdf){
-    if(x == TRUE & is.logical(x)){
-        x = '/Yes'
-    } else if (x == FALSE & is.logical(x)){
-        x = '/Off'
-    } else {
-        x %<>%
-            gsub(x = ., pattern = '\\', replacement = "\\\\\\\\" , fixed=  TRUE) %>%
-            gsub(x = ., pattern = '(',replacement = '\\\\(',fixed = TRUE) %>%
-            gsub(x = ., pattern = ')',replacement = '\\\\)', fixed = TRUE)
-
-        x = paste0('(',x,')')
-    }
-
-    fdf = stringr::str_replace(string  = fdf,pattern = paste0('/V\\s.*\n/T\\s\\(',field,'\\)'),
-                               replacement = paste0('/V ',x,'\n/T \\(',field,'\\)'))
-    return(fdf)
-}
-
-
-
 fdfGet = function(field,fdf){
     stringr::str_extract(string = fdf,
                 pattern =  paste0('/V\\s.*\n/T\\s\\(',field,'\\)'))
@@ -55,12 +34,12 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
     for(i in 1:length(char$abilityScores)){
         # ability scores
 
-        fields[[inPDF[i]]]$value = char$abilityScores[inChar[i]]
+        fields[[inPDF[i]]]$value = char$abilityMods[inChar[i]]
 
 
         # ability mods
 
-        fields[[paste0(inPDF[i],'-mod')]]$value = char$abilityMods[inChar[i]]
+        fields[[paste0(inPDF[i],'-mod')]]$value = char$abilityScores[inChar[i]]
 
     }
 
