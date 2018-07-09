@@ -1,7 +1,13 @@
-avraeSheet = function(char){
+#' @export
+avraeSheet = function(char = getOption('defaultCharacter')){
+
+    if(is.character(char)){
+        char = char %>% parse(text = .) %>% eval(envir = parent.frame())
+    }
+
     oganSheet = "1a9CUrPOdPPV5qbh3uUBT4cqq1Ue5Eo70fWLUp6pSZAY"
-    sheet = gs_key(x = oganSheet)
-    sheetToFill = sheet %>% gs_copy(to=char$Name)
+    sheet = googlesheets::gs_key(x = oganSheet)
+    sheetToFill = sheet %>% googlesheets::gs_copy(to=char$Name)
 
     file = googledrive::drive_get(id = sheetToFill$sheet_key,verbose=FALSE)
 
@@ -17,14 +23,21 @@ avraeSheet = function(char){
     sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Cha'], anchor = 'C40')
 
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$ClassField, anchor = 'T5')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$Background, anchor = 'Z5')
+    topInfo = matrix(c(char$ClassField,
+                       rep('',5),
+                       char$Background,
+                       rep('',4),
+                       '',
+                       'CLASS',rep('',5), 'BACKGROUND',rep('',4),'PLAYER NAME',
+                       char$Race,
+                       rep('',5),
+                       char$Alignment,
+                       rep('',5)),nrow = 3,byrow = TRUE)
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$Race, anchor = 'T7')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$Alignment, anchor = 'Z7')
 
+    sheetToFill %>% googlesheets::gs_edit_cells(input = topInfo, byrow= TRUE, anchor = 'T5')
 
     sheetToFill %>% googlesheets::gs_edit_cells(input = char$classInfo[,'Level'] %>% as.integer %>% sum,
                                                 anchor = 'AL6')
@@ -69,6 +82,12 @@ avraeSheet = function(char){
     sheetToFill %>% googlesheets::gs_edit_cells(input =proficiencies,
                                                 anchor = 'C49')
 
+    # saves ----
+    sheetToFill %>%
+        googlesheets::gs_edit_cells(input = char$abilityProf %>% as.integer(),anchor = 'H17' )
+
+
+
     # skills ------
 
     skillNames = names(char$skillProf) %>% sort
@@ -109,21 +128,20 @@ avraeSheet = function(char){
 
         weaponTable[,'Damage'] %<>% gsub('\\+\\-','-',x=.)
 
-        weaponsToWrite = data.frame('Name' = weaponTable[,'Name'],
+        weaponsToWrite = data.frame('Name' = paste0(weaponTable[,'Name'],' (',weaponTable[,'Range'],')'),
                                     Attack = weaponTable[,'Attack'],
-                                    'Damage/Type' = paste0(weaponTable[,'Damage'],'/',weaponTable[,'Type']),check.names = FALSE)
+                                    'Damage/Type' = paste0(weaponTable[,'Damage'],' [',weaponTable[,'Type'],']'),
+                                    check.names = FALSE,stringsAsFactors = FALSE)
+
+        weaponsToStructuredBox = cbind(weaponsToWrite$Name,'','','','','','=IMAGE("http://i.imgur.com/qlVxTyw.png",3)',
+                               weaponsToWrite$Attack, '','','=IMAGE("http://i.imgur.com/qlVxTyw.png",3)',
+                               weaponsToWrite$`Damage/Type`)
+
 
         sheetToFill %>%
-            googlesheets::gs_edit_cells(input = weaponsToWrite[1:min(nrow(weaponsToWrite),5),'Name'],
+            googlesheets::gs_edit_cells(input = weaponsToStructuredBox[1:min(nrow(weaponsToWrite),5),],
                                         anchor = 'R32',col_names = FALSE )
 
-        sheetToFill %>%
-            googlesheets::gs_edit_cells(input = weaponsToWrite[1:min(nrow(weaponsToWrite),5),'Attack'],
-                                        anchor = 'Y32',col_names = FALSE )
-
-        sheetToFill %>%
-            googlesheets::gs_edit_cells(input = weaponsToWrite[1:min(nrow(weaponsToWrite),5),'Damage/Type'],
-                                        anchor = 'AC32',col_names = FALSE )
 
         if(nrow(weaponsToWrite)>5){
             otherWeapons = weaponsToWrite[6:nrow(weaponsToWrite),]
@@ -151,48 +169,51 @@ avraeSheet = function(char){
     featuresCol1 = features[1:12] %>% ogbox::trimNAs()
     featuresCol2 = features[13:24] %>% ogbox::trimNAs()
 
-
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = featuresCol1,
-                                    anchor = 'Z45' )
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = featuresCol2,
-                                    anchor = 'AH45' )
+    features = cbind(featuresCol1,
+                     '','','','','','','=IMAGE("http://i.imgur.com/YThwbjs.png",3)',
+                     featuresCol2)
 
 
     sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$currency$CP,
+        googlesheets::gs_edit_cells(input = features,
+                                    anchor = 'Z45',col_names = FALSE )
+
+
+    currency = c(char$currency$CP,
+                 rep('',2),
+                 char$currency$SP,
+                 rep('',2),
+                 char$currency$EP,
+                 rep('',2),
+                 char$currency$GP,
+                 rep('',2),
+                 char$currency$PP)
+
+    sheetToFill %>%
+        googlesheets::gs_edit_cells(input = currency,
                                     anchor = 'D60' )
-
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$currency$SP,
-                                    anchor = 'D63' )
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$currency$EP,
-                                    anchor = 'D66' )
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$currency$GP,
-                                    anchor = 'D69' )
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$currency$PP,
-                                    anchor = 'D72' )
 
 
     # spellcasting ------
     DC = spellDC(char = char)
     spellAttack  =  spellAttack(char = char)
 
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = names(spellAttack),
-                                    anchor = 'U91' )
+    spellStuff = c(names(spellAttack),
+                   rep('',3),
+                   '=IMAGE("http://i.imgur.com/vGypnz4.png",2)',
+                   '',
+                   '=IMAGE("http://i.imgur.com/bMB1ljY.png",2)',
+                   DC,
+                   rep('',3),
+                   '=IMAGE("http://i.imgur.com/vGypnz4.png",2)',
+                   '',
+                   '=IMAGE("http://i.imgur.com/bMB1ljY.png",2)',
+                   spellAttack)
 
     sheetToFill %>%
-        googlesheets::gs_edit_cells(input = DC,
-                                    anchor = 'AB91' )
+        googlesheets::gs_edit_cells(input = spellStuff,
+                                    anchor = 'U91',byrow = TRUE )
 
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = spellAttack,
-                                    anchor = 'AI91')
 
     slots = spellSlots(char)
     maxSlotBoxes = c('AK101','E107','AK113','E119','AK124','E129','AK134','E138','AK142')
@@ -267,5 +288,7 @@ avraeSheet = function(char){
         }
 
     }
+
+    return(file)
 
 }
