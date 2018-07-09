@@ -70,15 +70,6 @@ avraeSheet = function(char = getOption('defaultCharacter')){
                                                 anchor = 'AE12')
 
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$maxHealth,
-                                                anchor = 'U16')
-
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentHealth,
-                                                anchor = 'R17')
-
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentTempHP,
-                                                anchor = 'R21')
-
 
     proficiencies = c(char$ArmorProficiencies %>% gsub('\n',', ', .) %>%
                           paste('Proficient in Armor:',.),
