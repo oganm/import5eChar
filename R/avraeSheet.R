@@ -15,13 +15,22 @@ avraeSheet = function(char = getOption('defaultCharacter')){
                                      role='reader', type = 'anyone')
 
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Str'], anchor = 'C15')
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Dex'], anchor = 'C20')
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Con'], anchor = 'C25')
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Int'], anchor = 'C30')
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Wis'], anchor = 'C35')
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$abilityScores['Cha'], anchor = 'C40')
+    abilityScores = c(char$abilityScores['Str'],
+                      '','DEX','=if(C20="","",INT((C20-10)/2))','',
+                      char$abilityScores['Dex'],
+                      '','CON','=if(C25="","",INT((C25-10)/2))','',
+                      char$abilityScores['Con'],
+                      '','INT','=if(C30="","",INT((C30-10)/2))','',
+                      char$abilityScores['Int'],
+                      '','WIS','=if(C35="","",INT((C35-10)/2))','',
+                      char$abilityScores['Wis'],
+                      '','CHA','=if(C40="","",INT((C40-10)/2))','',
+                      char$abilityScores['Cha'])
 
+    sheetToFill %>% googlesheets::gs_edit_cells(input = abilityScores, anchor = 'C15')
+
+
+    sheetToFill %>% googlesheets::gs_edit_cells(input = char$Name, anchor = 'C6')
 
 
     topInfo = matrix(c(char$ClassField,
@@ -48,18 +57,18 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     sheetToFill %>% googlesheets::gs_edit_cells(input = char$baseSpeed + char$speedMiscMod,
                                                 anchor = 'Z12')
 
+    personality = c(char$personality$traits,
+                    '','','PERSONALITY TRAITS',
+                    char$personality$ideals,
+                    '','','IDEALS',
+                    char$personality$bonds,
+                    '','','BONDS',
+                    char$personality$flaws,
+                    '','','FLAWS')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$personality$traits,
+    sheetToFill %>% googlesheets::gs_edit_cells(input = personality,
                                                 anchor = 'AE12')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$personality$ideals,
-                                                anchor = 'AE16')
-
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$personality$bonds,
-                                                anchor = 'AE20')
-
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$personality$flaws,
-                                                anchor = 'AE24')
 
     sheetToFill %>% googlesheets::gs_edit_cells(input = char$maxHealth,
                                                 anchor = 'U16')
