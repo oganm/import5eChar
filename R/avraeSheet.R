@@ -14,6 +14,15 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     share = googledrive::drive_share(googledrive::as_id(file$id),
                                      role='reader', type = 'anyone')
 
+    sheetToFill %>% googlesheets::gs_edit_cells(input = char$maxHealth,
+                                                anchor = 'U16')
+
+    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentHealth,
+                                                anchor = 'R17')
+
+    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentTempHP,
+                                                anchor = 'R21')
+
 
     abilityScores = c(char$abilityScores['Str'],
                       '','DEX','=if(C20="","",INT((C20-10)/2))','',
