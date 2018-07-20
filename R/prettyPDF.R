@@ -9,13 +9,6 @@ fdfGet = function(field,fdf){
 
 #' @export
 prettyPDF = function(file,char = getOption('defaultCharacter')){
-    if(Sys.info()['sysname'] =='Windows'){
-        path = system2('where','pdftk',stdout = TRUE)
-    } else {
-        path = system2('which','pdftk',stdout = TRUE)
-    }
-    animation::ani.options(pdftk = path)
-
 
     if(is.character(char)){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
