@@ -1,3 +1,19 @@
+# cellFeedToMatrix = function(cellFeed){
+#     nrow = cellFeed$row %>% max
+#     ncol = cellFeed$col %>% max
+#
+#     m = matrix('',nrow = nrow,ncol=ncol)
+#     for (i in seq_len(nrow(cellFeed))){
+#         cell = cellFeed[i,]
+#
+#         m[cell$row,cell$col] = cell$input_value
+#     }
+#
+#     return(m)
+#
+# }
+
+
 #' @export
 avraeSheet = function(char = getOption('defaultCharacter')){
 
@@ -14,14 +30,30 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     share = googledrive::drive_share(googledrive::as_id(file$id),
                                      role='reader', type = 'anyone')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$maxHealth,
-                                                anchor = 'U16')
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentHealth,
-                                                anchor = 'R17')
+    # cellFeed = sheetToFill %>% gs_read_cellfeed()
+    #
+    # cellMatrix = cellFeedToMatrix(cellFeed)
+    # cellMatrix = cellMatrix[,-(43:46)]
+    #
+    #
+    # sheetToFill %>% googlesheets::gs_edit_cells(input =cellMatrix,
+    #                                             anchor = 'A1')
+    #
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$currentTempHP,
-                                                anchor = 'R21')
+    healthData = data.frame( R16 = c('Hit Point Max',
+                                     char$currentHealth,'',
+                                     'CURRENT HIT POINTS',
+                                     'Condition',
+                                     char$currentTempHP),
+                             U16 = c(char$maxHealth,
+                                     '','',
+                                     '',
+                                     '',
+                                     ''))
+
+    sheetToFill %>% googlesheets::gs_edit_cells(input = healthData,
+                                                anchor = 'R16',col_names = FALSE)
 
 
     abilityScores = c(char$abilityScores['Str'],
@@ -36,10 +68,9 @@ avraeSheet = function(char = getOption('defaultCharacter')){
                       '','CHA','=if(C40="","",INT((C40-10)/2))','',
                       char$abilityScores['Cha'])
 
-    sheetToFill %>% googlesheets::gs_edit_cells(input = abilityScores, anchor = 'C15')
+    nameWithAbility = c(char$Name,rep('',5),'STR','=if(C15="","",INT((C15-10)/2))','',abilityScores)
 
-
-    sheetToFill %>% googlesheets::gs_edit_cells(input = char$Name, anchor = 'C6')
+    sheetToFill %>% googlesheets::gs_edit_cells(input = nameWithAbility, anchor = 'C6')
 
 
     topInfo = matrix(c(char$ClassField,
@@ -91,13 +122,7 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     sheetToFill %>% googlesheets::gs_edit_cells(input =proficiencies,
                                                 anchor = 'C49')
 
-    # saves ----
-    sheetToFill %>%
-        googlesheets::gs_edit_cells(input = char$abilityProf %>% as.integer(),anchor = 'H17' )
-
-
-
-    # skills ------
+    # skills and saves ------
 
     skillNames = names(char$skillProf) %>% sort
 
@@ -114,8 +139,16 @@ avraeSheet = function(char = getOption('defaultCharacter')){
         return(inp)
     })
 
+
+    savesAndSkills = c(char$abilityProf %>% as.integer(),
+                       'SAVING THROWS',
+                       '',
+                       skillProfs
+    )
+
     sheetToFill %>%
-        googlesheets::gs_edit_cells(input = skillProfs,anchor = 'H25' )
+        googlesheets::gs_edit_cells(input = savesAndSkills,anchor = 'H17' )
+
 
     # weapons -----
 
@@ -268,6 +301,25 @@ avraeSheet = function(char = getOption('defaultCharacter')){
 
     for(i in 0:9){
         if(i>0 && slots[i]>0){
+            # if(i %% 2 == 1){
+            #     slotToWrite = data.frame(AG = c('SLOTS',char$spellSlots[i+1],''),
+            #                              AI = c('=IMAGE("http://i.imgur.com/6jVSPeC.png",2)','',''),
+            #                              AK = c('MAX',slots[i],''))
+            #     sheetToFill %>%
+            #         googlesheets::gs_edit_cells(input = slotToWrite,
+            #                                     anchor = paste0('AH',spellRows[i+1]),col_names = FALSE)
+            #
+            # } else{
+            #     slotToWrite = data.frame(E =c('MAX',slots[i],''),
+            #                              F = c('','',''),
+            #                              G = c('=IMAGE("http://i.imgur.com/4ww92Ws.png",2)','',''),
+            #                              I = c('SLOTS',char$spellSlots[i+1],''))
+            #     sheetToFill %>%
+            #         googlesheets::gs_edit_cells(input = slotToWrite,
+            #                                     anchor = paste0('E',spellRows[i+1]),col_names = FALSE)
+            # }
+
+
             sheetToFill %>%
                 googlesheets::gs_edit_cells(input = slots[i],
                                             anchor = maxSlotBoxes[i])
@@ -276,25 +328,28 @@ avraeSheet = function(char = getOption('defaultCharacter')){
                                             anchor = slotBoxes[i])
         }
 
-        spellsToWrite = char$spells %>% dplyr::filter(level == i)
-        if(nrow(spellsToWrite)>0){
-            level = i %>% as.character
-            seq_along(spellCols[[level]]) %>% sapply(function(j){
-                start = rowCount[level]*j-(rowCount[level]-1)
-                end = min(rowCount[level]*j,nrow(spellsToWrite))
-                if(start>end){
-                    return(NULL)
-                }
-                sheetToFill %>%
-                    googlesheets::gs_edit_cells(input = spellsToWrite[start:end,]$name,
-                                                anchor = paste0(spellCols[[level]][j], spellRows[level]))
-                if(i >0){
+        if(!is.null(char$spells)){
+            spellsToWrite = char$spells %>% dplyr::filter(level == i)
+            if(nrow(spellsToWrite)>0){
+                level = i %>% as.character
+                seq_along(spellCols[[level]]) %>% sapply(function(j){
+                    start = rowCount[level]*j-(rowCount[level]-1)
+                    end = min(rowCount[level]*j,nrow(spellsToWrite))
+                    if(start>end){
+                        return(NULL)
+                    }
                     sheetToFill %>%
-                        googlesheets::gs_edit_cells(input = spellsToWrite[start:end,]$prepared %>% as.integer(),
-                                                    anchor = paste0(preparedBoxes[spellCols[[level]][j]], spellRows[level]))
-                }
-            })
+                        googlesheets::gs_edit_cells(input = spellsToWrite[start:end,]$name,
+                                                    anchor = paste0(spellCols[[level]][j], spellRows[level]))
+                    if(i >0){
+                        sheetToFill %>%
+                            googlesheets::gs_edit_cells(input = spellsToWrite[start:end,]$prepared %>% as.integer(),
+                                                        anchor = paste0(preparedBoxes[spellCols[[level]][j]], spellRows[level]))
+                    }
+                })
+            }
         }
+
 
     }
 
