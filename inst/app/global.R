@@ -27,11 +27,16 @@ consoleLength  = 15
 
 
 if(!exists('char')){
-    characterFile <- system.file("JimTheCommoner_Rogue1", package = "import5eChar")
-    #characterFile = 'chars/_137.82.157.147_c51e88ade00d9508710bbbc476b6061b'
-    # characterFile = 'inst/app/chars/_173.244.48.74_3a531df0147f56052e4d58b7cb15ebfa'
-    char = import5eChar::importCharacter(file = characterFile)
-
+    files = list.files()
+    timFile = files[grepl('Tim',files)]
+    if(length(timFile)==1){
+        char = import5eChar::importCharacter(file = timFile)
+    } else{
+        characterFile <- system.file("JimTheCommoner_Rogue1", package = "import5eChar")
+        #characterFile = 'chars/_137.82.157.147_c51e88ade00d9508710bbbc476b6061b'
+        # characterFile = 'inst/app/chars/_173.244.48.74_3a531df0147f56052e4d58b7cb15ebfa'
+        char = import5eChar::importCharacter(file = characterFile)
+    }
 }
 
 
