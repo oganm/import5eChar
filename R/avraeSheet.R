@@ -55,6 +55,9 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     sheetToFill %>% googlesheets::gs_edit_cells(input = healthData,
                                                 anchor = 'R16',col_names = FALSE)
 
+    sheetToFill %>% googlesheets::gs_edit_cells(input = char$maxHealth,
+                                                anchor = 'U16',col_names = FALSE)
+
 
     abilityScores = c(char$abilityScores['Str'],
                       '','DEX','=if(C20="","",INT((C20-10)/2))','',
@@ -208,8 +211,8 @@ avraeSheet = function(char = getOption('defaultCharacter')){
 
     features = char$Features %>% stringr::str_split('\n') %>% {.[[1]]}
 
-    featuresCol1 = features[1:12] %>% ogbox::trimNAs()
-    featuresCol2 = features[13:24] %>% ogbox::trimNAs()
+    featuresCol1 = features[1:12] %>% ogbox::trimNAs() %>% {c(.,rep('',12-length(.)))}
+    featuresCol2 = features[13:24] %>% ogbox::trimNAs() %>% {c(.,rep('',12-length(.)))}
 
     features = cbind(featuresCol1,
                      '','','','','','','=IMAGE("http://i.imgur.com/YThwbjs.png",3)',
