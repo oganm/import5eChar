@@ -47,6 +47,9 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
 
         fields[[names(saves)[i] %>% tolower %>% paste0(.,'-save')]]$value = saves[i]
 
+        fields[[names(saves)[i] %>% tolower %>% paste0(.,'-save-check')]]$value =
+            char$abilityProf[i] %>% {if(.){'Yes'}else{"Off"}}
+
     }
 
 
