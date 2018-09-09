@@ -14,8 +14,21 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    fdfFile = system.file('char.fdf',package = 'import5eChar')
-    fdf = readLines(fdfFile) %>% paste(collapse = '\n')
+    # fix all character fields
+    charFields = char %>% purrr::map_lgl(is.character)
+    noDims = char %>% purrr::map(dim) %>% purrr::map_lgl(is.null)
+
+    fixChars = which(charFields&noDims) %>% names
+
+    for (x in fixChars){
+        char[[x]] %<>% stringr::str_replace_all('•|\u{2022}','-') %>%
+            stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
+            stringr::str_replace_all('(¾)|(\u{00BE})','3/4') %>%
+            stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
+            stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
+            stringr::str_replace_all('(‘)|(\u{2018})',"'") %>%
+            stringr::str_replace_all('(’)|(\u{2018})',"'")
+    }
 
     sourcePDF = system.file('character.pdf',package='import5eChar')
 
@@ -118,18 +131,11 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
 
 
     fields[['features-and-traits']]$value =
-        char$Features %>% stringr::str_replace_all('•|\u{2022}','-') %>%
-        stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
-        stringr::str_replace('(¾)|(\u{00BE})','3/4') %>%
-        stringr::str_replace('(¼)|(\u{00BC})','1/4')
-
+        char$Features
 
 
     fields[['features-and-traits-2']]$value =
-        char$notes %>% stringr::str_replace_all('•|\u{2022}','-') %>%
-        stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
-        stringr::str_replace('(¾)|(\u{00BE})','3/4') %>%
-        stringr::str_replace('(¼)|(\u{00BC})','1/4')
+        char$notes
 
     # class level
 
