@@ -46,7 +46,7 @@ importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,ov
 
 processCharacter = function(char){
 
-    char %<>% stringr::str_replace('&','and') %>%  XML::xmlParse() %>%  (XML::xmlToList)
+    char %<>% stringr::str_replace_all('&','and') %>%  XML::xmlParse() %>%  (XML::xmlToList)
 
     # simple statistics -----
     char$proficiencyBonus %<>% as.integer
@@ -318,6 +318,7 @@ processCharacter = function(char){
           'maxUse' = resData[3] %>% as.integer(),
           'dice' = resData[5] %>% as.integer(),
           'ResourceDisplay' = {
+              out= 'unkown'
               if(resData[5]>0){
                   out = (paste0(resData[3],'d',resData[5]))
               } else if(resData[3]>0){
@@ -328,6 +329,7 @@ processCharacter = function(char){
               out
           },
           'Reset' = {
+              out = 'unkown'
               if(resData[10]==1){
                   out = 'static'
               }else if(resData[9] == 303){
@@ -337,6 +339,9 @@ processCharacter = function(char){
                       switch(resData[6] %>% as.integer,
                              "short rest",
                              'long rest')
+              }
+              if(is.null(out)){
+                  out = 'unkown'
               }
               out
           },
