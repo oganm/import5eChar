@@ -17,11 +17,16 @@ spellData = tryCatch(fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>%
                          spellData = list()
                      })
 # spellData = wizaRd::spells
-source('modules.R')
 source('modules/healthModule.R')
 source('modules/spellsModule.R')
 source('modules/resourceModule.R')
 source('modules/choicesModule.R')
+source('modules/characterDescriptionModule.R')
+source('modules/attributesModule.R')
+source('modules/weaponsModule.R')
+source('modules/skillsModule.R')
+source('modules/diceRollerModule.R')
+source('modules/packageVersionModule.R')
 
 consoleLength  = 15
 
@@ -40,7 +45,7 @@ if(!exists('char')){
 }
 
 
-if(Sys.info()['nodename'] == 'oganmDO'){
+if(Sys.info()['nodename'] == 'oganm'){
     options(ImTheWebClient= TRUE)
 }
 
