@@ -8,11 +8,11 @@ Description: Imports fifth edition characters exported by Walter Kammerer's
 Encoding: UTF-8
 LazyData: true
 Imports:
-    googledrive,
-    magrittr,
-    dplyr,
-    diceSyntax,
-    stringr,
+    googledrive (>= 0.1.1),
+    magrittr (>= 1.5),
+    dplyr (>= 0.7.5),
+    diceSyntax (>= 0.1.0),
+    stringr (>= 1.3.1),
     XML,
     purrr,
     ogbox,
