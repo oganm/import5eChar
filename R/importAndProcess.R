@@ -348,12 +348,23 @@ processCharacter = function(char){
           'RecoverPerShortRest' = resData[7],
           'RecoverPerLongRest' = resData[8])
     }) %>% t
+    # this is to prevent the character reader from crashing when the character has no
+    # resources. this is may not be the best solution as you wrote this when you
+    # were drunk. revisit later.
+    if(length(resources) == 0){
+        resources = data.frame(remainingUse = character(0),
+                               maxUse = integer(0),
+                               dice= integer(0),
+                               RecoverPerShortRest = integer(0),
+                               RecoverPerLongRest = integer(0))
+    } else{
+        resources %<>%as.data.frame(stringsAsFactors = FALSE) %>% dplyr::mutate(remainingUse = as.integer(remainingUse),
+                                                                                maxUse = as.integer(maxUse),
+                                                                                dice = as.integer(dice),
+                                                                                RecoverPerShortRest = as.integer(RecoverPerShortRest),
+                                                                                RecoverPerLongRest  = as.integer(RecoverPerLongRest))
+    }
 
-    resources %<>%as.data.frame(stringsAsFactors = FALSE) %>% dplyr::mutate(remainingUse = as.integer(remainingUse),
-                                                  maxUse = as.integer(maxUse),
-                                                  dice = as.integer(dice),
-                                                  RecoverPerShortRest = as.integer(RecoverPerShortRest),
-                                                  RecoverPerLongRest  = as.integer(RecoverPerLongRest))
 
     rownames(resources) = NULL
 
