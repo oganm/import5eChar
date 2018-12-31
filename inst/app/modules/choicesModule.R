@@ -38,6 +38,15 @@ choices = function(input,output,session,char){
                          list)
         }
 
+        if(char$notes != ''){
+            tabs = c(tabs,
+                     tabPanel('Notes',
+                              char$notes  %>%
+                                  gsub('\n','<br/>',.,fixed = TRUE) %>%
+                                  HTML ) %>%
+                         list)
+        }
+
 
 
         do.call(tabsetPanel,c(id = session$ns('choicesTab'),tabs))
