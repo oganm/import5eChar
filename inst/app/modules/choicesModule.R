@@ -9,12 +9,27 @@ choicesUI = function(id){
 choices = function(input,output,session,char){
 
     output$choices = renderUI({
+
+        getRelevantFeature = function(x,char){
+            extraText = stringr::str_extract(char$Features,
+                                             glue('(?<={x}):.*?(?=\\n)'))
+
+            if(!is.na(extraText)){
+                x = tagList(strong(x), extraText)
+            }
+            return(x)
+        }
+
         tabs = seq_along(char$classChoices) %>% lapply(function(i){
+
             tabPanel(names(char$classChoices)[i] %>% abbreviate(minlength = 3),
                      tagList(
                          strong(names(char$classChoices)[i]),
                          char$classChoices[[i]] %>%
-                             lapply(tags$li) %>%
+                             lapply(function(x){
+                                 x = getRelevantFeature(x, char)
+                                 tags$li(x)
+                             }) %>%
                              do.call(tags$ul,.)
                      )
            )
@@ -25,7 +40,10 @@ choices = function(input,output,session,char){
         if(length(feats)>0){
             tabs = c(tabs,
                      tabPanel('Feats',feats %>%
-                                  lapply(tags$li) %>%
+                                  lapply(function(x){
+                                      x = getRelevantFeature(x, char)
+                                      tags$li(x)
+                                  }) %>%
                                   do.call(tags$ul,.)) %>%
                          list)
         }
