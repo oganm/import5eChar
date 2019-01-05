@@ -11,6 +11,7 @@ library(dplyr)
 library(shinyBS)
 library(jsonlite)
 library(shinythemes)
+library(stringr)
 
 spellData = tryCatch(fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>% paste(collapse = '\n')),
                      error = function(e){

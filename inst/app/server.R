@@ -105,4 +105,19 @@ shinyServer(function(input, output,session) {
 
     })
 
+
+    observe({
+        query = parseQueryString(session$clientData$url_search)
+        if(!is.null(query$valid) && query$valid==TRUE){
+            showModal(
+                modalDialog(title = "We are moving!",
+                            p("This app is moving. You can now access it from ",
+                              a(href="https://oganm.com/shiny/interactiveSheet",target= '_blank', 'oganm.com/shiny/interactiveSheet'),'.'),
+                            p("This link will continue to work but you will get this annoying message every time."),
+                            easyClose = FALSE)
+            )
+        }
+    }
+    )
+
 })
