@@ -9,11 +9,9 @@ fdfGet = function(field,fdf){
 
 #' @export
 prettyPDF = function(file,char = getOption('defaultCharacter')){
-
     if(is.character(char)){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
-
     # fix all character fields
     charFields = char %>% purrr::map_lgl(is.character)
     noDims = char %>% purrr::map(dim) %>% purrr::map_lgl(is.null)
@@ -27,8 +25,27 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
             stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
             stringr::str_replace_all('(‘)|(\u{2018})',"'") %>%
-            stringr::str_replace_all('(’)|(\u{2018})',"'")
+            stringr::str_replace_all('(’)|(\u{2018})',"'") %>%
+            stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
+            stringr::str_replace_all('(“)|(\u{201C})','"') %>%
+            stringr::str_replace_all('(”)|(\u{201D})','"')
+
     }
+
+    fixCharsPersonality = names(char$personality)
+    for (x in fixCharsPersonality){
+        char$personality[[x]] %<>% stringr::str_replace_all('•|\u{2022}','-') %>%
+            stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
+            stringr::str_replace_all('(¾)|(\u{00BE})','3/4') %>%
+            stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
+            stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
+            stringr::str_replace_all('(‘)|(\u{2018})',"'") %>%
+            stringr::str_replace_all('(’)|(\u{2018})',"'") %>%
+            stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
+            stringr::str_replace_all('(“)|(\u{201C})','"') %>%
+            stringr::str_replace_all('(”)|(\u{201D})','"')
+    }
+
 
     sourcePDF = system.file('character.pdf',package='import5eChar')
 

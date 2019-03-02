@@ -245,11 +245,22 @@ processCharacter = function(char){
 
     classData = char$classData %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
 
-    char$classInfo = classData[[1]] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>%
-        strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
-        {rownames(.) =NULL
-        colnames(.) = c('Class','Archetype','Level','Caster Type')
-        .}
+    tryCatch({
+        char$classInfo = classData[[1]] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>%
+            strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
+            {rownames(.) =NULL
+            colnames(.) = c('Class','Archetype','Level','Caster Type')
+            .}
+        },
+        error = function(e){
+            char$classInfo = NULL
+            })
+
+    # char$classInfo = classData[[1]] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>%
+    #     strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
+    #     {rownames(.) =NULL
+    #     colnames(.) = c('Class','Archetype','Level','Caster Type')
+    #     .}
 
 
     whereStart = classData %>% grep(pattern = '^[0-9]',x = .) %>% {.[[1]]}
