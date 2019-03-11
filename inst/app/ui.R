@@ -33,9 +33,17 @@ shinyUI(
                                    br(),
                                    diceRollerUI(id = 'diceRoller4', label = '')),
                             column(6,
-                                   actionButton('help',label = 'Help!',style = 'margin-top: 28px;float:right',
+                                   span(
+                                       actionButton('help',label = 'Help!',style = 'margin-top: 28px',
                                                 onclick =
-                                                    "window.open('https://github.com/oganm/import5eChar/blob/master/interactiveSheetDocumentation.md', '_blank')")))),
+                                                    "window.open('https://github.com/oganm/import5eChar/blob/master/interactiveSheetDocumentation.md', '_blank')"),
+                                       actionButton('meh','Donate',
+                                                icon = icon('gift'),
+                                                onclick =
+                                                    "window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NBC57LQVGMAJG', '_blank')",
+                                                style = 'margin-top: 28px;'),
+                                       bsTooltip('meh',title = "I can afford to keep this up virtually forever as it only costs about 7$/month to run. But if you are feeling generous it\\'s nice for things to pay for themselves"),
+                                       style = 'float:right')))),
             column(3,
                    wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
                    resourcesUI('resources'),
