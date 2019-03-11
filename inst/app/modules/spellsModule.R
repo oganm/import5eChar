@@ -74,7 +74,7 @@ spells = function(input,output,session,char){
                     spSource = input$spellSource
                 }
                 a(href = paste0(spSource,
-                                x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'",'',.)),
+                                x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'|’",'',.)),
                   target= '_blank',x
                 ) %>% as.character()
             })
@@ -133,7 +133,10 @@ spells = function(input,output,session,char){
                         size = 'sm',
                         inputId = session$ns(paste0("slotMark",x)),
                         label = '',
-                        choices = c(0,seq_len(slots[x])),
+                        choices = c(0,seq_len(slots[x])) %>% lapply(function(y){
+                            div(id = paste0(x,'-',y), width= "100%",onclick = glue('Shiny.onInputChange("',session$ns('spellSlots'),'",  this.id)'),
+                              y)
+                        }) %>% sapply(as.character),
                         selected = char$spellSlots[as.character(x)]
                     ) %>% as.character()
                     #
@@ -168,6 +171,11 @@ spells = function(input,output,session,char){
 
         }
     })
+
+
+    # observe({
+    #     print(input$spellSlots)
+    # })
 
 
 
