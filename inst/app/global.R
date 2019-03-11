@@ -13,10 +13,15 @@ library(jsonlite)
 library(shinythemes)
 library(stringr)
 
-spellData = tryCatch(fromJSON(readLines('https://pastebin.com/raw/2LqVRve5') %>% paste(collapse = '\n')),
+spellData = tryCatch(fromJSON(readLines('https://raw.githubusercontent.com/oganm/wizaRd/master/data-raw/spelldice.json') %>% paste(collapse = '\n')),
                      error = function(e){
                          spellData = list()
                      })
+
+spellDetails = tryCatch(fromJSON(readLines('https://raw.githubusercontent.com/oganm/wizaRd/master/data-raw/spellDetails.json') %>% paste(collapse = '\n')),
+                        error = function(e){
+                            spellDetails = list()
+                        })
 # spellData = wizaRd::spells
 source('modules/healthModule.R')
 source('modules/spellsModule.R')

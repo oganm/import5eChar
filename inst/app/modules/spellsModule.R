@@ -63,20 +63,56 @@ spells = function(input,output,session,char){
             groups %<>% c(nrow(char$spells))
 
 
+
             availableLevels = unique(char$spells$level)
             # maxLevel = (char$spellSlots>0) %>% which %>% max %>% {.-1} # max level with spell slots
 
-
             nameButtons = char$spells$name %>% sapply(function(x){
+                namelink = x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'|’",'',.)
+
                 if(is.null(input$spellSource) || input$spellSource == ''){
                     spSource = .sheetApp.spellSource
                 } else{
                     spSource = input$spellSource
                 }
-                a(href = paste0(spSource,
-                                x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'|’",'',.)),
-                  target= '_blank',x
-                ) %>% as.character()
+
+
+                # prepare the link
+                spelllink = a(href = paste0(spSource,
+                                       namelink),
+                         target= '_blank',x,
+                         id = paste0('name_button_',namelink)
+                )
+
+                # prepare additional information
+
+                spellIndex = which(tolower(names(spellDetails)) %in% tolower(x))
+                if(length(spellIndex==1)){
+                    spellInfo = spellDetails[[spellIndex]]
+                } else{
+                    spellInfo = list()
+                }
+
+
+
+                if(length(spellInfo)>0){
+                    tooltipData =
+                        spellInfo[c('school','components','castingTime','duration','range','aoe','attackSave','damageEffect')] %>%
+                        unlist %>%
+                        na.omit() %>% {.[.!='']}
+
+                    tooltipText = seq_along(tooltipData) %>% sapply(function(i){
+                        paste0(names(tooltipData)[i],': ',tooltipData[[i]])
+                    }) %>% paste(collapse = '</br>')
+
+                    div(spelllink,
+                        bsTooltip(id = paste0('name_button_',namelink),tooltipText)) %>%
+                        as.character -> out
+                    return(out)
+                }else{
+                    return(as.character(spelllink))
+                }
+
             })
 
             prepared = char$spells$name %>% sapply(function(x){
@@ -90,7 +126,7 @@ spells = function(input,output,session,char){
                 spellIndex = which(tolower(names(spellData)) %in% tolower(x))
 
                 if(length(spellIndex==1)){
-                    spellDice = spellData[[which(tolower(names(spellData)) %in% tolower(x))]]
+                    spellDice = spellData[[spellIndex]]
                     spellDice %<>%
                         gsub(pattern = 'SPELL\\+PROF', replacement = spellAttack(char),.) %>%
                         gsub(pattern = 'SPELL',replacement = char$abilityMods[char$castingStatCode + 1],.)
