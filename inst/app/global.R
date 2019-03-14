@@ -33,8 +33,9 @@ source('modules/weaponsModule.R')
 source('modules/skillsModule.R')
 source('modules/diceRollerModule.R')
 source('modules/packageVersionModule.R')
+source('modules/consoleModule.R')
 
-consoleLength  = 15
+consoleLength  = 60
 
 
 if(!exists('char')){

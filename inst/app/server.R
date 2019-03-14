@@ -50,60 +50,20 @@ shinyServer(function(input, output,session) {
 
     choicesModule = callModule(choices,'choices', char = char)
 
-    output$console = renderText({
-        out = ''
+    callModule(console,'console',
+               consoleLength = consoleLength,
+               attributeModule,
+               weaponModule,
+               skillModule,
+               resourceModule,
+               diceModule,
+               diceModule2,
+               diceModule3,
+               diceModule4,
+               characterDescription,
+               healthModule,
+               spellsModule)
 
-        if(out == ''){
-            out = attributeModule()
-        }
-        if(out ==''){
-            out = weaponModule()
-        }
-        if(out == ''){
-            out = skillModule()
-        }
-        if(out == ''){
-            out = resourceModule()
-        }
-        if(out == ''){
-            out = diceModule()
-        }
-        if(out == ''){
-            out = diceModule2()
-        }
-        if(out == ''){
-            out = diceModule3()
-        }
-        if(out == ''){
-            out = diceModule4()
-        }
-        if(out ==''){
-            out = characterDescription()
-        }
-        if(out ==''){
-            out = healthModule()
-        }
-        if(out == ''){
-            out = spellsModule()
-        }
-
-
-
-        isolate({
-
-            # console memory
-            if(out != ''){
-                out %<>% strsplit('\n') %>% {.[[1]]} # kinda not necesarry
-                oldConsole = consoleOut() %>% strsplit(split = '\n') %>% {.[[1]]}
-                newConsole = c(oldConsole[(length(out)+1):consoleLength],out)
-                console = newConsole %>% paste(collapse='\n')
-                consoleOut(console)
-            }
-
-            return(consoleOut())
-        })
-
-    })
 
 
     observe({

@@ -45,7 +45,7 @@ shinyUI(
                                        bsTooltip('meh',title = "I can afford to keep this up virtually forever as it only costs about 7$/month to run. But if you are feeling generous it\\'s nice for things to pay for themselves"),
                                        style = 'float:right')))),
             column(3,
-                   wellPanel(verbatimTextOutput('console',placeholder = TRUE)),
+                   consoleUI("console"),
                    resourcesUI('resources'),
                    br(),
                    choicesUI('choices'))),
