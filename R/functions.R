@@ -143,11 +143,11 @@ attack = function(adv = 0,
     }
 
     if(adv == 0){
-        attackRoll = diceSyntax::r(r1d20,vocal=vocal)
+        attackRoll = diceSyntax::r('1d20',vocal=vocal)
     } else if(adv == 1){
-        attackRoll = diceSyntax::r(r2d20d1,vocal = vocal)
+        attackRoll = diceSyntax::r("2d20d1",vocal = vocal)
     } else if (adv == -1){
-        attackRoll = diceSyntax::r(r2d20dh1, vocal = vocal)
+        attackRoll = diceSyntax::r("2d20dh1", vocal = vocal)
     }
     finalRoll = unname(attackRoll + char$abilityMods[attackStat] + proficient*char$proficiencyBonus + modToHit)
     if(sharpShoot){
@@ -206,7 +206,7 @@ skillCheck = function(skill,
         bonus %>% floor()
     }
 
-    diceSyntax::r(r1d20) + unname(bonus)
+    diceSyntax::r("1d20") + unname(bonus)
 }
 
 #' Title
@@ -229,7 +229,7 @@ quickCheck = function(char =  getOption('defaultCharacter')){
         return(x)
     }
 
-    roll = diceSyntax::r(r1d20)
+    roll = diceSyntax::r("1d20")
     bonus = skillBonus(char = char)
 
 
@@ -246,7 +246,7 @@ abilityCheck = function(ability,char=  getOption('defaultCharacter')){
     if(is.character(char)){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
-    roll = diceSyntax::r(r1d20)
+    roll = diceSyntax::r("1d20")
     bonus = char$abilityMods[ability]
 
     roll + unname(bonus)
@@ -265,7 +265,7 @@ save = function(stat, char =  getOption('defaultCharacter')){
     }
 
 
-    unname(diceSyntax::r(r1d20) + saveBonus(char = char)[stat])
+    unname(diceSyntax::r("1d20") + saveBonus(char = char)[stat])
 }
 
 
@@ -274,7 +274,7 @@ quickSave = function(char = getOption('defaultCharacter')){
     if(is.character(char)){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
-    diceSyntax::r(r1d20)  + saveBonus(char = char)
+    diceSyntax::r("1d20")  + saveBonus(char = char)
 }
 
 
@@ -287,6 +287,6 @@ init = function(char = getOption('defaultCharacter')){
         char = char %>% parse(text = .) %>% eval(envir = parent.frame())
     }
 
-    diceSyntax::r(r1d20) + initBonus(char)
+    diceSyntax::r("1d20") + initBonus(char)
 }
 
