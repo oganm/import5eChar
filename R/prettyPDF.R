@@ -28,7 +28,8 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(’)|(\u{2018})',"'") %>%
             stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
-            stringr::str_replace_all('(”)|(\u{201D})','"')
+            stringr::str_replace_all('(”)|(\u{201D})','"') %>%
+            stringr::str_replace_all('(→)|(\u{201D})','->')
 
     }
 
@@ -43,7 +44,8 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(’)|(\u{2018})',"'") %>%
             stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
-            stringr::str_replace_all('(”)|(\u{201D})','"')
+            stringr::str_replace_all('(”)|(\u{201D})','"') %>%
+            stringr::str_replace_all('(→)|(\u{201D})','->')
     }
 
 
@@ -299,7 +301,6 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
 
 
     fields[['other-profs']]$value = profAndLang
-
 
     staplr::set_fields(sourcePDF,output_filepath = file,fields = fields)
 
