@@ -1,4 +1,4 @@
-name: CharacterSheet
+name: Character Sheet
 description: >
   Makes a character sheet out of exported XML
-create_dir: false
+create_dir: FALSE

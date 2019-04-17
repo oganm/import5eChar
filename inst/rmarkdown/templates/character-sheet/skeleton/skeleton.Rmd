@@ -272,7 +272,7 @@ if(!is.null(char$spells)){
         } else{
             text = paste('Level',availableLevels[i],'(',char$spellSlots[availableLevels[i] %>% as.character()],')')
         }
-        out = out %>% group_rows(group_label = text,
+        out = out %>% kableExtra::group_rows(group_label = text,
                                  start_row = groups[i]+1,
                                  end_row = groups[i+1]-1+1, latex_gap_space = "1em")
     }
