@@ -20,18 +20,18 @@
   "speedMiscMod": [0],
   "movementMode": ["Speed"],
   "unarmoredDefense": [""],
-  "abilityScores": [9, 20, 18, 11, 14, 12],
-  "abilityProf": [true, false, true, false, true, false],
-  "miscSaveBonus": [0, 0, 0, 0, 0, 0],
+  "abilityScores": {"Str":9,"Dex":20,"Con":18,"Int":11,"Wis":14,"Cha":12},
+  "abilityProf": {"Str":true,"Dex":false,"Con":true,"Int":false,"Wis":true,"Cha":false},
+  "miscSaveBonus": {"Str":0,"Dex":0,"Con":0,"Int":0,"Wis":0,"Cha":0},
   "statToSave": [""],
-  "abilityMods": [-1, 5, 4, 0, 2, 1],
-  "skillAttributes": ["Str", "Dex", "Dex", "Dex", "Int", "Int", "Int", "Int", "Int", "Wis", "Wis", "Wis", "Wis", "Wis", "Cha", "Cha", "Cha", "Cha"],
-  "profToInit": [false, false, false, false],
-  "skillProf": [false, false, false, true, false, false, false, false, false, false, true, false, true, false, false, true, false, true],
-  "skillMiscMod": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-  "skillDoubleProf": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-  "skillHalfProf": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
-  "skillHalfProfRoundUp": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  "abilityMods": {"Str":-1,"Dex":5,"Con":4,"Int":0,"Wis":2,"Cha":1},
+  "skillAttributes": {"Athletics":"Str","Acrobatics":"Dex","Sleight of Hand":"Dex","Stealth":"Dex","Arcana":"Int","History":"Int","Investigation":"Int","Nature":"Int","Religion":"Int","Animal Handling":"Wis","Insight":"Wis","Medicine":"Wis","Perception":"Wis","Survival":"Wis","Deception":"Cha","Intimidation":"Cha","Performance":"Cha","Persuasion":"Cha"},
+  "profToInit": {"profToInit":false,"doubleProfToInit":false,"halfProfToInit":false,"halfProfToInitRoundUp":false},
+  "skillProf": {"Athletics":false,"Acrobatics":false,"Sleight of Hand":false,"Stealth":true,"Arcana":false,"History":false,"Investigation":false,"Nature":false,"Religion":false,"Animal Handling":false,"Insight":true,"Medicine":false,"Perception":true,"Survival":false,"Deception":false,"Intimidation":true,"Performance":false,"Persuasion":true},
+  "skillMiscMod": {"Athletics":0,"Acrobatics":0,"Sleight of Hand":0,"Stealth":0,"Arcana":0,"History":0,"Investigation":0,"Nature":0,"Religion":0,"Animal Handling":0,"Insight":0,"Medicine":0,"Perception":0,"Survival":0,"Deception":0,"Intimidation":0,"Performance":0,"Persuasion":0},
+  "skillDoubleProf": {"Athletics":false,"Acrobatics":false,"Sleight of Hand":false,"Stealth":false,"Arcana":false,"History":false,"Investigation":false,"Nature":false,"Religion":false,"Animal Handling":false,"Insight":false,"Medicine":false,"Perception":false,"Survival":false,"Deception":false,"Intimidation":false,"Performance":false,"Persuasion":false},
+  "skillHalfProf": {"Athletics":false,"Acrobatics":false,"Sleight of Hand":false,"Stealth":false,"Arcana":false,"History":false,"Investigation":false,"Nature":false,"Religion":false,"Animal Handling":false,"Insight":false,"Medicine":false,"Perception":false,"Survival":false,"Deception":false,"Intimidation":false,"Performance":false,"Persuasion":false},
+  "skillHalfProfRoundUp": {"Athletics":false,"Acrobatics":false,"Sleight of Hand":false,"Stealth":false,"Arcana":false,"History":false,"Investigation":false,"Nature":false,"Religion":false,"Animal Handling":false,"Insight":false,"Medicine":false,"Perception":false,"Survival":false,"Deception":false,"Intimidation":false,"Performance":false,"Persuasion":false},
   "weapons": {
     "Longbow Of Flying": {
       "name": ["Longbow Of Flying"],
@@ -109,8 +109,8 @@
     ["Cleric", "Forge Domain", "2", "0"]
   ],
   "statToInit": [""],
-  "weaponAttackMods": [0, 0, 0, 0, 0, 0, 0, 0, 2],
-  "weaponDamageMods": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  "weaponAttackMods": {"all":0,"allOneHand":0,"allTwoHand":0,"oneHandMelee":0,"twoHandMelee":0,"allMelee":0,"oneHandRanged":0,"twoHandRanged":0,"allRanged":2},
+  "weaponDamageMods": {"all":0,"allOneHand":0,"allTwoHand":0,"oneHandMelee":0,"twoHandMelee":0,"allMelee":0,"oneHandRanged":0,"twoHandRanged":0,"allRanged":0},
   "resources": [
     {
       "name": "Action Surge",
@@ -212,7 +212,7 @@
   },
   "hitDice": ["16d10", "2d8"],
   "hitDiceRemain": ["16d10", "2d8"],
-  "spellSlots": [0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+  "spellSlots": {"Cantrip":0,"1":3,"2":0,"3":0,"4":0,"5":0,"6":0,"7":0,"8":0,"9":0},
   "spells": [
     {
       "level": 0,
