@@ -1,0 +1,283 @@
+{
+  "initMiscMod": [0],
+  "improvedInitiative": ["0"],
+  "currentHealth": [182],
+  "maxHealth": [182],
+  "currentTempHP": [0],
+  "armorBonus": [12],
+  "shieldBonus": [0],
+  "miscArmorBonus": [1],
+  "maxDex": [10],
+  "proficiencyBonus": [6],
+  "miscSpellAttackBonus": [0],
+  "miscSpellDCBonus": [0],
+  "castingStatCode": [4],
+  "offenseAbilityDisplay": ["1"],
+  "deathSaveSuccesses": ["0"],
+  "deathSaveFailures": ["0"],
+  "showDeathSaves": ["true"],
+  "baseSpeed": [30],
+  "speedMiscMod": [0],
+  "movementMode": ["Speed"],
+  "unarmoredDefense": [""],
+  "abilityScores": [9, 20, 18, 11, 14, 12],
+  "abilityProf": [true, false, true, false, true, false],
+  "miscSaveBonus": [0, 0, 0, 0, 0, 0],
+  "statToSave": [""],
+  "abilityMods": [-1, 5, 4, 0, 2, 1],
+  "skillAttributes": ["Str", "Dex", "Dex", "Dex", "Int", "Int", "Int", "Int", "Int", "Wis", "Wis", "Wis", "Wis", "Wis", "Cha", "Cha", "Cha", "Cha"],
+  "profToInit": [false, false, false, false],
+  "skillProf": [false, false, false, true, false, false, false, false, false, false, true, false, true, false, false, true, false, true],
+  "skillMiscMod": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+  "skillDoubleProf": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  "skillHalfProf": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  "skillHalfProfRoundUp": [false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false],
+  "weapons": {
+    "Longbow Of Flying": {
+      "name": ["Longbow Of Flying"],
+      "range": ["150/600"],
+      "dice": ["1d8"],
+      "hands": [2],
+      "attackStat": ["Dex"],
+      "proficient": [true],
+      "type": ["ranged"],
+      "damageType": ["Piercing"],
+      "miscDamageBonus": [0],
+      "magicDamageBonus": [0],
+      "miscAttackBonus": [0],
+      "magicAttackBonus": [0]
+    },
+    "Crossbow, hand +1": {
+      "name": ["Crossbow, hand +1"],
+      "range": ["30/120"],
+      "dice": ["1d6"],
+      "hands": [1],
+      "attackStat": ["Dex"],
+      "proficient": [true],
+      "type": ["ranged"],
+      "damageType": ["Piercing"],
+      "miscDamageBonus": [0],
+      "magicDamageBonus": [1],
+      "miscAttackBonus": [1],
+      "magicAttackBonus": [0]
+    },
+    "Dagger (Continual Flame)": {
+      "name": ["Dagger (Continual Flame)"],
+      "range": ["20/60"],
+      "dice": ["1d4"],
+      "hands": [1],
+      "attackStat": ["Dex"],
+      "proficient": [true],
+      "type": ["melee"],
+      "damageType": ["Piercing"],
+      "miscDamageBonus": [0],
+      "magicDamageBonus": [0],
+      "miscAttackBonus": [0],
+      "magicAttackBonus": [0]
+    },
+    "Sling": {
+      "name": ["Sling"],
+      "range": ["30/120"],
+      "dice": ["1d4"],
+      "hands": [1],
+      "attackStat": ["Dex"],
+      "proficient": [true],
+      "type": ["ranged"],
+      "damageType": ["Bludgeoning"],
+      "miscDamageBonus": [0],
+      "magicDamageBonus": [0],
+      "miscAttackBonus": [0],
+      "magicAttackBonus": [0]
+    },
+    "Crossbow, hand": {
+      "name": ["Crossbow, hand"],
+      "range": ["30/120"],
+      "dice": ["1d6"],
+      "hands": [1],
+      "attackStat": ["Dex"],
+      "proficient": [true],
+      "type": ["ranged"],
+      "damageType": ["Piercing"],
+      "miscDamageBonus": [0],
+      "magicDamageBonus": [0],
+      "miscAttackBonus": [0],
+      "magicAttackBonus": [0]
+    }
+  },
+  "classInfo": [
+    ["Fighter", "Battle Master", "16", "-1"],
+    ["Cleric", "Forge Domain", "2", "0"]
+  ],
+  "statToInit": [""],
+  "weaponAttackMods": [0, 0, 0, 0, 0, 0, 0, 0, 2],
+  "weaponDamageMods": [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  "resources": [
+    {
+      "name": "Action Surge",
+      "shortName": "Act. Surge",
+      "remainingUse": 1,
+      "maxUse": 1,
+      "dice": 0,
+      "ResourceDisplay": "1",
+      "Reset": "long rest",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    },
+    {
+      "name": "Superiority Dice",
+      "shortName": "Superiority",
+      "remainingUse": 6,
+      "maxUse": 6,
+      "dice": 10,
+      "ResourceDisplay": "6d10",
+      "Reset": "never",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    },
+    {
+      "name": "Indomitable",
+      "shortName": "",
+      "remainingUse": 2,
+      "maxUse": 2,
+      "dice": 0,
+      "ResourceDisplay": "2",
+      "Reset": "long rest",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    },
+    {
+      "name": "Second Wind",
+      "shortName": "S. Wind",
+      "remainingUse": 1,
+      "maxUse": 1,
+      "dice": 10,
+      "ResourceDisplay": "1d10",
+      "Reset": "short rest",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    },
+    {
+      "name": "Lucky",
+      "shortName": "Lucky",
+      "remainingUse": 3,
+      "maxUse": 3,
+      "dice": 20,
+      "ResourceDisplay": "3d20",
+      "Reset": "long rest",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    },
+    {
+      "name": "Channel Divinity",
+      "shortName": "Channel Div",
+      "remainingUse": 1,
+      "maxUse": 1,
+      "dice": 0,
+      "ResourceDisplay": "1",
+      "Reset": "short rest",
+      "RecoverPerShortRest": 0,
+      "RecoverPerLongRest": 0
+    }
+  ],
+  "feats": ["", "Crossbow Expert", "Sharpshooter", "Resilient", "Lucky", "Healer"],
+  "classChoices": {
+    "fighting style": ["Archery"],
+    "combat superiority maneuvers": ["Trip Attack", "Precision Attack", "Menacing Attack", "Maneuvering Attack", "Evasive Footwork", "Disarming Attack", "Rally", "Distracting Strike", "Pushing Attack", "Commander’s Strike"]
+  },
+  "Features": ["Human Features:\n• One extra skill proficiency of your choosing\n• One bonus feat of your choosing\nCriminal Feature:\n• You know someone who can connect you with other criminals\nFighter Features:\n• Fighting Style - Archery: +2 to attack with ranged weapons\n• Heal 1d10 + level hit points as a bonus action (once between rests)\n• Crossbow Expert: You don't have disadvantage from adjacent enemies on ranged attacks, you can load crossbows faster, and you can make a bonus action attack with a hand crossbow after attacking with a one-handed weapon\n• Take an extra action once between rests\n• Trip: You can cause one creature you hit to take Superiority Die extra damage and if it is at most Large size must make a Str save or fall prone\n• Precise Strike: You can gain Superiority Die to an attack roll\n• Frighten: You can cause one creature you hit to take Superiority Die extra damage and must make a Wis save or be frightened this round\n• Sharpshooter: Your ranged attacks ignore ½ and ¾ cover, don't have disadvantage from long range, and you can take -5 to a ranged attack for +10 damage\n• You can make two attacks on your turn\n• Reposition Ally: You can cause one creature you hit to take Superiority Die extra damage and allow one ally to use a reaction to move half their speed without provoking from your target\n• Evade: You can gain Superiority Die to AC while moving\n• Disarm: You can cause one creature you hit to take Superiority Die extra damage and must make a Str save or drop something they are holding\n• Resilient: You gain proficiency with one save and +1 to that ability\nCleric Features:\n• Cleric Archetype: Forge\n• Proficiency Heavy Armor, Smith's Tools\n• You can make a nonmagical weapon or armor a +1 magic item until you die or take a long rest, once after a long rest\n• Reroll a failed save 1/day\n• Maneuver die increases to d10\n• Rally: You can give one creature Superiority Die + Cha mod temp hp\n• Distract: You can cause one creature you hit to take Superiority Die extra damage and grant advantage to the next attack against it this round from someone else\n• Extra Attack: Three attacks\n• Lucky: You can reroll a d20 roll you make or an attack against you 3/day\n• Reroll a failed save 2/day\n• Turn Undead (see rules)\n• Artisan's Blessing (see rules)\n• Healer: You can use a healer's kit to heal a creature 1d6 + 4 hp as an action, and a dying creature you stabilize gains 1 hp\n• Gain one maneuver die when you roll initiative and have none\n• Push: You can cause one creature you hit to take Superiority Die extra damage and if it is at most Large size must make a Str save or be pushed up to 15 feet\n• Command Ally: You may have an ally make an attack with Superiority Die extra damage in place of one of your own attacks\n"],
+  "ArmorProficiencies": ["Light Armor, Medium Armor, Heavy Armor, Shields\nLight Armor, Medium Armor, Shields\nHeavy Armor\n"],
+  "WeaponProficiencies": ["Simple Weapons, Martial Weapons\n"],
+  "ToolProficiencies": ["One type of gaming set\nThieves' Tools\nPoisoner's kit\nSmith's Tools\n"],
+  "LanguagesKnown": ["Common\nExtra Language\n"],
+  "Equipment": ["qleather armor\nshield\nlongbow\ncrossbow, hand\nhandaxe (2)\narrows (20)\ndungeoneer's pack\ncrowbar\nset of dark common clothes\nhood\nbelt pouch\n"],
+  "notes": ["This is a test note"],
+  "Class": ["Fighter 16, Cleric 2"],
+  "Race": ["Human"],
+  "Background": ["Criminal"],
+  "Alignment": ["lawful neutral"],
+  "personality": {
+    "traits": [""],
+    "ideals": [""],
+    "bonds": [""],
+    "flaws": [""]
+  },
+  "Name": ["Tim"],
+  "ClassField": ["Fighter 16, Cleric 2"],
+  "currency": {
+    "CP": ["0"],
+    "SP": ["0"],
+    "EP": ["0"],
+    "GP": ["12"],
+    "PP": ["0"]
+  },
+  "hitDice": ["16d10", "2d8"],
+  "hitDiceRemain": ["16d10", "2d8"],
+  "spellSlots": [0, 3, 0, 0, 0, 0, 0, 0, 0, 0],
+  "spells": [
+    {
+      "level": 0,
+      "name": "Resistance",
+      "prepared": true
+    },
+    {
+      "level": 0,
+      "name": "Thaumaturgy",
+      "prepared": true
+    },
+    {
+      "level": 0,
+      "name": "Mending",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Identify",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Searing Smite",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Bless",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Healing Word",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Protection From Evil And Good",
+      "prepared": true
+    },
+    {
+      "level": 1,
+      "name": "Create Or Destroy Water",
+      "prepared": false
+    },
+    {
+      "level": 1,
+      "name": "Detect Evil And Good",
+      "prepared": false
+    },
+    {
+      "level": 1,
+      "name": "Cure Wounds",
+      "prepared": false
+    },
+    {
+      "level": 1,
+      "name": "Purify Food And Drink",
+      "prepared": false
+    },
+    {
+      "level": 1,
+      "name": "Shield Of Faith",
+      "prepared": true
+    }
+  ]
+}

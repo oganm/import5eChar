@@ -1,0 +1,100 @@
+<?xml version='1.0' encoding='UTF-8' standalone='yes' ?>
+<character>
+<version>1</version>
+<initMiscMod>0</initMiscMod>
+<improvedInitiative>0</improvedInitiative>
+<currentHealth>182</currentHealth>
+<maxHealth>182</maxHealth>
+<currentTempHP>0</currentTempHP>
+<armorBonus>12</armorBonus>
+<shieldBonus>0</shieldBonus>
+<miscArmorBonus>1</miscArmorBonus>
+<maxDex>10</maxDex>
+<proficiencyBonus>6</proficiencyBonus>
+<miscSpellAttackBonus>0</miscSpellAttackBonus>
+<miscSpellDCBonus>0</miscSpellDCBonus>
+<castingStatCode>4</castingStatCode>
+<offenseAbilityDisplay>1</offenseAbilityDisplay>
+<deathSaveSuccesses>0</deathSaveSuccesses>
+<deathSaveFailures>0</deathSaveFailures>
+<showDeathSaves>true</showDeathSaves>
+<baseSpeed>30</baseSpeed>
+<speedMiscMod>0</speedMiscMod>
+<movementMode>Speed</movementMode>
+<raceCode>-1</raceCode>
+<subraceCode>-1</subraceCode>
+<backgroundCode>-1</backgroundCode>
+<pagePosition0>1</pagePosition0>
+<pagePosition1>2</pagePosition1>
+<pagePosition2>3</pagePosition2>
+<pagePosition3>4</pagePosition3>
+<pagePosition4>5</pagePosition4>
+<unarmoredDefense>0</unarmoredDefense>
+<featCode></featCode>
+<classData>Fighter⊡Battle Master⊡16⊡-1⊠Cleric⊡Forge Domain⊡2⊡0⊟⊠Extra Attack⊟Action Surge⊡Act. Surge⊡1⊡1⊡0⊡2⊡0⊡0⊡-1⊡0⊠Superiority Dice⊡Superiority⊡6⊡6⊡10⊡1⊡0⊡0⊡303⊡0⊠Indomitable⊡⊡2⊡2⊡0⊡2⊡0⊡0⊡-1⊡0⊠Second Wind⊡S. Wind⊡1⊡1⊡10⊡1⊡0⊡0⊡-1⊡0⊠Lucky⊡Lucky⊡3⊡3⊡20⊡2⊡0⊡0⊡-1⊡0⊠Channel Divinity⊡Channel Div⊡1⊡1⊡0⊡1⊡0⊡0⊡-1⊡0⊟⊠Crossbow Expert⊠Sharpshooter⊠Resilient⊠Lucky⊠Healer⊟fighting style⊡Archery⊠combat superiority maneuvers⊡Trip Attack⊡Precision Attack⊡Menacing Attack⊡Maneuvering Attack⊡Evasive Footwork⊡Disarming Attack⊡Rally⊡Distracting Strike⊡Pushing Attack⊡Commander’s Strike⊟⊟⊟Human⊟Human Variant⊟Criminal⊟0⊠0⊠2⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠⊟20⊠20⊠20⊠20⊠20⊠20⊠⊟0⊟2⊟0⊟1⊟1⊟1</classData>
+<multiclassFeatures></multiclassFeatures>
+<weaponList>5⊠Longbow Of Flying⊠150/600⊠2201⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠8⊠Crossbow, hand +1⊠30/120⊠2101⊠1⊠1⊠0⊠1⊠0⊠true⊠true⊠1⊠1⊠6⊠Dagger (Continual Flame)⊠20/60⊠1101⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠4⊠Sling⊠30/120⊠2100⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠4⊠Crossbow, hand⊠30/120⊠2101⊠1⊠0⊠0⊠0⊠0⊠true⊠true⊠1⊠1⊠6</weaponList>
+<abilityScores>9⊠20⊠18⊠11⊠14⊠12⊠true⊠false⊠true⊠false⊠true⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0</abilityScores>
+<skillInfo>false⊠false⊠false⊠true⊠false⊠false⊠false⊠false⊠false⊠false⊠true⊠false⊠true⊠false⊠false⊠true⊠false⊠true⊠false⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠0⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false⊠false</skillInfo>
+<spellList>v1.1⊠0⊡3⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠true⊡true⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡false⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡0⊡⊠0⊠2⊠false⊠0⊟Resistance⊟⊟⊟⊟⊟⊟true⊟0⊡0⊟Thaumaturgy⊟⊟⊟⊟⊟⊟true⊟0⊡0⊟Mending⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Identify⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Searing Smite⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Bless⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Healing Word⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Protection From Evil And Good⊟⊟⊟⊟⊟⊟true⊟0⊡1⊟Create Or Destroy Water⊟⊟⊟⊟⊟⊟false⊟0⊡1⊟Detect Evil And Good⊟⊟⊟⊟⊟⊟false⊟0⊡1⊟Cure Wounds⊟⊟⊟⊟⊟⊟false⊟0⊡1⊟Purify Food And Drink⊟⊟⊟⊟⊟⊟false⊟0⊡1⊟Shield Of Faith⊟⊟⊟⊟⊟⊟true⊟0⊡</spellList>
+<noteList>Human Features:
+• One extra skill proficiency of your choosing
+• One bonus feat of your choosing
+Criminal Feature:
+• You know someone who can connect you with other criminals
+Fighter Features:
+• Fighting Style - Archery: +2 to attack with ranged weapons
+• Heal 1d10 + level hit points as a bonus action (once between rests)
+• Crossbow Expert: You don't have disadvantage from adjacent enemies on ranged attacks, you can load crossbows faster, and you can make a bonus action attack with a hand crossbow after attacking with a one-handed weapon
+• Take an extra action once between rests
+• Trip: You can cause one creature you hit to take Superiority Die extra damage and if it is at most Large size must make a Str save or fall prone
+• Precise Strike: You can gain Superiority Die to an attack roll
+• Frighten: You can cause one creature you hit to take Superiority Die extra damage and must make a Wis save or be frightened this round
+• Sharpshooter: Your ranged attacks ignore ½ and ¾ cover, don't have disadvantage from long range, and you can take -5 to a ranged attack for +10 damage
+• You can make two attacks on your turn
+• Reposition Ally: You can cause one creature you hit to take Superiority Die extra damage and allow one ally to use a reaction to move half their speed without provoking from your target
+• Evade: You can gain Superiority Die to AC while moving
+• Disarm: You can cause one creature you hit to take Superiority Die extra damage and must make a Str save or drop something they are holding
+• Resilient: You gain proficiency with one save and +1 to that ability
+Cleric Features:
+• Cleric Archetype: Forge
+• Proficiency Heavy Armor, Smith's Tools
+• You can make a nonmagical weapon or armor a +1 magic item until you die or take a long rest, once after a long rest
+• Reroll a failed save 1/day
+• Maneuver die increases to d10
+• Rally: You can give one creature Superiority Die + Cha mod temp hp
+• Distract: You can cause one creature you hit to take Superiority Die extra damage and grant advantage to the next attack against it this round from someone else
+• Extra Attack: Three attacks
+• Lucky: You can reroll a d20 roll you make or an attack against you 3/day
+• Reroll a failed save 2/day
+• Turn Undead (see rules)
+• Artisan's Blessing (see rules)
+• Healer: You can use a healer's kit to heal a creature 1d6 + 4 hp as an action, and a dying creature you stabilize gains 1 hp
+• Gain one maneuver die when you roll initiative and have none
+• Push: You can cause one creature you hit to take Superiority Die extra damage and if it is at most Large size must make a Str save or be pushed up to 15 feet
+• Command Ally: You may have an ally make an attack with Superiority Die extra damage in place of one of your own attacks
+⊠Light Armor, Medium Armor, Heavy Armor, Shields
+Light Armor, Medium Armor, Shields
+Heavy Armor
+⊠Simple Weapons, Martial Weapons
+⊠One type of gaming set
+Thieves' Tools
+Poisoner's kit
+Smith's Tools
+⊠Common
+Extra Language
+⊠qleather armor
+shield
+longbow
+crossbow, hand
+handaxe (2)
+arrows (20)
+dungeoneer's pack
+crowbar
+set of dark common clothes
+hood
+belt pouch
+⊠This is a test note⊠Fighter 16, Cleric 2⊠Human⊠Criminal⊠lawful neutral⊠⊠⊠⊠⊠Tim⊠Fighter 16, Cleric 2⊠0⊠0⊠0⊠12⊠0⊠0</noteList>
+<hitDiceList>2⊠16⊠10⊠16⊠2⊠8⊠2</hitDiceList>
+<classResource>-1⊠-1⊠-1⊠-1⊠-1⊠-1⊠1⊠2⊠1000⊠3⊠4⊠5</classResource>
+</character>

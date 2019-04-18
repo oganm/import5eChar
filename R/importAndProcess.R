@@ -14,7 +14,7 @@
 #'
 #' @export
 #'
-importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,overwrite=TRUE,...){
+importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,overwrite=TRUE,clean = TRUE,...){
     if(is.null(regex) & is.null(fileID) & is.null(file)){
         error('Either regex, fileID or file should be provided')
     }
@@ -40,11 +40,11 @@ importCharacter = function(regex=NULL, fileID = NULL,file = NULL, output=NULL,ov
 
     char = paste(readLines(output,encoding = 'UTF-8'),collapse = '\n')
 
-    return(processCharacter(char))
+    return(processCharacter(char,clean = clean))
 }
 
 
-processCharacter = function(char){
+processCharacter = function(char,clean = TRUE){
 
     char %<>% stringr::str_replace_all('&','and') %>%  XML::xmlParse() %>%  (XML::xmlToList)
 
@@ -460,6 +460,28 @@ processCharacter = function(char){
 
     char$spells = spells
 
+    if(clean){
+        useless_fields = c('version',
+                           'raceCode',
+                           'subraceCode',
+                           'backgroundCode',
+                           'pagePosition0',
+                           'pagePosition1',
+                           'pagePosition2',
+                           'pagePosition3',
+                           'pagePosition4',
+                           'featCode',
+                           'classData',
+                           'multiclassFeatures',
+                           'weaponList',
+                           'skillInfo',
+                           'spellList',
+                           'noteList',
+                           'hitDiceList',
+                           'classResource')
+
+        char = char[!names(char) %in% useless_fields]
+    }
 
     return(char)
 }
