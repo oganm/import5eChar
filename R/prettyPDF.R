@@ -1,5 +1,5 @@
 # animation::pdftk(sourcePDF,operation = 'generate_fdf',output = fdfFile)
-# staplr::get_fields(input_filepath = sourcePDF)
+# fields = staplr::get_fields(input_filepath = sourcePDF)
 
 
 fdfGet = function(field,fdf){
@@ -29,7 +29,9 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
             stringr::str_replace_all('(”)|(\u{201D})','"') %>%
-            stringr::str_replace_all('(→)|(\u{201D})','->')
+            stringr::str_replace_all('(→)|(\u{201D})','->') %>%
+            gsub("[^\x01-\x7F]", "", .)
+
 
     }
 
@@ -45,7 +47,8 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
             stringr::str_replace_all('(”)|(\u{201D})','"') %>%
-            stringr::str_replace_all('(→)|(\u{201D})','->')
+            stringr::str_replace_all('(→)|(\u{201D})','->') %>%
+            gsub("[^\x01-\x7F]", "", .)
     }
 
 
