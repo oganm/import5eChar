@@ -1,6 +1,6 @@
 # animation::pdftk(sourcePDF,operation = 'generate_fdf',output = fdfFile)
-# fields = staplr::get_fields(input_filepath = sourcePDF)
-
+# fields = staplr::get_fields(input_filepath = system.file('character.pdf',package='import5eChar'))
+# saveRDS(fields,'inst/char.rds')
 
 fdfGet = function(field,fdf){
     stringr::str_extract(string = fdf,
