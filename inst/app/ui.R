@@ -42,7 +42,7 @@ shinyUI(
                                                 onclick =
                                                     "window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NBC57LQVGMAJG', '_blank')",
                                                 style = 'margin-top: 28px;'),
-                                       bsTooltip('meh',title = "I can afford to keep this up virtually forever as it only costs about 7$/month to run. But if you are feeling generous it\\'s nice for things to pay for themselves"),
+                                       bsTooltip('meh',title = readLines('http://oganm.com/donation.txt')),
                                        style = 'float:right')))),
             column(3,
                    consoleUI("console"),

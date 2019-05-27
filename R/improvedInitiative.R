@@ -7,8 +7,7 @@ improvedInitiativeJSON = function(char = getOption('defaultCharacter')){
     saves = saveBonus(char) %>% {.[. != 0]}
     skills = skillBonus(char) %>% {.[. != 0]}
 
-    iiJSON = list(Name = char$Name,
-                  Source = '',
+    iiJSON = list(Source = '',
                   Type = '',
                   HP = list(Value = char$maxHealth,
                             Notes = ''),
@@ -20,12 +19,12 @@ improvedInitiativeJSON = function(char = getOption('defaultCharacter')){
                   Abilities = list(Str = char$abilityScores['Str'],
                                    Dex = char$abilityScores['Dex'],
                                    Con = char$abilityScores['Con'],
-                                   Cha = char$abilityScores['Cha'],
                                    Int = char$abilityScores['Int'],
-                                   Wis = char$abilityScores['Wis']),
-                  DamageVulnerabilities = NULL,
-                  DamageResistances = NULL,
-                  ConditionImmunities = NULL,
+                                   Wis = char$abilityScores['Wis'],
+                                   Cha = char$abilityScores['Cha']),
+                  DamageVulnerabilities = list(),
+                  DamageResistances =  list(),
+                  ConditionImmunities = list(),
                   Saves = lapply(seq_along(saves), function(i){
                       list(Name = names(saves)[i],
                            Modifier = unname(saves[i]))
@@ -34,15 +33,17 @@ improvedInitiativeJSON = function(char = getOption('defaultCharacter')){
                       list(Name = names(skills)[i],
                            Modifier = unname(skills[i]))
                   }),
-                  Senses = NULL,
+                  Senses = list(),
                   Languages = char$LanguagesKnown %>% strsplit('\n') %>% {c(.[[1]],'')},
-                  Challenge = '',
-                  Traits = NULL,
-                  Actions = NULL,
-                  Reactions = NULL,
-                  LegendaryActions = NULL,
-                  Description = '',
-                  ImageURL =''
+                  Challenge = list(),
+                  Traits = list(),
+                  Actions = list(),
+                  Reactions = list(),
+                  LegendaryActions = list(),
+                  Description = list(),
+                  Player = 'player',
+                  Version = '2.3.2',
+                  ImageURL =list()
                   ) %>% jsonlite::toJSON(pretty = TRUE,auto_unbox = TRUE)
 
     return(iiJSON)
