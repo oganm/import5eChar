@@ -25,7 +25,7 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
             stringr::str_replace_all('(¼)|(\u{00BC})','1/4') %>%
             stringr::str_replace_all('(‘)|(\u{2018})',"'") %>%
-            stringr::str_replace_all('(’)|(\u{2018})',"'") %>%
+            stringr::str_replace_all('(’)|(\u{2019})',"'") %>%
             stringr::str_replace_all('(—)|(\u{FE58})',"-") %>%
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
             stringr::str_replace_all('(”)|(\u{201D})','"') %>%
