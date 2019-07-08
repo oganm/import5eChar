@@ -27,7 +27,7 @@ AC =  function(char = getOption('defaultCharacter')){
     char$armorBonus +
         char$shieldBonus +
         char$miscArmorBonus +
-        min(stat2mod(char$abilityScores['Dex']),char$maxDex) +
+        min(max(stat2mod(char$abilityScores['Dex']),0),char$maxDex) +
         statAdd
 }
 
