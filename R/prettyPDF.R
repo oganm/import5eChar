@@ -18,6 +18,8 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
 
     fixChars = which(charFields&noDims) %>% names
 
+    disallowedCharRegex = "[^\u0001-\u007F\u0080-\u00FF\u0100-\u017F\u0180-\u024F\u1E00-\u1EFF\u0370-\u03FF\u1F00-\u1FFF\u0400-\u04FF\u0500-\u052F\u0530-\u058F\u0590-\u05FF\u0600-\u06FF]"
+
     for (x in fixChars){
         char[[x]] %<>% stringr::str_replace_all('•|\u{2022}','-') %>%
             stringr::str_replace_all('(½)|(\u{00BD})','1/2') %>%
@@ -30,10 +32,12 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
             stringr::str_replace_all('(”)|(\u{201D})','"') %>%
             stringr::str_replace_all('(→)|(\u{201D})','->') %>%
-            gsub("[^\x01-\x7F]", "", .)
+            # gsub("[^\x01-\x7F]", "", .)
+            gsub(disallowedCharRegex,'',.)
 
 
     }
+    # cat(char$Features)
 
     fixCharsPersonality = names(char$personality)
     for (x in fixCharsPersonality){
@@ -48,7 +52,9 @@ prettyPDF = function(file,char = getOption('defaultCharacter')){
             stringr::str_replace_all('(“)|(\u{201C})','"') %>%
             stringr::str_replace_all('(”)|(\u{201D})','"') %>%
             stringr::str_replace_all('(→)|(\u{201D})','->') %>%
-            gsub("[^\x01-\x7F]", "", .)
+            # gsub("[^\x01-\x7F]", "", .)
+            gsub(disallowedCharRegex,'',.)
+
     }
 
 
