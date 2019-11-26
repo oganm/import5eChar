@@ -79,6 +79,9 @@ weapons =function(input, output,session,char){
         return(img(src = icon,width = 20,height = 20))
     }
     output$weaponsTable = renderDataTable({
+        if(length(char$weapons) == 0){
+            return(NULL)
+        }
         weaponTable = char$weapons %>% sapply(function(x){
 
 

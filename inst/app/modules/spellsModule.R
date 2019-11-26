@@ -1,3 +1,5 @@
+
+
 spellsUI = function(id){
     ns = NS(id)
     tagList(
@@ -5,7 +7,9 @@ spellsUI = function(id){
                     Shiny.onInputChange(variableName, null);
 });"),
         htmlOutput(ns('casterInfo')),
-        dataTableOutput(ns('spellTable')))
+        htmlOutput(ns('spellTabs'))# ,
+        #dataTableOutput(ns('spellTable'))
+        )
     }
 
 spells = function(input,output,session,char){
@@ -35,6 +39,8 @@ spells = function(input,output,session,char){
                        descriptiveElement(names(spellDC(char)),'Casting Stat')),
                 column(1,
                        dropdownButton(
+                           checkboxInput(session$ns('cantripScale'),label = 'Cantrip Scaling',value = TRUE),
+                           bsTooltip(session$ns('cantripScale'),'Only works for automatically created characters',placement = 'bottom'),
                            strong('Spell Source'),
                            shinysky::textInput.typeahead(id = session$ns('spellSource'),
                                                placeholder = 'dndbeyond',
@@ -52,6 +58,186 @@ spells = function(input,output,session,char){
             )
         )
 
+    })
+
+
+    output$spellTabs = renderUI({
+
+        if(!is.null(char$spells) && !is.null(input$cantripScale)){
+            groups = char$spells$level %>% duplicated %>% not %>% which
+            groups = groups -1
+            groups %<>% c(nrow(char$spells))
+
+
+
+            availableLevels = unique(char$spells$level)
+            # maxLevel = (char$spellSlots>0) %>% which %>% max %>% {.-1} # max level with spell slots
+
+            nameButtons = char$spells$name %>% sapply(function(x){
+                namelink = x %>% tolower() %>% gsub(' |/','-',.) %>% gsub("'|’",'',.)
+
+                if(is.null(input$spellSource) || input$spellSource == ''){
+                    spSource = .sheetApp.spellSource
+                } else{
+                    spSource = input$spellSource
+                }
+
+
+                # prepare the link
+                spelllink = a(href = paste0(spSource,
+                                            namelink),
+                              target= '_blank',x,
+                              id = paste0('name_button_',namelink)
+                )
+
+                # prepare additional information
+
+                spellIndex = which(tolower(names(spellDetails)) %in% tolower(x))
+                if(length(spellIndex==1)){
+                    spellInfo = spellDetails[[spellIndex]]
+                } else{
+                    spellInfo = list()
+                }
+
+
+
+                if(length(spellInfo)>0){
+                    tooltipData =
+                        spellInfo[c('school','components','castingTime','duration','range','aoe','attackSave','damageEffect')] %>%
+                        unlist %>%
+                        na.omit() %>% {.[.!='']}
+
+                    tooltipText = seq_along(tooltipData) %>% sapply(function(i){
+                        paste0(names(tooltipData)[i],': ',tooltipData[[i]])
+                    }) %>% paste(collapse = '</br>')
+
+                    div(spelllink,
+                        bsTooltip(id = paste0('name_button_',namelink),tooltipText)) %>%
+                        as.character -> out
+                    return(out)
+                }else{
+                    return(as.character(spelllink))
+                }
+
+            })
+
+            prepared = char$spells$name %>% sapply(function(x){
+                checkboxInput(inputId = paste0(x,'-prep'),
+                              label = '',
+                              value = char$spells %>% filter(name == x) %$% prepared) %>%
+                    as.character
+            })
+
+            diceButtons = char$spells$name %>% sapply(function(x){
+                spellIndex = which(tolower(names(spellData)) %in% tolower(x))
+
+                if(length(spellIndex==1)){
+                    spellDice = spellData[[spellIndex]]
+                    spellDice %<>%
+                        gsub(pattern = 'SPELL\\+PROF', replacement = spellAttack(char),.) %>%
+                        gsub(pattern = 'SPELL',replacement = char$abilityMods[char$castingStatCode + 1],.) # %>%
+                    if(input$cantripScale){
+                        print('scaling cantrips')
+                        # cantrip level scaling
+                        playerLevel = char$classInfo[,'Level'] %>% as.integer() %>% sum
+
+                        if(is.integer(playerLevel)){
+                            replacement = 1 + (playerLevel>=5) + (playerLevel>=11) + (playerLevel>=17)
+                        } else{
+                            replacement = 1
+                        }
+                        spellDice %<>% gsub(pattern = 'CAN',replacement = replacement,.) %>%
+                            gsub(pattern = 'BLD',replacement = replacement-1,.)
+
+                    } else{
+                        replacement = 1
+                        spellDice %<>% gsub(pattern = 'CAN',replacement = replacement,.) %>%
+                            gsub(pattern = 'BLD',replacement = replacement-1,.)
+                    }
+                    lapply(spellDice, function(y){
+                        actionButton(inputId = paste0(y,'_roll'),
+                                     label= y,
+                                     class= 'modButton',
+                                     onclick =  glue('Shiny.onInputChange("',session$ns('spellDice'),'",  this.id)'))
+                    }) %>% tagList %>% as.character
+                } else{
+                    return('')
+                }
+
+            })
+
+
+            table  = data.frame(nameButtons, prepared,
+                                diceButtons,
+                                level = char$spells$level  + .1,
+                                stringsAsFactors = FALSE)
+
+            slots = spellSlots(char)
+            maxLevel = max(which(slots>0),0)
+
+            slotInfo = 1:(1+maxLevel) %>% sapply(function(x){
+                if(names(char$spellSlots[x]) == 'Cantrip'){
+                    text = 'Cantrip'
+                } else{
+                    text = paste0('Level ',names(char$spellSlots[x]))
+                }
+
+                strong(text) %>% as.character()
+            })
+
+
+            slotMarks = 0:maxLevel %>% sapply(function(x){
+                if(x>0 && slots[[x]]>0){
+                    radioGroupButtons(
+                        status = 'primary',
+                        size = 'sm',
+                        inputId = session$ns(paste0("slotMark",x)),
+                        label = '',
+                        choices = c(0,seq_len(slots[x])) %>% lapply(function(y){
+                            div(id = paste0(x,'-',y), width= "100%",onclick = glue('Shiny.onInputChange("',session$ns('spellSlots'),'",  this.id)'),
+                                y)
+                        }) %>% sapply(as.character),
+                        selected = char$spellSlots[as.character(x)]
+                    ) %>% as.character()
+                    #
+                    #
+                    # checkboxGroupInput('slotMark','',choices = rep('',slots[x]),selected = char$spellSlots[as.character(x)]>=seq_len(slots[x]), inline = TRUE) %>%
+                    #     as.character()
+                } else {
+                    ''
+                }
+            })
+
+            levelTable = data.frame(nameButtons = slotInfo,
+                                    prepared = slotMarks,
+                                    diceButtons = '',
+                                    level = 0:maxLevel,
+                                    stringsAsFactors = FALSE)
+
+            browser()
+
+
+            finalTable = rbind(table,levelTable) %>% arrange(level)
+            lapply(0:maxLevel,function(i){
+                tabTable = finalTable %>% filter(level>=i & level<i+1) %>% select(-level)
+
+                tabPanel(i,
+                         datatable(tabTable,escape = FALSE,selection = 'none',rownames = FALSE,width = '100%',height = 'auto',
+                          colnames= rep('',3),
+                          options = list(bFilter = 0,
+                                         bLengthChange = 0,
+                                         paging = 0,
+                                         ordering = 0,
+                                         bInfo = 0,
+                                         pageLength = nrow(tabTable))),value = i)
+
+            }) -> tabs
+
+            do.call(tabsetPanel,tabs)
+
+        } else{
+            NULL
+        }
     })
 
 
@@ -129,7 +315,21 @@ spells = function(input,output,session,char){
                     spellDice = spellData[[spellIndex]]
                     spellDice %<>%
                         gsub(pattern = 'SPELL\\+PROF', replacement = spellAttack(char),.) %>%
-                        gsub(pattern = 'SPELL',replacement = char$abilityMods[char$castingStatCode + 1],.)
+                        gsub(pattern = 'SPELL',replacement = char$abilityMods[char$castingStatCode + 1],.) # %>%
+                    if(input$cantripScale){
+                        print('scaling cantrips')
+                        # cantrip level scaling
+                        playerLevel = char$classInfo[,'Level'] %>% as.integer() %>% sum
+
+                        if(is.integer(playerLevel)){
+                            replacement = 1 + (playerLevel>=5) + (playerLevel>=11) + (playerLevel>=17)
+                        } else{
+                            replacement = 1
+                        }
+                        spellDice %<>% gsub(pattern = 'CAN',replacement = replacement,.) %>%
+                            gsub(pattern = 'BLD',replacement = replacement-1,.)
+
+                    }
                     lapply(spellDice, function(y){
                         actionButton(inputId = paste0(y,'_roll'),
                                      label= y,
@@ -205,13 +405,15 @@ spells = function(input,output,session,char){
 
             return(dt)
 
+        } else{
+            NULL
         }
     })
 
 
-    # observe({
-    #     print(input$spellSlots)
-    # })
+    observe({
+        print(input$spellSlots)
+    })
 
 
 

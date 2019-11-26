@@ -243,13 +243,18 @@ processCharacter = function(char,clean = TRUE){
 
     char$weapons = weapons
 
+
     classData = char$classData %>% strsplit('⊟|(\u{229f})') %>% {.[[1]]}
 
     tryCatch({
         char$classInfo = classData[[1]] %>% strsplit('⊠|\u{22a0}') %>% {.[[1]]} %>%
             strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
             {rownames(.) =NULL
-            colnames(.) = c('Class','Archetype','Level','Caster Type')
+            if(ncol(.)==4){
+                colnames(.) = c('Class','Archetype','Level','Caster Type')
+            } else if(ncol(.) ==5){
+                colnames(.) = c('Class','Archetype','Level','Caster Type','Unkown')
+            }
             .}
         },
         error = function(e){
