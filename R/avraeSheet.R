@@ -22,7 +22,7 @@ avraeSheet = function(char = getOption('defaultCharacter')){
     }
 
     oganSheet = "1a9CUrPOdPPV5qbh3uUBT4cqq1Ue5Eo70fWLUp6pSZAY"
-    sheet = googlesheets::gs_key(x = oganSheet)
+    sheet = googlesheets::gs_key(x = oganSheet,lookup = FALSE)
     sheetToFill = sheet %>% googlesheets::gs_copy(to=paste0('avrae_',char$Name))
 
     file = googledrive::drive_get(id = sheetToFill$sheet_key,verbose=FALSE)
