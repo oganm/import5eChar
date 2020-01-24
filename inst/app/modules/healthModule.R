@@ -52,6 +52,9 @@ health = function(input, output, session,
 
     # creating hit dice buttons
     output$hitDiceSection = renderUI({
+        if(is.null(char$hitDice)){
+            return(NULL)
+        }
         tagList(
             HTML('<strong>&emsp;&emsp;&emsp;&emsp;HD: </strong>'),
             lapply(char$hitDiceRemain,function(x){
@@ -247,7 +250,7 @@ health = function(input, output, session,
     observeEvent(input$healthDropdown,{
         updateNumericInput(session,inputId = 'currentHealth',value = char$currentHealth,min= 0, max = char$maxHealth)
         updateNumericInput(session,inputId = 'tempHealth',value = char$currentTempHP,min= 0)
-        updateNumericInput(session,inputId = 'maxHealth',value = charInitial$maxHealth,min= 1)
+        updateNumericInput(session,inputId = 'maxHealth',value = char$maxHealth,min= 1)
     })
 
     observe({

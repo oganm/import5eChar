@@ -12,6 +12,7 @@ library(shinyBS)
 library(jsonlite)
 library(shinythemes)
 library(stringr)
+library(monsteR)
 
 spellData = tryCatch(fromJSON(readLines('https://raw.githubusercontent.com/oganm/wizaRd/master/data-raw/spelldice.json') %>% paste(collapse = '\n')),
                      error = function(e){
@@ -34,6 +35,7 @@ source('modules/skillsModule.R')
 source('modules/diceRollerModule.R')
 source('modules/packageVersionModule.R')
 source('modules/consoleModule.R')
+source('modules/petModule.R')
 
 consoleLength  = 60
 

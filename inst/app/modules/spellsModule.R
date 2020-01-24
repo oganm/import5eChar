@@ -214,7 +214,6 @@ spells = function(input,output,session,char){
                                     level = 0:maxLevel,
                                     stringsAsFactors = FALSE)
 
-            browser()
 
 
             finalTable = rbind(table,levelTable) %>% arrange(level)

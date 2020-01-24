@@ -50,6 +50,8 @@ shinyServer(function(input, output,session) {
 
     choicesModule = callModule(choices,'choices', char = char)
 
+    petModule = callModule(pet,'pet')
+
     callModule(console,'console',
                consoleLength = consoleLength,
                attributeModule,
@@ -62,7 +64,8 @@ shinyServer(function(input, output,session) {
                diceModule4,
                characterDescription,
                healthModule,
-               spellsModule)
+               spellsModule,
+               petModule)
 
 
 
