@@ -11,20 +11,14 @@ processHit = function(attackData){
         }
 
 
-
-        if(attackRoll == 0){
+        if(attackRoll == 1){
             damageText = 'CRITICAL MISS'
             damage = 0
         } else if(attackRoll == 20){
+            critDamage = stringr::str_replace_all(attackData$damage, "\\d+(?=d|D)", function(m) as.integer(m) * 2)
 
-            for(i in seq_along(dicePortion)){
-
-
-                critDamage = stringr::str_replace_all(attackData$damage, "\\d+(?=d|D)", function(m) as.integer(m) * 2)
-
-                damageText = capture.output({damage = diceSyntax::roll(critDamage)}) %>%
-                    gsub('(\\[1\\] )|"','',.) %>%  paste0(collapse = '\n')
-            }
+            damageText = capture.output({damage = diceSyntax::roll(critDamage)}) %>%
+                gsub('(\\[1\\] )|"','',.) %>%  paste0(collapse = '\n')
         } else{
 
             damageText = capture.output({damage = diceSyntax::roll(attackData$damage)}) %>%
