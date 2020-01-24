@@ -41,6 +41,8 @@ processHit = function(attackData){
                          "Rolls:[ {attackRoll} ] (1d20)\n",
                          "{damageText}\n",
                          "{capture.output(roll) %>% paste0(collapse = '\n')}")
+    } else{
+        out = ''
     }
 
 
@@ -156,6 +158,7 @@ petUI = function(id){
 
 pet = function(input,output,session){
 
+    reset = reactiveVal(value = FALSE)
     out = reactiveVal(value = '')
 
     pet = reactiveValues(currentHealth = 1,
@@ -246,6 +249,7 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
     })
 
@@ -256,6 +260,7 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
     })
 
@@ -266,6 +271,7 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
     })
 
@@ -276,6 +282,7 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
     })
 
@@ -286,6 +293,7 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
     })
 
@@ -296,7 +304,15 @@ pet = function(input,output,session){
 
         attack = processHit(attackData)
         out(attack)
+        reset(TRUE)
 
+    })
+
+    observe({
+        if(reset()){
+            out('')
+            reset(FALSE)
+        }
     })
 
 
