@@ -33,6 +33,6 @@ Imports:
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax,
-    oganm/shinysky,
+    AnalytixWare/ShinySky,
     pridiltal/staplr
 RoxygenNote: 6.0.1
