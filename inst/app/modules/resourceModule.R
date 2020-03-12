@@ -24,36 +24,15 @@ resources = function(input,output,session,char){
         }
 
 
-        buttons = 1:nrow(char$resources) %>% sapply(function(i){
-            resource =  char$resources[i,]
-            x = resource$shortName
-
-            if(resource$dice == 0 & resource$Reset != 'static'){
-                out = tags$b(x) %>% as.character
-            } else{
-
-                out = actionButton(label = x,
-                                   inputId= x,
-                                   onclick = glue('Shiny.onInputChange("',session$ns('resourceButton'),'",  this.id)'),
-                                   class = 'resourceButton') %>% as.character
-            }
-
-            return(out)
+        buttons = char$resources$shortName %>% sapply(function(x){
+            actionButton(label = x,
+                         inputId= x,
+                         onclick = glue('Shiny.onInputChange("',session$ns('resourceButton'),'",  this.id)'),
+                         class = 'resourceButton') %>% as.character
         })
 
         displays = 1:nrow(char$resources) %>% sapply(function(i){
-            resource = char$resources[i,]
-
-            if(resource$dice == 0 & resource$Reset != 'static'){
-                out = glue::glue('<div style="width:300%"><input type="text" id="resourceslider{i}" name="slider" data-min="0" data-max="{char$resources$maxUse[i]}" value="{char$resources$remainingUse[i]}" /></div>')
-
-                # sliderInput(inputId = paste0(''), value = char$resources$remainingUse[i],
-                #             label = '',
-                #             min = 0,
-                #             max = char$resources$maxUse[i],step = 1, width = '100%') %>%
-                #     as.character -> out
-
-            } else if(char$resources$dice[i]>0){
+            if(char$resources$dice[i]>0){
                 out = paste0(char$resources$remainingUse[i],
                              'd',
                              char$resources$dice[i])
@@ -66,9 +45,9 @@ resources = function(input,output,session,char){
 
         refill = 1:nrow(char$resources) %>% sapply(function(i){
             resource = char$resources[i,]
-            if(resource$dice!=0 & (resource$Reset != 'static' |
+            if(resource$Reset != 'static' |
                resource$RecoverPerLongRest >0 |
-               resource$RecoverPerShortRest > 0)){
+               resource$RecoverPerShortRest > 0){
                 actionButton(inputId = resource$name, # ids must be unique per element shortname is used so using name now. actually not really as these actually set different variables. not sure why I thought this was the case
                              label = '+',
                              onclick =  glue('Shiny.onInputChange("',session$ns('recoverResource'),'",  this.id)'),
@@ -83,14 +62,6 @@ resources = function(input,output,session,char){
                                    refill = refill,
                                    stringsAsFactors = FALSE)
 
-        js = c(
-            "function(settings){",
-            "  $('[id^=resourceslider]').ionRangeSlider({",
-            "    grid: true,",
-            "  });",
-            "}"
-        )
-
         table = datatable(resourceTable,escape = FALSE,selection = 'none',rownames = FALSE,
                           colnames= rep('',2),
                           options = list(bFilter = 0,
@@ -98,8 +69,7 @@ resources = function(input,output,session,char){
                                          paging = 0,
                                          ordering = 0,
                                          bInfo = 0,
-                                         pageLength = nrow(resourceTable),
-                                         initComplete = JS(js)))
+                                         pageLength = nrow(resourceTable)))
 
     })
 
