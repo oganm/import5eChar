@@ -82,3 +82,7 @@ border-color: #6959CD;
 .tempHealth .irs-single, .tempHealth .irs-bar-edge, .tempHealth .irs-bar {
 background: #6959CD;
 }
+
+.inactiveResource {
+background: #5c5c5c;
+}

@@ -44,41 +44,49 @@ processHit = function(attackData){
 
 }
 
+monsters = monsteR::monsters
 monsters$`Animate Objects` =
     list(actions =
              list(
                  'Tiny' = list(
+                     name = 'Tiny',
                      attack_bonus = 8,
                      damage_dice = '1d4',
                      damage_bonus = 5,
                      default_count = 10,
                      saves = c(Str = -3, Dex = 4, Con = 0, Int = -4, Wis = -4, Cha = -5)),
                  'Small' = list(
+                     name = 'Small',
                      attack_bonus = 6,
                      damage_dice = '1d8',
                      damage_bonus = 2,
                      default_count = 10,
                      saves = c(Str = -2, Dex = 3, Con = 0, Int = -4, Wis = -4, Cha = -5)),
                  "Medium" = list(
+                     name = 'Medium',
                      attack_bonus = 5,
                      damage_dice = '2d6',
                      damage_bonus = 1,
                      default_count = 5,
                      saves = c(Str = 0, Dex = 2, Con = 0, Int = -4, Wis = -4, Cha = -5)),
                  "Large" = list(
+                     name = 'Large',
                      attack_bonus = 6,
                      damage_dice = '2d10',
                      damage_bonus = 2,
                      default_count = 2,
                      saves = c(Str = 2, Dex = 0, Con = 0, Int = -4, Wis = -4, Cha = -5)),
                  "Huge" = list(
-                     damage_bonus = 8,
+                     name = 'Huge',
+                     attack_bonus = 8,
                      damage_dice = '2d12',
-                     damage_bonus = 4,
+                     damage_bonus = 2,
                      saves = c(Str = 4, Dex = -2, Con = 0, Int = -4, Wis = -4, Cha = -5))
-             )
+             ),
+         HP = 80
     )
 
+monsters = c(monsters[length(monsters)],monsters[-length(monsters)])
 
 seq_along(monsters) %>% lapply(function(i){
     validAttacks = monsteR:::attackable(monsters[[i]]$actions)
@@ -191,7 +199,7 @@ pet = function(input,output,session){
     observeEvent(input$monster,{
 
         if(!is.null(input$monster) && input$monster!= ''){
-            monster = monsteR::monsters[[input$monster]]
+            monster = monsters[[input$monster]]
 
             pet$currentHealth = monster$HP
             pet$maxHealth = monster$HP
