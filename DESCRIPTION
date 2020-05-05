@@ -29,10 +29,12 @@ Imports:
     DT,
     shinyBS,
     jsonlite,
-    shinysky
+    shinysky,
+    monsteR
 Remotes:
     oganm/ogbox,
     oganm/diceSyntax,
     AnalytixWare/ShinySky,
-    pridiltal/staplr
+    pridiltal/staplr,
+    oganm/monsteR
 RoxygenNote: 6.0.1
