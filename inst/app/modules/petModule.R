@@ -45,6 +45,22 @@ processHit = function(attackData){
 }
 
 monsters = monsteR::monsters
+
+
+monsters$`Steel Defender` = list(
+    HP = 17, # minimum hp
+    actions = list(
+        `Force-Empowered Rend`= list(
+            name = 'Force-Empowered Rend',
+            attack_bonus = 4,
+            damage_dice = '1d8',
+            damage_bonus = 2,
+            saves  = c(Str = 2, Dex = 3, Con = 4, Int = -4, Wis = 0, Cha = -2))
+        )
+    )
+monsters = c(monsters[length(monsters)],monsters[-length(monsters)])
+
+
 monsters$`Animate Objects` =
     list(actions =
              list(
@@ -86,7 +102,11 @@ monsters$`Animate Objects` =
          HP = 80
     )
 
+
 monsters = c(monsters[length(monsters)],monsters[-length(monsters)])
+
+
+
 
 seq_along(monsters) %>% lapply(function(i){
     validAttacks = monsteR:::attackable(monsters[[i]]$actions)
@@ -158,7 +178,10 @@ petUI = function(id){
     })
 }
 
-pet = function(input,output,session){
+pet = function(input,output,session, char){
+
+
+
 
     reset = reactiveVal(value = FALSE)
     out = reactiveVal(value = '')
@@ -197,6 +220,16 @@ pet = function(input,output,session){
                                                   damage_bonus = 0)))
 
     observeEvent(input$monster,{
+
+
+        if(any(char$classInfo[,'Archetype'] == 'Battle Smith')){
+            level = char$classInfo[char$classInfo[,'Archetype'] == 'Battle Smith','Level'] %>% as.numeric()
+            proficiency = char$proficiencyBonus
+
+            monsters$`Steel Defender`$HP = unname(level*5+2+char$abilityMods['Int'])
+            monsters$`Steel Defender`$actions$`Force-Empowered Rend`$attack_bonus = 2 +  char$proficiencyBonus
+            monsters$`Steel Defender`$actions$`Force-Empowered Rend`$damage_bonus = char$proficiencyBonus
+        }
 
         if(!is.null(input$monster) && input$monster!= ''){
             monster = monsters[[input$monster]]

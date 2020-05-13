@@ -50,7 +50,7 @@ shinyServer(function(input, output,session) {
 
     choicesModule = callModule(choices,'choices', char = char)
 
-    petModule = callModule(pet,'pet')
+    petModule = callModule(pet,'pet', char = char)
 
     callModule(console,'console',
                consoleLength = consoleLength,
