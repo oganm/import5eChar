@@ -89,15 +89,22 @@ casterLevel =  function(char=  getOption('defaultCharacter')){
 
     classInfo = char$classInfo
 
-    warlockLevels = classInfo[classInfo[,'Caster Type'] == 3,'Level'] %>% as.numeric() %>% sum
-
     fullLevel = classInfo[classInfo[,'Caster Type'] == 0,'Level'] %>% as.numeric() %>% sum
 
-    halfLevel = classInfo[classInfo[,'Caster Type'] == 1,'Level'] %>% as.numeric() %>% sum
+    halfLevel = classInfo[classInfo[,'Caster Type'] == 1 & classInfo[,'ArtificerFlag'] == 0,'Level'] %>% as.numeric() %>% sum
+
+    halfLevelArtificer = classInfo[classInfo[,'Caster Type'] == 1 & classInfo[,'ArtificerFlag'] == 1,'Level'] %>% as.numeric() %>% sum
 
     thirdLevel = classInfo[classInfo[,'Caster Type'] == 2,'Level'] %>% as.numeric() %>% sum
 
-    totalLevel = fullLevel + floor(1/2*halfLevel) + floor(1/3*thirdLevel)
+
+    if(nrow(classInfo)==1){
+        totalLevel = fullLevel + ceiling(halfLevel*1/2)*(halfLevel>1) + ceiling(thirdLevel*1/3)*(thirdLevel>2) + ceiling(halfLevelArtificer*1/2)
+    } else{
+        totalLevel = fullLevel + floor(1/2*halfLevel) + floor(1/3*thirdLevel) + ceiling(1/2*halfLevelArtificer)
+    }
+
+    warlockLevels = classInfo[classInfo[,'Caster Type'] == 3,'Level'] %>% as.numeric() %>% sum
 
     return(c(casterLevel = totalLevel, pactMagic = warlockLevels))
 
