@@ -251,9 +251,10 @@ processCharacter = function(char,clean = TRUE){
             strsplit('⊡|\u{22A1}') %>% as.data.frame() %>% t %>%
             {rownames(.) =NULL
             if(ncol(.)==4){
-                colnames(.) = c('Class','Archetype','Level','Caster Type')
+                . = cbind(.,matrix('0'))
+                colnames(.) = c('Class','Archetype','Level','Caster Type','ArtificerFlag')
             } else if(ncol(.) ==5){
-                colnames(.) = c('Class','Archetype','Level','Caster Type','Unkown')
+                colnames(.) = c('Class','Archetype','Level','Caster Type','ArtificerFlag')
             }
             .}
         },
