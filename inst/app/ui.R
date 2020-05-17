@@ -24,7 +24,7 @@ shinyUI(
                                         weaponsUI(id = 'weapons')),
                                tabPanel('Spells',
                                         spellsUI(id = 'spells'))),
-                   bsCollapse(
+                   bsCollapse(open = 'Pet',
                        bsCollapsePanel('Pet',
                                        petUI(id = 'pet'))
                    )
