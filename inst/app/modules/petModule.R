@@ -55,6 +55,18 @@ monsters$`Steel Defender` = list(
             attack_bonus = 4,
             damage_dice = '1d8',
             damage_bonus = 2,
+            saves  = c(Str = 2, Dex = 3, Con = 4, Int = -4, Wis = 0, Cha = -2)),
+        Repair = list(
+            name = 'Repair',
+            attack_bonus = 0,
+            damage_dice = '2d8',
+            damage_bonus = 2,
+            saves  = c(Str = 2, Dex = 3, Con = 4, Int = -4, Wis = 0, Cha = -2)),
+        Mending = list(
+            name = 'Mending',
+            attack_bonus = 0,
+            damage_dice = '2d6',
+            damage_bonus = 0,
             saves  = c(Str = 2, Dex = 3, Con = 4, Int = -4, Wis = 0, Cha = -2))
         )
     )
@@ -229,6 +241,8 @@ pet = function(input,output,session, char){
             monsters$`Steel Defender`$HP = unname(level*5+2+char$abilityMods['Int'])
             monsters$`Steel Defender`$actions$`Force-Empowered Rend`$attack_bonus = 2 +  char$proficiencyBonus
             monsters$`Steel Defender`$actions$`Force-Empowered Rend`$damage_bonus = char$proficiencyBonus
+
+            monsters$`Steel Defender`$actions$Repair$damage_bonus = char$proficiencyBonus
         }
 
         if(!is.null(input$monster) && input$monster!= ''){

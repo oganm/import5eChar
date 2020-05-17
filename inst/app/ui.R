@@ -23,34 +23,38 @@ shinyUI(
                                tabPanel('Weapons',
                                         weaponsUI(id = 'weapons')),
                                tabPanel('Spells',
-                                        spellsUI(id = 'spells')),
-                               tabPanel('Pet',
-                                        petUI(id = 'pet'))),
-                   fluidRow(column(6,
-                                   diceRollerUI(id = 'diceRoller'),
-                                   br(),
-                                   diceRollerUI(id = 'diceRoller2', label = ''),
-                                   br(),
-                                   diceRollerUI(id = 'diceRoller3', label = ''),
-                                   br(),
-                                   diceRollerUI(id = 'diceRoller4', label = '')),
-                            column(6,
-                                   span(
-                                       actionButton('help',label = 'Help!',style = 'margin-top: 28px',
-                                                onclick =
-                                                    "window.open('https://github.com/oganm/import5eChar/blob/master/interactiveSheetDocumentation.md', '_blank')"),
-                                       actionButton('meh','Donate',
-                                                icon = icon('gift'),
-                                                onclick =
-                                                    "window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NBC57LQVGMAJG', '_blank')",
-                                                style = 'margin-top: 28px;'),
-                                       bsTooltip('meh',title = readLines('http://oganm.com/donation.txt')),
-                                       style = 'float:right')))),
+                                        spellsUI(id = 'spells'))),
+                   bsCollapse(
+                       bsCollapsePanel('Pet',
+                                       petUI(id = 'pet'))
+                   )
+                   ),
             column(3,
                    consoleUI("console"),
                    resourcesUI('resources'),
                    br(),
-                   choicesUI('choices'))),
+                   choicesUI('choices'),
+                   fluidRow(diceRollerUI(id = 'diceRoller'),
+                            br(),
+                            diceRollerUI(id = 'diceRoller2', label = ''),
+                            br(),
+                            diceRollerUI(id = 'diceRoller3', label = ''),
+                            br(),
+                            diceRollerUI(id = 'diceRoller4', label = '')),
+                   fluidRow(
+                                span(
+                            actionButton('help',label = 'Help!',style = 'margin-top: 28px',
+                                         onclick =
+                                                        "window.open('https://github.com/oganm/import5eChar/blob/master/interactiveSheetDocumentation.md', '_blank')"),
+                                       actionButton('meh','Donate',
+                                                    icon = icon('gift'),
+                                                    onclick =
+                                                        "window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=NBC57LQVGMAJG', '_blank')",
+                                                    style = 'margin-top: 28px;'),
+                                       bsTooltip('meh',title = readLines('http://oganm.com/donation.txt')),
+                                       style = 'float:right'))
+                   )
+            ),
         fluidRow(
             hr(),
             fluidRow(column(1),

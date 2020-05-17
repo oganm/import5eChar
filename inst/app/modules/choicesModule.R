@@ -22,7 +22,7 @@ choices = function(input,output,session,char){
 
         tabs = seq_along(char$classChoices) %>% lapply(function(i){
 
-            tabPanel(names(char$classChoices)[i] %>% abbreviate(minlength = 3),
+            bsCollapsePanel(names(char$classChoices)[i] %>% abbreviate(minlength = 3),
                      tagList(
                          strong(names(char$classChoices)[i]),
                          char$classChoices[[i]] %>%
@@ -39,7 +39,7 @@ choices = function(input,output,session,char){
 
         if(length(feats)>0){
             tabs = c(tabs,
-                     tabPanel('Feats',feats %>%
+                     bsCollapsePanel('Feats',feats %>%
                                   lapply(function(x){
                                       x = getRelevantFeature(x, char)
                                       tags$li(x)
@@ -49,7 +49,7 @@ choices = function(input,output,session,char){
         }
         if(char$Features!=''){
             tabs = c(tabs,
-                     tabPanel('Features',
+                     bsCollapsePanel('Features',
                               char$Features  %>%
                                   gsub('\n','<br/>',.,fixed = TRUE) %>%
                                   HTML ) %>%
@@ -58,7 +58,7 @@ choices = function(input,output,session,char){
 
         if(char$notes != ''){
             tabs = c(tabs,
-                     tabPanel('Notes',
+                     bsCollapsePanel('Notes',
                               char$notes  %>%
                                   gsub('\n','<br/>',.,fixed = TRUE) %>%
                                   HTML ) %>%
@@ -67,7 +67,7 @@ choices = function(input,output,session,char){
 
 
 
-        do.call(tabsetPanel,c(id = session$ns('choicesTab'),tabs))
+        do.call(bsCollapse,c(id = session$ns('choicesTab'),multiple = TRUE,tabs))
     })
 
 }
