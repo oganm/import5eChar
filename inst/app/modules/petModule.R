@@ -152,7 +152,7 @@ petUI = function(id){
                        #              class = 'modButton',style = 'background-color:#6959CD'),
                        # actionButton(ns('setHealth'),'Set', class = 'modButton')),
                 column(6,
-                       shiny::selectInput(ns('monster'),label = 'Load SRD monster',choices = c('',names(monsters))))
+                       shiny::selectInput(inputId = ns('monster'),label = 'Load SRD monster',choices = c('',names(monsters))))
 
             ),
             fluidRow(
@@ -230,6 +230,16 @@ pet = function(input,output,session, char){
                                                   attack_bonus = 0,
                                                   damage_dice = 0,
                                                   damage_bonus = 0)))
+
+    observeEvent(char$classInfo,{
+        if(any(char$classInfo[,'Archetype'] == 'Battle Smith')){
+            updateSelectInput(session = session,
+                              inputId = 'monster',
+                              label = 'Load SRD monster',
+                              choices = c('',names(monsters)),
+                              selected = 'Steel Defender')
+        }
+    })
 
     observeEvent(input$monster,{
 
