@@ -239,7 +239,8 @@ pet = function(input,output,session, char){
                               choices = c('',names(monsters)),
                               selected = 'Steel Defender')
         }
-    })
+    },priority = -9999)
+
 
     observeEvent(input$monster,{
 
@@ -257,6 +258,7 @@ pet = function(input,output,session, char){
 
         if(!is.null(input$monster) && input$monster!= ''){
             monster = monsters[[input$monster]]
+
 
             pet$currentHealth = monster$HP
             pet$maxHealth = monster$HP
