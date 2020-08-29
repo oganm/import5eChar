@@ -36,6 +36,7 @@ source('modules/diceRollerModule.R')
 source('modules/packageVersionModule.R')
 source('modules/consoleModule.R')
 source('modules/petModule.R')
+source('modules/roll20Module.R')
 
 consoleLength  = 60
 

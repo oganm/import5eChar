@@ -16,7 +16,8 @@ shinyUI(
         characterDescriptionUI(id = 'character'),
         fluidRow(
             column(3,attributesUI(id = 'attributes'),
-                   skillsUI(id = 'skills')),
+                   skillsUI(id = 'skills'),
+                   roll20UI(id = 'roll20')),
             column(5,healthUI(id = 'health'),
                    hr(),
                    tabsetPanel(id = 'tabs',

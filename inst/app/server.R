@@ -52,6 +52,20 @@ shinyServer(function(input, output,session) {
 
     petModule = callModule(pet,'pet', char = char)
 
+    callModule(roll20,'roll20',
+               attributeModule,
+               weaponModule,
+               skillModule,
+               resourceModule,
+               diceModule,
+               diceModule2,
+               diceModule3,
+               diceModule4,
+               characterDescription,
+               healthModule,
+               spellsModule,
+               petModule)
+
     callModule(console,'console',
                consoleLength = consoleLength,
                attributeModule,
