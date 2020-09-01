@@ -68,7 +68,7 @@ sendMessage = function(session, message){
 roll20UI = function(id){
     ns = NS(id)
     tagList(
-        shiny::tags$p('Connect to roll20 (beta and possibly unsafe)'),
+        shiny::tags$p('Connect to roll20 (beta, possibly unsafe and very slow)'),
         switchInput(ns('roll20'),label = 'Connect'),
         dropdownButton(
         textInput(ns('email'),label = 'email'),
@@ -88,12 +88,10 @@ roll20 = function(input, output, session,...){
     b = reactiveVal()
     loggedIn = reactiveVal(FALSE)
     observeEvent(input$login,{
-        print('dasdas')
         withProgress(message = 'Logging into roll20',value = 1,{
             b(startRoll20Session(input$email, input$password, input$gameLink))
             loggedIn(TRUE)
         })
-        print('dadsa')
 
     })
 
@@ -117,6 +115,13 @@ roll20 = function(input, output, session,...){
                              print('failed to send message')
                          })
             }
+        })
+    })
+
+    session$onSessionEnded(function() {
+        isolate({
+            print('stopping chrome session')
+            b()$stop
         })
     })
 }

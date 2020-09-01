@@ -4,6 +4,7 @@
 shinyServer(function(input, output,session) {
     # close the R session when Chrome closes
     session$onSessionEnded(function() {
+        print('main session ended')
         if(!is.null(getOption('ImThePortableClient')) |
            !is.null(getOption('AutoCloseCharSheet'))){
             stopApp()
