@@ -430,7 +430,16 @@ pet = function(input,output,session, char){
 
                 }
 
-                break
+                if(extraPosition<=7){
+                    for(i in seq(extraPosition, 7,by = 1)){
+                        updateTextInput(session,inputId = glue::glue('extra{extraPosition}-name'),
+                                        value = '')
+                        updateNumericInput(session,glue::glue('extra{extraPosition}-bonus'),
+                                           value = 0)
+                        extraPosition = extraPosition+1
+                    }
+
+                }
             }
 
             for(i in seq(1,5)){
