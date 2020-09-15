@@ -18,11 +18,21 @@ skills = function(input, output,session,char){
         statSep = char$skillAttributes %>% duplicated() %>% not %>% which %>% {.[-1] -1}
         skillAttributes = unique(char$skillAttributes)
 
+        prof = char$proficiencyBonus
         attributeRows = data.frame(skillName = skillAttributes %>% map(strong) %>% map_chr(as.character),
                                    profMark='',
                                    skillBonus = '',
                                    index = c(0,statSep+.1),
-                                   buttons = '',stringsAsFactors = FALSE)
+                                   buttons = skillAttributes %>% map_chr(function(x){
+                                       base = char$abilityMods[x]
+
+                                       tagList(
+                                           actionButton(label = base+prof, inputId = x,
+                                                        onclick = glue('Shiny.onInputChange("',session$ns('proficientSkill'),'",  this.id)'),
+                                                        class = 'skillButton')
+                                       ) %>% as.character
+                                   }),
+                                   stringsAsFactors = FALSE)
         charAts = data.frame(skillName = names(skillBonus),
                              profMark,
                              skillBonus,
@@ -46,6 +56,7 @@ skills = function(input, output,session,char){
         charAts1 = charAts[1:12,]
         charAts2 = rbind(charAts[13:nrow(charAts),],data.frame(skillName = '',
                                                                buttons = ''))
+
         charAts = cbind(charAts1,charAts2)
 
         table = datatable(charAts,escape = FALSE,selection = 'none',rownames = FALSE,
@@ -75,8 +86,22 @@ skills = function(input, output,session,char){
             session$sendCustomMessage(type = 'resetInputValue',
                                       message =  session$ns('skillButton'))
         }
+
+
+
+        if(!is.null(input$proficientSkill)){
+            out = glue(
+                'Proficient ',input$proficientSkill,' check:\n',
+                unname(roll('1d20')+ char$proficiencyBonus+char$abilityMods[input$proficientSkill])
+            )
+            session$sendCustomMessage(type = 'resetInputValue',
+                                      message =  session$ns('proficientSkill'))
+        }
+
         return(out)
     })
+
+
     return(out)
 
 }
