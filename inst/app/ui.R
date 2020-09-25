@@ -27,7 +27,13 @@ shinyUI(
                                         spellsUI(id = 'spells'))),
                    bsCollapse(open = 'Pet',
                        bsCollapsePanel('Pet',
-                                       petUI(id = 'pet'))
+                                       tabsetPanel(
+                                           tabPanel(title = 1,
+                                                    petUI(id = 'pet')),
+                                           tabPanel(title = 2,
+                                                    petUI(id = 'pet2'))
+                                       )
+                                       )
                    )
                    ),
             column(3,

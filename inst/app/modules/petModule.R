@@ -57,6 +57,23 @@ processHit = function(attackData,advantage = "Norm"){
 monsters = monsteR::monsters
 
 
+
+monsters$`Homonculus Servant` = list(
+    HP = 8, # minimum HP,
+    AC = 13,
+    abilityScores = c(Str = 4, Dex = 15, Con = 12, Int = 10, Wis = 10, Cha = 7),
+    saves = c(Str = -3, Dex = 4, Con = 1, Int = 0, Wis = 0, Cha = -2),
+    actions = list(
+        `Force Strike` = list(
+            name = 'Force Strike',
+            attack_bonus = 4,
+            damage_dice = '1d4',
+            damage_bonus = 2
+        )
+    )
+)
+monsters = c(monsters[length(monsters)],monsters[-length(monsters)])
+
 monsters$`Steel Defender` = list(
     HP = 17, # minimum hp
     AC = 15, # change at level 15
@@ -92,13 +109,17 @@ skillAttributes = c('Str',
 
 
 monsters$`Steel Defender`$skills = stat2mod(monsters$`Steel Defender`$abilityScores)[skillAttributes]
+monsters$`Homonculus Servant`$skills =  stat2mod(monsters$`Homonculus Servant`$abilityScores)[skillAttributes]
 
 names(monsters$`Steel Defender`$skills) = names(monsters$Aboleth$skills)
+names(monsters$`Homonculus Servant`$skills) = names(monsters$Aboleth$skills)
+
 
 monsters$`Steel Defender`$skills['Athletics'] = 4
 monsters$`Steel Defender`$skills['Perception'] = 4
 
-
+monsters$`Homonculus Servant`$skills['Perception'] = 4
+monsters$`Homonculus Servant`$skills['Stealth'] = 4
 
 monsters = c(monsters[length(monsters)],monsters[-length(monsters)])
 
@@ -155,7 +176,7 @@ petUI = function(id){
         tags$script("Shiny.addCustomMessageHandler('resetInputValue', function(variableName){
                     Shiny.onInputChange(variableName, null);
 });"),
-        wellPanel(style = 'overflow-y:scroll;max-height: 700px',
+        wellPanel(style = 'overflow-y:scroll;max-height: 400px',
             fluidRow(
                 column(6,
                        healthUI(ns('petHealth'))),
@@ -363,6 +384,19 @@ pet = function(input,output,session, char){
 
     observeEvent(input$monster,{
 
+
+        if(any(char$classInfo[,'Class']=='Artificer')){
+            level = char$classInfo[char$classInfo[,'Class'] == 'Artificer','Level'] %>% as.numeric()
+            proficiency = char$proficiencyBonus
+
+            monsters$`Homonculus Servant`$HP = unname(level+ 1 + char$abilityMods['Int'])
+            monsters$`Homonculus Servant`$saves['Dex'] = 2 + char$proficiencyBonus
+            monsters$`Homonculus Servant`$skills['Perception'] = 2 + char$proficiencyBonus
+            monsters$`Homonculus Servant`$skills['Stealth'] = 2 + char$proficiencyBonus
+
+            monsters$`Homonculus Servant`$actions$`Force Strike`$attack_bonus = 2 + char$proficiencyBonus
+            monsters$`Homonculus Servant`$actions$`Force Strike`$damage_bonus = char$proficiencyBonus
+        }
 
         if(any(char$classInfo[,'Archetype'] == 'Battle Smith')){
             level = char$classInfo[char$classInfo[,'Archetype'] == 'Battle Smith','Level'] %>% as.numeric()

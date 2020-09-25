@@ -25,7 +25,7 @@ healthUI = function(id){
                    icon = icon("bars"),
                    size=  'xs',
                    width = '30px',
-                   right = TRUE,
+                   right = FALSE,
                    inputId = ns('healthDropdown')))),
         div(
             numericInput(inputId = ns('increment'),
