@@ -4,6 +4,7 @@
 shinyServer(function(input, output,session) {
     # close the R session when Chrome closes
     session$onSessionEnded(function() {
+        print('main session ended')
         if(!is.null(getOption('ImThePortableClient')) |
            !is.null(getOption('AutoCloseCharSheet'))){
             stopApp()
@@ -51,6 +52,7 @@ shinyServer(function(input, output,session) {
     choicesModule = callModule(choices,'choices', char = char)
 
     petModule = callModule(pet,'pet', char = char)
+    petModule2 = callModule(pet,'pet2', char = char)
 
     callModule(roll20,'roll20',
                attributeModule,
@@ -64,7 +66,8 @@ shinyServer(function(input, output,session) {
                characterDescription,
                healthModule,
                spellsModule,
-               petModule)
+               petModule,
+               petModule2)
 
     callModule(console,'console',
                consoleLength = consoleLength,
@@ -79,7 +82,8 @@ shinyServer(function(input, output,session) {
                characterDescription,
                healthModule,
                spellsModule,
-               petModule)
+               petModule,
+               petModule2)
 
 
 
