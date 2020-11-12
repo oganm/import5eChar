@@ -391,10 +391,10 @@ pet = function(input,output,session, char){
 
             monsters$`Homonculus Servant`$HP = unname(level+ 1 + char$abilityMods['Int'])
             monsters$`Homonculus Servant`$saves['Dex'] = 2 + char$proficiencyBonus
-            monsters$`Homonculus Servant`$skills['Perception'] = 2 + char$proficiencyBonus
+            monsters$`Homonculus Servant`$skills['Perception'] = 2*char$proficiencyBonus
             monsters$`Homonculus Servant`$skills['Stealth'] = 2 + char$proficiencyBonus
 
-            monsters$`Homonculus Servant`$actions$`Force Strike`$attack_bonus = 2 + char$proficiencyBonus
+            monsters$`Homonculus Servant`$actions$`Force Strike`$attack_bonus = unname(char$abilityMods['Int']) + char$proficiencyBonus
             monsters$`Homonculus Servant`$actions$`Force Strike`$damage_bonus = char$proficiencyBonus
         }
 
@@ -403,9 +403,9 @@ pet = function(input,output,session, char){
             proficiency = char$proficiencyBonus
 
             monsters$`Steel Defender`$HP = unname(level*5+2+char$abilityMods['Int'])
-            monsters$`Steel Defender`$actions$`Force-Empowered Rend`$attack_bonus = 2 +  char$proficiencyBonus
+            monsters$`Steel Defender`$actions$`Force-Empowered Rend`$attack_bonus = unname(char$abilityMods['Int']) +  char$proficiencyBonus
             monsters$`Steel Defender`$actions$`Force-Empowered Rend`$damage_bonus = char$proficiencyBonus
-            monsters$`Steel Defender`$skills['Perception'] = 2 + char$proficiencyBonus
+            monsters$`Steel Defender`$skills['Perception'] = 2*char$proficiencyBonus
             monsters$`Steel Defender`$skills['Athletics'] = 2 + char$proficiencyBonus
             monsters$`Steel Defender`$saves['Dex'] = 1 + char$proficiencyBonus
             monsters$`Steel Defender`$saves['Con'] = 2 + char$proficiencyBonus
