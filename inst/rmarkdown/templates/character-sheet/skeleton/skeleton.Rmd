@@ -138,6 +138,9 @@ charAts2 = rbind(charAts[13:nrow(charAts),],data.frame(skillName = '',
                                                        skillBonus = ''))
 charAts = cbind(charAts1,charAts2)
 
+rownames(charAts) = NULL
+
+
 out = kable(charAts, format = 'latex',booktabs= TRUE,escape=FALSE,col.names = NULL,linesep= '')%>%
     kable_styling(position = 'center',latex_options = "HOLD_position")
 
