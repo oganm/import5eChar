@@ -42,7 +42,7 @@ weapons =function(input, output,session,char){
             icon = 'icons/whip.png'
         } else if(grepl('hammer|pick|maul', tolower(weapon$name))){
             icon = 'icons/claw-hammer.png'
-        } else if(grepl('trident', tolower(weapon$name))){
+        } else if(grepl('trident|wave', tolower(weapon$name))){
             icon = 'icons/trident.png'
         } else if(grepl('sword|rapier|scimitar|dagger', tolower(weapon$name))){
             icon = 'icons/pointy-sword.png'
