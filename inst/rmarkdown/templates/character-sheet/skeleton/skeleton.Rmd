@@ -52,7 +52,7 @@ init = initBonus(char= char)
 
 c1 = c('Class \\& Level',
 	   'Race',
-	   'Backrground',
+	   'Background',
 	   'Alignment',
 	   'Proficiency') %>% boldify()
 
